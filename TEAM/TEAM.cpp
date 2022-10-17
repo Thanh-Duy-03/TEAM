@@ -338,7 +338,7 @@ void Game::InstructionScene(float fDeltaTime)
 int main()
 {
 	Game game;
-	if (!game.ConstructConsole(120, 70, 10, 10))
+	if (!game.ConstructConsole(120,70, 10, 10))
 	{
 		game.ChangeName(L"Game");
 		game.Start();
