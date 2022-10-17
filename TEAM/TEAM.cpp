@@ -35,30 +35,30 @@ bool Game::SceneManager(float fDeltaTime)
 {
 	switch (m_nCurrentState)
 	{
-	case 0:
+	case 0: // Exit
 		return false;
 
-	case 1:
+	case 1: // Menu
 		StartMenu(fDeltaTime);
 		break;
-	case 2:
+	case 2: //New Game
 		PlayGame(fDeltaTime);
 		break;
 
-	case 3:
+	case 3: // Load game
 		LoadGame(fDeltaTime);
 		break;
 
-	case 4:
+	case 4: // High score
 		HighScoreScene(fDeltaTime);
 		break;
 
-	case 5:
+	case 5: // Instruction
 		InstructionScene(fDeltaTime);
 		break;
 
 	default:
-		this->m_nCurrentState = 0;
+		this->m_nCurrentState = 0; //  Exit
 		break;
 	}
 	return true;
