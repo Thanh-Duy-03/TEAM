@@ -255,14 +255,8 @@ void Game::PlayGame(float fDeltaTime)
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	Fill(0, 0, 89, 7, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 14, 89, 14, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 20, 89, 20, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 26, 89, 26, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 32, 89, 32, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 38, 89, 38, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 44, 89, 44, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 50, 89, 50, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 56, 89, 56, PIXEL_SOLID, FG_BLACK + BG_WHITE);
+	for (int i = 1; i <= 5; ++i)
+		DrawLine(0, 8 + 9 * i, 89, 8 + 9 * i, PIXEL_SOLID, FG_BLACK + BG_WHITE);
 	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
 	Fill(0, 63, 89, 69, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 
