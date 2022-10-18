@@ -2,6 +2,7 @@
 
 int main()
 {
+	srand(time(0));
 	Game game;
 	if (!game.ConstructConsole(120,70, 9, 9))
 	{

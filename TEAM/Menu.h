@@ -37,7 +37,10 @@ public:
 	float timeToSpawn;
 	float time;
 	float speed;
+	float timeToStop;
+	float timeStop;
 	int y;
+	bool stop;
 	wstring sprite;
 	short color;
 	int width;

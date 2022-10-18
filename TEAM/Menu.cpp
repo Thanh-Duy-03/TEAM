@@ -14,6 +14,7 @@ Player::Player()
 void Player::LoadSprite(wstring fileName)
 {
 	wfstream file(fileName);
+	this->sprite = L"";
 	if (file.is_open())
 	{
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
@@ -36,11 +37,14 @@ Lane::Lane()
 	this->timeToSpawn = 0;
 	this->color = FG_BLACK + BG_WHITE;
 	this->y = 0;
+	this->stop = false;
+	this->timeToStop = 4;
 }
 
 void Lane::LoadSprite(wstring fileName)
 {
 	wfstream file(fileName);
+	this->sprite = L"";
 	if (file.is_open())
 	{
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
@@ -58,9 +62,28 @@ void Lane::LoadSprite(wstring fileName)
 	}
 	file.close();
 }
-
+int ran = 9;
 void Lane::Update(float fDeltaTime, int screenWidth)
 {
+	
+	if (this->stop &&this->y==ran )
+	{
+		timeStop += fDeltaTime;
+		if (this->timeStop >= this->timeToStop)
+		{
+			this->timeStop = 0;
+			this->stop = false;
+		}
+		return;
+	}
+	this->timeStop += fDeltaTime;
+	if (this->timeStop >= this->timeToStop )
+	{
+		this->stop = true;
+		 ran = 9 * (rand() % 6 + 1);
+		this->timeStop = 0;
+	}
+
 	this->time += fDeltaTime;
 	if (this->posList.empty() || this->time >= this->timeToSpawn)
 	{
@@ -83,7 +106,6 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 
 bool Game::OnUserCreate()
 {
-	srand(time(0));
 	this->m_nCurrentState = 1;
 
 	return true;
@@ -375,6 +397,17 @@ void Game::PlayGame(float fDeltaTime)
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
 
 	UpdateLane(fDeltaTime);
+	if (this->player.currentLane != 0 && this->player.currentLane != 7)
+	{
+		for (int i = 0; i < this->lane[this->player.currentLane].posList.size(); i++)
+		{
+			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i])
+			{
+				this->m_nCurrentState = 1;
+			}
+			
+		}
+	}
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
