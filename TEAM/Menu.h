@@ -24,6 +24,8 @@ public:
 	wstring sprite;
 	short color;
 	int width;
+	int total;
+	int level;
 };
 
 class Lane
@@ -52,19 +54,20 @@ class Game : public ConsoleGame
 private:
 	Player player;
 	Lane lane[8];
-
+	float score;
 protected:
 	virtual bool OnUserCreate();
 	virtual bool OnUserUpdate(float fDeltaTime);
 	bool SceneManager(float fDeltaTime);
 	void StartMenu(float fDeltaTime);
-	void StartGame(float fDeltaTime, int level);
+	void StartGame(float fDeltaTime);
 	void PlayGame(float fDeltaTime);
 	void LoadGame(float fDeltaTime);
 	void HighScoreScene(float fDeltaTime);
 	void InstructionScene(float fDeltaTime);
 	void UpdateLane(float fDeltaTime);
 	void DrawLane();
+	void DrawScore(float fDeltaTime);
 
 private:
 	int m_nCurrentState;
