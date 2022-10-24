@@ -36,7 +36,7 @@ public:
 	void Update(float fDeltaTime, int screenWidth);
 
 public:
-	float timeToSpawn;
+	int Kc;
 	float time;
 	float speed;
 	float timeToStop;

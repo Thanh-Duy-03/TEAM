@@ -37,7 +37,7 @@ Lane::Lane()
 	this->speed = 0;
 	this->sprite = L"";
 	this->time = 0;
-	this->timeToSpawn = 0;
+	this->Kc = 0;
 	this->color = FG_BLACK + BG_WHITE;
 	this->y = 0;
 	this->stop = false;
@@ -67,8 +67,8 @@ void Lane::LoadSprite(wstring fileName)
 }
 void Lane::Update(float fDeltaTime, int screenWidth)
 {
-	
-	if (this->stop &&this->y==ran )
+
+	if (this->stop && this->y == ran)
 	{
 		timeStop += fDeltaTime;
 		if (this->timeStop >= this->timeToStop)
@@ -80,15 +80,15 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 	}
 
 	this->timeStop += fDeltaTime;
-	if (this->timeStop >= this->timeToStop )
+	if (this->timeStop >= this->timeToStop)
 	{
 		this->stop = true;
-		 ran = 9 * (rand() % 6 + 1);
+		ran = 9 * (rand() % 6 + 1);
 		this->timeStop = 0;
 	}
 
 	this->time += fDeltaTime;
-	if (this->posList.empty() || this->time >= this->timeToSpawn)
+	if (this->posList.empty() || this->posList[this->posList.size() - 1] >= this->Kc)
 	{
 		float newPos = 0;
 		this->posList.push_back(newPos);
@@ -355,38 +355,44 @@ void Game::StartGame(float fDeltaTime)
 	this->lane[1].y = 54;
 	this->lane[1].LoadSprite(L"Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
+	this->lane[1].Kc = 60 - 6 * this->player.level;
 	//this->lane[1].timeToSpawn = 3 + rand() % 10;
-	this->lane[1].timeToSpawn = 7 - this->player.level;
+	//this->lane[1].timeToSpawn = 7 - this->player.level;
 
 	this->lane[2].y = 45;
 	this->lane[2].LoadSprite(L"Truck.txt");
 	this->lane[2].speed = 10.0f;
+	this->lane[2].Kc = 60 - 6 * this->player.level;
 	//this->lane[2].timeToSpawn = 3 + rand() % 10;
-	this->lane[2].timeToSpawn = 8 - this->player.level;
+	//this->lane[2].timeToSpawn = 8 - this->player.level;
 
 	this->lane[3].y = 36;
 	this->lane[3].LoadSprite(L"Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
+	this->lane[3].Kc = 60 - 6 * this->player.level;
 	//this->lane[3].timeToSpawn = 3 + rand() % 10;
-	this->lane[3].timeToSpawn = 10 - this->player.level;
+	//this->lane[3].timeToSpawn = 10 - this->player.level;
 
 	this->lane[4].y = 27;
 	this->lane[4].LoadSprite(L"Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
+	this->lane[4].Kc = 60 - 6 * this->player.level;
 	//this->lane[4].timeToSpawn = 3 + rand() % 10;
-	this->lane[4].timeToSpawn = 8 - this->player.level;
+	//this->lane[4].timeToSpawn = 8 - this->player.level;
 
 	this->lane[5].y = 18;
 	this->lane[5].LoadSprite(L"Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
+	this->lane[5].Kc = 60 - 6 * this->player.level;
 	//this->lane[5].timeToSpawn = 3 + rand() % 10;
-	this->lane[5].timeToSpawn = 10 - this->player.level;
+	//this->lane[5].timeToSpawn = 10 - this->player.level;
 
 	this->lane[6].y = 9;
 	this->lane[6].LoadSprite(L"Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
+	this->lane[6].Kc = 60 - 6 * this->player.level;
 	//this->lane[6].timeToSpawn = 5 + rand() % 10;
-	this->lane[6].timeToSpawn = 7 - this->player.level;
+	//this->lane[6].timeToSpawn = 7 - this->player.level;
 
 	this->lane[7].y = 0;
 	this->m_nCurrentState = 6;
@@ -407,7 +413,7 @@ void Game::PlayGame(float fDeltaTime)
 	DrawLane();
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
-	
+
 	UpdateLane(fDeltaTime);
 	DrawScore(fDeltaTime);
 	if (this->player.currentLane != 0 && this->player.currentLane != 7)
@@ -416,18 +422,21 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i])
 			{
+				this->player.total = 0;
+				this->player.level = 1;
 				this->m_nCurrentState = 1;
 			}
-			
+
 		}
 	}
 	//Qua mang choi 
 	if (this->player.currentLane == 7)
 	{
 		this->player.level++;
-		this->player.total = (int)this->score;
+		this->player.total += (int)this->score;
 		StartGame(fDeltaTime);
 	}
+	//
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
@@ -540,8 +549,8 @@ void Game::DrawLane()
 void Game::DrawScore(float fDeltaTime)
 {
 	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n";
-	       Score += L"▄█ █▄▄ █▄█ █▀▄ ██▄";
-		   DrawString(93, 7, Score, BG_WHITE + FG_BLUE);
+	Score += L"▄█ █▄▄ █▄█ █▀▄ ██▄";
+	DrawString(93, 7, Score, BG_WHITE + FG_BLUE);
 	wstring Number0 = L"█▀▀█\n█▄▀█\n█▄▄█";
 	wstring Number1 = L"▄█\n █\n▄█▄";
 	wstring Number2 = L"█▀█\n ▄▀\n█▄▄";
@@ -553,12 +562,12 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
 	wstring Numbers[10] = { Number0,Number1,Number2,Number3,Number4,Number5,Number6,Number7, Number8 ,Number9 };
-	this->score -= (fDeltaTime*1.5);
+	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
 	{
 
-		DrawString(112-5*i, 12, Numbers[k%10], BG_WHITE + FG_BLUE);
+		DrawString(112 - 5 * i, 12, Numbers[k % 10], BG_WHITE + FG_BLUE);
 		k /= 10;
 	}
 
@@ -569,7 +578,7 @@ void Game::DrawScore(float fDeltaTime)
 		DrawString(112 - 5 * i, 19, Numbers[j % 10], BG_WHITE + FG_BLUE);
 		j /= 10;
 	}
-	DrawString(112 - 5 , 25, Numbers[this->player.level], BG_WHITE + FG_BLUE);
+	DrawString(112 - 5, 25, Numbers[this->player.level], BG_WHITE + FG_BLUE);
 
 	if (this->score <= 0)
 	{
