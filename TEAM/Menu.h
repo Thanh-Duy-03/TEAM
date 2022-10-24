@@ -86,6 +86,7 @@ protected:
 	void DrawScore(float fDeltaTime);
 	void SaveGame(float fDeltaTime);
 	void DieGame(float fDeltaTime);
+	void effect(float time);
 
 private:
 	int m_nCurrentState;

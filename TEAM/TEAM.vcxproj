@@ -137,8 +137,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Die_Game.txt" />
+    <Text Include="firstGlow.txt" />
     <Text Include="Load_Game.txt" />
     <Text Include="Player.txt" />
+    <Text Include="secondGlow.txt" />
+    <Text Include="thirdGlow.txt" />
     <Text Include="Truck.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

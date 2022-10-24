@@ -95,7 +95,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 	this->time += fDeltaTime;
 	if (this->posList.empty() || this->posList[this->posList.size() - 1] >= this->Kc)
 	{
-		float newPos = 0;
+		float newPos = -20;
 		this->posList.push_back(newPos);
 		this->time = 0;
 	}
@@ -104,7 +104,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 		for (int i = 0; i < this->posList.size(); i++)
 		{
 			this->posList[i] += this->speed * fDeltaTime;
-			if (this->posList[i] >= screenWidth || this->posList[i] < 0)
+			if (this->posList[i] >= screenWidth || this->posList[i] < -50)
 			{
 				this->posList.pop_front();
 			}
@@ -119,7 +119,7 @@ bool Game::OnUserCreate()
 	fi.imbue(loc);
 	for (int i = 1; i <= 5; ++i)
 	{
-		getline(fi, this->Load_Game[i].name);
+		fi >> this->Load_Game[i].name;
 		fi >> this->Load_Game[i].level;
 		fi >> this->Load_Game[i].point;
 	}
@@ -127,9 +127,10 @@ bool Game::OnUserCreate()
 
 	fi.open("Die_Game.txt");
 	fi.imbue(loc);
+	
 	for (int i = 1; i <= 5; ++i)
 	{
-		getline(fi, this->High_Score[i].name);
+		fi >> this->High_Score[i].name;
 		fi >> this->High_Score[i].level;
 		fi >> this->High_Score[i].point;
 	}
@@ -151,26 +152,6 @@ bool Game::SceneManager(float fDeltaTime)
 	{
 	case 0: // Exit
 	{
-		wofstream fo("Load_Game.txt");
-		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		fo.imbue(loc);
-		for (int i = 1; i <= 5; ++i)
-		{
-			fo << this->Load_Game[i].name << "\n";
-			fo << this->Load_Game[i].level << "\n";
-			fo << this->Load_Game[i].point << "\n";
-		}
-		fo.close();
-
-		fo.open("Die_Game.txt");
-		fo.imbue(loc);
-		for (int i = 1; i <= 5; ++i)
-		{
-			fo << this->High_Score[i].name << "\n";
-			fo << this->High_Score[i].level << "\n";
-			fo << this->High_Score[i].point << "\n";
-		}
-		fo.close();
 		return false;
 	}
 
@@ -457,6 +438,7 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 
 void Game::PlayGame(float fDeltaTime)
 {
+	static float time = 0.0;
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
 	Fill(0, 0, 89, 7, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
@@ -471,7 +453,6 @@ void Game::PlayGame(float fDeltaTime)
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
 
-	UpdateLane(fDeltaTime);
 	DrawScore(fDeltaTime);
 	if (this->player.currentLane != 0 && this->player.currentLane != 7)
 	{
@@ -479,46 +460,64 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i])
 			{
-				this->m_nCurrentState = 8;
-				return;
+				this->player.die = true;
+				//this->m_nCurrentState = 8;
+				//return;
 			}
 
 		}
 	}
 	//Qua mang choi 
+
 	if (this->player.currentLane == 7)
 	{
 		this->player.level++;
 		this->player.total += (int)this->score;
 		StartGame(fDeltaTime, this->player.level, this->player.total);
 	}
-	if (this->m_keys['L'].bPressed)
+	if (!this->player.die)
 	{
-		this->m_nCurrentState = 7;
+		UpdateLane(fDeltaTime);
+		if (this->m_keys['L'].bPressed)
+		{
+			this->m_nCurrentState = 7;
+		}
+		if (this->m_keys[VK_ESCAPE].bPressed)
+		{
+			this->m_nCurrentState = 1;
+		}
+		if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed) && this->player.x - 5 >= 0)
+		{
+			this->player.x -= 5;
+		}
+		if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed) && this->player.x + this->player.width + 5 <= 89)
+		{
+			this->player.x += 5;
+		}
+		if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.currentLane < 7)
+		{
+			this->player.currentLane++;
+			this->player.y = this->lane[this->player.currentLane].y;
+		}
+		if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.currentLane > 0)
+		{
+			this->player.currentLane--;
+			this->player.y = this->lane[this->player.currentLane].y;
+		}
+	}
+	else
+	{
+		time += fDeltaTime;
+		effect(time);
+		if (time >= 3.0)
+		{
+			time = 0;
+			this->m_nCurrentState = 8;
+			return;
+		}
 	}
 	//
-	if (this->m_keys[VK_ESCAPE].bPressed)
-	{
-		this->m_nCurrentState = 1;
-	}
-	if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed) && this->player.x - 5 >= 0)
-	{
-		this->player.x -= 5;
-	}
-	if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed) && this->player.x + this->player.width + 5 <= 89)
-	{
-		this->player.x += 5;
-	}
-	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.currentLane < 7)
-	{
-		this->player.currentLane++;
-		this->player.y = this->lane[this->player.currentLane].y;
-	}
-	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.currentLane > 0)
-	{
-		this->player.currentLane--;
-		this->player.y = this->lane[this->player.currentLane].y;
-	}
+
 }
 
 void Game::LoadGame(float fDeltaTime)
@@ -698,10 +697,6 @@ void Game::SaveGame(float fDeltaTime)
 			name += c;
 		}
 	}
-	if (this->m_keys[VK_SPACE].bPressed)
-	{
-		name += L' ';
-	}
 	if (this->m_keys[VK_BACK].bPressed && name != L"")
 	{
 		name.pop_back();
@@ -713,6 +708,16 @@ void Game::SaveGame(float fDeltaTime)
 		this->Load_Game[6].point = this->player.total;
 		sort(this->Load_Game + 1, this->Load_Game + 6 + 1, cmp);
 		this->m_nCurrentState = 1;
+		wofstream fo("Load_Game.txt");
+		locale loc(locale(), new codecvt_utf8<wchar_t>);
+		fo.imbue(loc);
+		for (int i = 1; i <= 5; ++i)
+		{
+			fo << this->Load_Game[i].name << "\n";
+			fo << this->Load_Game[i].level << "\n";
+			fo << this->Load_Game[i].point << "\n";
+		}
+		fo.close();
 		name.clear();
 		return;
 	}
@@ -740,10 +745,7 @@ void Game::DieGame(float fDeltaTime)
 			name += c;
 		}
 	}
-	if (this->m_keys[VK_SPACE].bPressed)
-	{
-		name += L' ';
-	}
+	
 	if (this->m_keys[VK_BACK].bPressed && name != L"")
 	{
 		name.pop_back();
@@ -754,10 +756,32 @@ void Game::DieGame(float fDeltaTime)
 		this->High_Score[6].level = this->player.level;
 		this->High_Score[6].point = this->player.total;
 		sort(this->High_Score + 1, this->High_Score + 6 + 1, cmp);
+		locale loc(locale(), new codecvt_utf8<wchar_t>);
+		wofstream fo("Die_Game.txt");
+		fo.imbue(loc);
+		for (int i = 1; i <= 5; ++i)
+		{
+			fo << this->High_Score[i].name << "\n";
+			fo << this->High_Score[i].level << "\n";
+			fo << this->High_Score[i].point << "\n";
+		}
+		fo.close();
 		this->m_nCurrentState = 1;
 		name.clear();
 		return;
 	}
 
 	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
+}
+
+void Game::effect(float time)
+{
+	if (time < 0.5){
+		this->player.color = FG_RED + BG_WHITE;
+		this->player.LoadSprite(L"firstGlow.txt");
+		}
+	else if (time < 1)
+		this->player.LoadSprite(L"secondGlow.txt");
+	else if (time < 1.5)
+		this->player.LoadSprite(L"thirdGlow.txt");
 }

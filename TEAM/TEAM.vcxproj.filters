@@ -46,5 +46,14 @@
     <Text Include="Player.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="secondGlow.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="firstGlow.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="thirdGlow.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
