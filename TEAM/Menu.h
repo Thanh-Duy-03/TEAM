@@ -49,18 +49,34 @@ public:
 	deque<float> posList;
 };
 
+class Save
+{
+public:
+	wstring name;
+	int level;
+	int point;
+	Save()
+	{
+		name = L"";
+		level = 0;
+		point = 0;
+	}
+};
+
 class Game : public ConsoleGame
 {
 private:
 	Player player;
 	Lane lane[8];
 	float score;
+	Save Load_Game[10], High_Score[10];
+
 protected:
 	virtual bool OnUserCreate();
 	virtual bool OnUserUpdate(float fDeltaTime);
 	bool SceneManager(float fDeltaTime);
 	void StartMenu(float fDeltaTime);
-	void StartGame(float fDeltaTime);
+	void StartGame(float fDeltaTime, int level, int score);
 	void PlayGame(float fDeltaTime);
 	void LoadGame(float fDeltaTime);
 	void HighScoreScene(float fDeltaTime);
@@ -68,6 +84,8 @@ protected:
 	void UpdateLane(float fDeltaTime);
 	void DrawLane();
 	void DrawScore(float fDeltaTime);
+	void SaveGame(float fDeltaTime);
+	void DieGame(float fDeltaTime);
 
 private:
 	int m_nCurrentState;

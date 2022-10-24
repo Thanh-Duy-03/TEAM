@@ -1,6 +1,11 @@
 ﻿#include "Menu.h"
 int ran = -7;
 
+bool cmp(Save a, Save b)
+{
+	return (a.level > b.level || (a.level == b.level && a.point > b.point));
+}
+
 Player::Player()
 {
 	this->x = 0;
@@ -109,6 +114,27 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 
 bool Game::OnUserCreate()
 {
+	wifstream fi("Load_Game.txt");
+	locale loc(locale(), new codecvt_utf8<wchar_t>);
+	fi.imbue(loc);
+	for (int i = 1; i <= 5; ++i)
+	{
+		getline(fi, this->Load_Game[i].name);
+		fi >> this->Load_Game[i].level;
+		fi >> this->Load_Game[i].point;
+	}
+	fi.close();
+
+	fi.open("Die_Game.txt");
+	fi.imbue(loc);
+	for (int i = 1; i <= 5; ++i)
+	{
+		getline(fi, this->High_Score[i].name);
+		fi >> this->High_Score[i].level;
+		fi >> this->High_Score[i].point;
+	}
+	fi.close();
+
 	this->m_nCurrentState = 1;
 
 	return true;
@@ -124,14 +150,37 @@ bool Game::SceneManager(float fDeltaTime)
 	switch (m_nCurrentState)
 	{
 	case 0: // Exit
+	{
+		wofstream fo("Load_Game.txt");
+		locale loc(locale(), new codecvt_utf8<wchar_t>);
+		fo.imbue(loc);
+		for (int i = 1; i <= 5; ++i)
+		{
+			fo << this->Load_Game[i].name << "\n";
+			fo << this->Load_Game[i].level << "\n";
+			fo << this->Load_Game[i].point << "\n";
+		}
+		fo.close();
+
+		fo.open("Die_Game.txt");
+		fo.imbue(loc);
+		for (int i = 1; i <= 5; ++i)
+		{
+			fo << this->High_Score[i].name << "\n";
+			fo << this->High_Score[i].level << "\n";
+			fo << this->High_Score[i].point << "\n";
+		}
+		fo.close();
 		return false;
+	}
 
 	case 1: // Menu
 		StartMenu(fDeltaTime);
 		break;
 	case 2: // New Game
-		StartGame(fDeltaTime);
-		break;
+	{
+		StartGame(fDeltaTime, 1, 0);
+	}break;
 
 	case 3: // Load game
 		LoadGame(fDeltaTime);
@@ -148,7 +197,12 @@ bool Game::SceneManager(float fDeltaTime)
 	case 6: // Play Game
 		PlayGame(fDeltaTime);
 		break;
-
+	case 7:
+		SaveGame(fDeltaTime);
+		break;
+	case 8:
+		DieGame(fDeltaTime);
+		break;
 	default:
 		this->m_nCurrentState = 0; //  Exit
 		break;
@@ -341,7 +395,7 @@ void Game::StartMenu(float fDeltaTime)
 	DrawStringAlpha((int)truck2X, 60, truck2, truck2Color);
 }
 
-void Game::StartGame(float fDeltaTime)
+void Game::StartGame(float fDeltaTime, int level, int point)
 {
 	this->score = 200;
 	this->player.x = 0;
@@ -349,6 +403,8 @@ void Game::StartGame(float fDeltaTime)
 	this->player.currentLane = 0;
 	this->player.LoadSprite(L"Player.txt");
 	this->player.color = FG_BLUE + BG_WHITE;
+	this->player.level = level;
+	this->player.total = point;
 
 	this->lane[0].y = 63;
 
@@ -396,6 +452,7 @@ void Game::StartGame(float fDeltaTime)
 
 	this->lane[7].y = 0;
 	this->m_nCurrentState = 6;
+
 }
 
 void Game::PlayGame(float fDeltaTime)
@@ -422,9 +479,8 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i])
 			{
-				this->player.total = 0;
-				this->player.level = 1;
-				this->m_nCurrentState = 1;
+				this->m_nCurrentState = 8;
+				return;
 			}
 
 		}
@@ -434,7 +490,11 @@ void Game::PlayGame(float fDeltaTime)
 	{
 		this->player.level++;
 		this->player.total += (int)this->score;
-		StartGame(fDeltaTime);
+		StartGame(fDeltaTime, this->player.level, this->player.total);
+	}
+	if (this->m_keys['L'].bPressed)
+	{
+		this->m_nCurrentState = 7;
 	}
 	//
 	if (this->m_keys[VK_ESCAPE].bPressed)
@@ -519,10 +579,39 @@ void Game::HighScoreScene(float fDeltaTime)
 void Game::InstructionScene(float fDeltaTime)
 {
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_CYAN);
-	if (this->m_keys[VK_ESCAPE].bPressed)
+	DrawStringAlpha(10, 9, L"Save Game", BG_CYAN + FG_WHITE);
+	static wstring name;
+
+	for (char c = 'A'; c <= 'Z'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	for (char c = '0'; c <= '9'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	if (this->m_keys[VK_SPACE].bPressed)
+	{
+		name += L' ';
+	}
+	if (this->m_keys[VK_BACK].bPressed && name != L"")
+	{
+		name.pop_back();
+	}
+	if (this->m_keys[VK_RETURN].bPressed)
 	{
 		this->m_nCurrentState = 1;
+		name.clear();
+		return;
 	}
+
+	DrawStringAlpha(10, 10, name, BG_CYAN + FG_WHITE);
 }
 
 void Game::UpdateLane(float fDeltaTime)
@@ -587,4 +676,88 @@ void Game::DrawScore(float fDeltaTime)
 	/*	█▀▀█   ▄█░   █▀█   █▀▀█   ░█▀█░   █▀▀   ▄▀▀▄   ▀▀▀█   ▄▀▀▄   ▄▀▀▄
 		█▄▀█   ░█░   ░▄▀   ░░▀▄   █▄▄█▄   ▀▀▄   █▄▄░   ░░█░   ▄▀▀▄   ▀▄▄█
 		█▄▄█   ▄█▄   █▄▄   █▄▄█   ░░░█░   ▄▄▀   ▀▄▄▀   ░▐▌░   ▀▄▄▀   ░▄▄▀*/
+}
+
+void Game::SaveGame(float fDeltaTime)
+{
+	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
+	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
+	static wstring name;
+
+	for (char c = 'A'; c <= 'Z'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	for (char c = '0'; c <= '9'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	if (this->m_keys[VK_SPACE].bPressed)
+	{
+		name += L' ';
+	}
+	if (this->m_keys[VK_BACK].bPressed && name != L"")
+	{
+		name.pop_back();
+	}
+	if (this->m_keys[VK_RETURN].bPressed)
+	{
+		this->Load_Game[6].name = name;
+		this->Load_Game[6].level = this->player.level;
+		this->Load_Game[6].point = this->player.total;
+		sort(this->Load_Game + 1, this->Load_Game + 6 + 1, cmp);
+		this->m_nCurrentState = 1;
+		name.clear();
+		return;
+	}
+
+	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
+}
+
+void Game::DieGame(float fDeltaTime)
+{
+	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
+	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
+	static wstring name;
+
+	for (char c = 'A'; c <= 'Z'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	for (char c = '0'; c <= '9'; c++)
+	{
+		if (this->m_keys[c].bPressed)
+		{
+			name += c;
+		}
+	}
+	if (this->m_keys[VK_SPACE].bPressed)
+	{
+		name += L' ';
+	}
+	if (this->m_keys[VK_BACK].bPressed && name != L"")
+	{
+		name.pop_back();
+	}
+	if (this->m_keys[VK_RETURN].bPressed)
+	{
+		this->High_Score[6].name = name;
+		this->High_Score[6].level = this->player.level;
+		this->High_Score[6].point = this->player.total;
+		sort(this->High_Score + 1, this->High_Score + 6 + 1, cmp);
+		this->m_nCurrentState = 1;
+		name.clear();
+		return;
+	}
+
+	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
 }
