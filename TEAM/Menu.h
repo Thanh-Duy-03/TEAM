@@ -42,6 +42,7 @@ public:
 	float timeToStop;
 	float timeStop;
 	int y;
+	int x;
 	bool stop;
 	wstring sprite;
 	short color;

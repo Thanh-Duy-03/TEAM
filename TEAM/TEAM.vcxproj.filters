@@ -55,5 +55,8 @@
     <Text Include="thirdGlow.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Truck2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -1,6 +1,9 @@
 GAMEDE
 5
 730
+GAME7
+3
+339
 HACK
 2
 193
@@ -8,8 +11,5 @@ XAD
 1
 0
 DSAD
-1
-0
-HHH
 1
 0
