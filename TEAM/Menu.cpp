@@ -119,9 +119,11 @@ bool Game::OnUserCreate()
 	fi.imbue(loc);
 	for (int i = 1; i <= 5; ++i)
 	{
-		fi >> this->Load_Game[i].name;
-		fi >> this->Load_Game[i].level;
-		fi >> this->Load_Game[i].point;
+		Save tmp;
+		fi >> tmp.name;
+		fi >> tmp.level;
+		fi >> tmp.point;
+		this->Load_Game.push_back(tmp);
 	}
 	fi.close();
 
@@ -386,6 +388,7 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->player.color = FG_BLUE + BG_WHITE;
 	this->player.level = level;
 	this->player.total = point;
+	this->player.die = false;
 
 	this->lane[0].y = 63;
 
@@ -526,6 +529,20 @@ void Game::LoadGame(float fDeltaTime)
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
+		return;
+	}
+	int vtLoadGame = 0;
+	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && vtLoadGame > 0)
+	{
+		--vtLoadGame;
+	}
+	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && vtLoadGame < 4)
+	{
+		++vtLoadGame;
+	}
+	if (this->m_keys[VK_SPACE].bPressed || this->m_keys[VK_RETURN].bPressed)
+	{
+		StartGame(fDeltaTime, this->Load_Game[vtLoadGame].level, this->Load_Game[vtLoadGame].point);
 	}
 	// Thêm danh sách load game
 }
@@ -703,15 +720,17 @@ void Game::SaveGame(float fDeltaTime)
 	}
 	if (this->m_keys[VK_RETURN].bPressed)
 	{
-		this->Load_Game[6].name = name;
-		this->Load_Game[6].level = this->player.level;
-		this->Load_Game[6].point = this->player.total;
-		sort(this->Load_Game + 1, this->Load_Game + 6 + 1, cmp);
-		this->m_nCurrentState = 1;
+		this->Load_Game.pop_front();
+		Save tmp;
+		tmp.name = name;
+		tmp.level = this->player.level;
+		tmp.point = this->player.total;
+		this->Load_Game.push_back(tmp);
+
 		wofstream fo("Load_Game.txt");
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
 		fo.imbue(loc);
-		for (int i = 1; i <= 5; ++i)
+		for (int i = 0; i < this->Load_Game.size(); ++i)
 		{
 			fo << this->Load_Game[i].name << "\n";
 			fo << this->Load_Game[i].level << "\n";
@@ -719,6 +738,7 @@ void Game::SaveGame(float fDeltaTime)
 		}
 		fo.close();
 		name.clear();
+		this->m_nCurrentState = 1;
 		return;
 	}
 
@@ -756,6 +776,7 @@ void Game::DieGame(float fDeltaTime)
 		this->High_Score[6].level = this->player.level;
 		this->High_Score[6].point = this->player.total;
 		sort(this->High_Score + 1, this->High_Score + 6 + 1, cmp);
+
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
 		wofstream fo("Die_Game.txt");
 		fo.imbue(loc);
@@ -766,8 +787,8 @@ void Game::DieGame(float fDeltaTime)
 			fo << this->High_Score[i].point << "\n";
 		}
 		fo.close();
-		this->m_nCurrentState = 1;
 		name.clear();
+		this->m_nCurrentState = 1;
 		return;
 	}
 

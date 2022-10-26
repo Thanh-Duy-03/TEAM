@@ -58,7 +58,7 @@ public:
 	Save()
 	{
 		name = L"";
-		level = 0;
+		level = 1;
 		point = 0;
 	}
 };
@@ -69,7 +69,8 @@ private:
 	Player player;
 	Lane lane[8];
 	float score;
-	Save Load_Game[10], High_Score[10];
+	Save High_Score[10];
+	deque <Save> Load_Game;
 
 protected:
 	virtual bool OnUserCreate();
