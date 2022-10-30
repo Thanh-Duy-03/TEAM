@@ -61,7 +61,7 @@ int ConsoleGame::ConstructConsole(int width, int height, int fontW, int fontH)
 	wcscpy_s(cfi.FaceName, L"Consolas");
 	if (!SetCurrentConsoleFontEx(this->m_hConsole, FALSE, &cfi))
 	{
-		//return 1;
+		return 1;
 	}
 
 	this->m_rectWindow.Left = 0;
@@ -72,12 +72,12 @@ int ConsoleGame::ConstructConsole(int width, int height, int fontW, int fontH)
 
 	if (!SetConsoleWindowInfo(this->m_hConsole, TRUE, &this->m_rectWindow))
 	{
-		//return 1;
+		return 1;
 	}
 
 	if (!SetConsoleMode(this->m_hConsoleIn, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT))
 	{
-		//return 1;
+		return 1;
 	}
 	DisableSelection();
 	FixWindowSize();

@@ -4,10 +4,14 @@ int main()
 {
 	srand(time(0));
 	Game game;
-	if (!game.ConstructConsole(120,70, 9, 9))
+	int size = 2;
+	while (game.ConstructConsole(120, 70, size, size) == 0)
 	{
-		game.ChangeName(L"Game");
-		game.Start();
+		size++;
 	}
+	size -= 2;
+	game.ConstructConsole(120, 70, size, size);
+	game.ChangeName(L"Game");
+	game.Start();
 	return 0;
 }
