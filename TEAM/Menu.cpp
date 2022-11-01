@@ -673,17 +673,18 @@ void Game::SaveGame(float fDeltaTime)
 	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
 	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
 	static wstring name;
+	int length = 5;
 
 	for (char c = 'A'; c <= 'Z'; c++)
 	{
-		if (this->m_keys[c].bPressed)
+		if (this->m_keys[c].bPressed && name.length() < length)
 		{
 			name += c;
 		}
 	}
 	for (char c = '0'; c <= '9'; c++)
 	{
-		if (this->m_keys[c].bPressed)
+		if (this->m_keys[c].bPressed && name.length() < length)
 		{
 			name += c;
 		}
@@ -724,17 +725,18 @@ void Game::DieGame(float fDeltaTime)
 	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
 	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
 	static wstring name;
+	int length;
 
 	for (char c = 'A'; c <= 'Z'; c++)
 	{
-		if (this->m_keys[c].bPressed)
+		if (this->m_keys[c].bPressed && name.length() < length)
 		{
 			name += c;
 		}
 	}
 	for (char c = '0'; c <= '9'; c++)
 	{
-		if (this->m_keys[c].bPressed)
+		if (this->m_keys[c].bPressed && name.length() < length)
 		{
 			name += c;
 		}
