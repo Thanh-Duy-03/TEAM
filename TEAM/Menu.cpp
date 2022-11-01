@@ -6,41 +6,6 @@ bool cmp(Save a, Save b)
 	return (a.level > b.level || (a.level == b.level && a.point > b.point));
 }
 
-Player::Player()
-{
-	this->x = 0;
-	this->y = 0;
-	this->currentLane = 0;
-	this->width = 0;
-	this->sprite = L"";
-	this->color = FG_BLACK + BG_WHITE;
-	this->die = false;
-	this->total = 0;
-	this->level = 1;
-}
-
-void Player::LoadSprite(wstring fileName)
-{
-	wfstream file(fileName);
-	this->sprite = L"";
-	if (file.is_open())
-	{
-		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		file.imbue(loc);
-		int maxWidth = 0;
-		wstring line;
-		while (!file.eof())
-		{
-			getline(file, line);
-			if (maxWidth < line.size())
-				maxWidth = line.size();
-			this->sprite += line + L"\n";
-		}
-		this->width = maxWidth;
-	}
-	file.close();
-}
-
 Lane::Lane()
 {
 	this->speed = 0;
@@ -56,7 +21,8 @@ Lane::Lane()
 void Lane::LoadSprite(wstring fileName)
 {
 	wfstream file(fileName);
-	this->sprite = L""; this->sprite = L"";
+	this->sprite = L"";
+	this->sprite = L"";
 	if (file.is_open())
 	{
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
@@ -133,7 +99,7 @@ bool Game::OnUserCreate()
 
 	fi.open("Die_Game.txt");
 	fi.imbue(loc);
-	
+
 	for (int i = 1; i <= 5; ++i)
 	{
 		fi >> this->High_Score[i].name;
@@ -167,7 +133,8 @@ bool Game::SceneManager(float fDeltaTime)
 	case 2: // New Game
 	{
 		StartGame(fDeltaTime, 1, 0);
-	}break;
+	}
+	break;
 
 	case 3: // Load game
 		LoadGame(fDeltaTime);
@@ -401,52 +368,51 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[1].LoadSprite(L"Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
 	this->lane[1].Kc = 60 - 6 * this->player.level;
-	//this->lane[1].timeToSpawn = 3 + rand() % 10;
-	//this->lane[1].timeToSpawn = 7 - this->player.level;
+	// this->lane[1].timeToSpawn = 3 + rand() % 10;
+	// this->lane[1].timeToSpawn = 7 - this->player.level;
 
 	this->lane[2].x = 90;
 	this->lane[2].y = 45;
 	this->lane[2].LoadSprite(L"Truck2.txt");
 	this->lane[2].speed = -10.0f;
 	this->lane[2].Kc = 60 - 6 * this->player.level;
-	//this->lane[2].timeToSpawn = 3 + rand() % 10;
-	//this->lane[2].timeToSpawn = 8 - this->player.level;
+	// this->lane[2].timeToSpawn = 3 + rand() % 10;
+	// this->lane[2].timeToSpawn = 8 - this->player.level;
 
 	this->lane[3].x = -20;
 	this->lane[3].y = 36;
 	this->lane[3].LoadSprite(L"Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
 	this->lane[3].Kc = 60 - 6 * this->player.level;
-	//this->lane[3].timeToSpawn = 3 + rand() % 10;
-	//this->lane[3].timeToSpawn = 10 - this->player.level;
+	// this->lane[3].timeToSpawn = 3 + rand() % 10;
+	// this->lane[3].timeToSpawn = 10 - this->player.level;
 
 	this->lane[4].x = -20;
 	this->lane[4].y = 27;
 	this->lane[4].LoadSprite(L"Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
 	this->lane[4].Kc = 60 - 6 * this->player.level;
-	//this->lane[4].timeToSpawn = 3 + rand() % 10;
-	//this->lane[4].timeToSpawn = 8 - this->player.level;
+	// this->lane[4].timeToSpawn = 3 + rand() % 10;
+	// this->lane[4].timeToSpawn = 8 - this->player.level;
 
 	this->lane[5].x = -20;
 	this->lane[5].y = 18;
 	this->lane[5].LoadSprite(L"Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
 	this->lane[5].Kc = 60 - 6 * this->player.level;
-	//this->lane[5].timeToSpawn = 3 + rand() % 10;
-	//this->lane[5].timeToSpawn = 10 - this->player.level;
+	// this->lane[5].timeToSpawn = 3 + rand() % 10;
+	// this->lane[5].timeToSpawn = 10 - this->player.level;
 
 	this->lane[6].x = -20;
 	this->lane[6].y = 9;
 	this->lane[6].LoadSprite(L"Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
 	this->lane[6].Kc = 60 - 6 * this->player.level;
-	//this->lane[6].timeToSpawn = 5 + rand() % 10;
-	//this->lane[6].timeToSpawn = 7 - this->player.level;
+	// this->lane[6].timeToSpawn = 5 + rand() % 10;
+	// this->lane[6].timeToSpawn = 7 - this->player.level;
 
 	this->lane[7].y = 0;
 	this->m_nCurrentState = 6;
-
 }
 
 void Game::PlayGame(float fDeltaTime)
@@ -474,14 +440,12 @@ void Game::PlayGame(float fDeltaTime)
 			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i] - this->player.width)
 			{
 				this->player.die = true;
-				//this->m_nCurrentState = 8;
-				//return;
+				// this->m_nCurrentState = 8;
+				// return;
 			}
-			
-
 		}
 	}
-	//Qua mang choi 
+	// Qua mang choi
 
 	if (this->player.currentLane == 7)
 	{
@@ -531,7 +495,6 @@ void Game::PlayGame(float fDeltaTime)
 		}
 	}
 	//
-
 }
 
 void Game::LoadGame(float fDeltaTime)
@@ -654,7 +617,7 @@ void Game::DrawLane()
 	{
 		for (int j = 0; j < this->lane[i].posList.size(); j++)
 		{
-			if (i < 7 && i>0)
+			if (i < 7 && i > 0)
 			{
 				((ran == this->lane[i].y) ? Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED) : Draw(5, this->lane[i].y, PIXEL_SOLID, FG_GREEN + BG_GREEN));
 			}
@@ -677,7 +640,7 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = { Number0,Number1,Number2,Number3,Number4,Number5,Number6,Number7, Number8 ,Number9 };
+	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
 	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
@@ -776,7 +739,7 @@ void Game::DieGame(float fDeltaTime)
 			name += c;
 		}
 	}
-	
+
 	if (this->m_keys[VK_BACK].bPressed && name != L"")
 	{
 		name.pop_back();
@@ -808,10 +771,11 @@ void Game::DieGame(float fDeltaTime)
 
 void Game::effect(float time)
 {
-	if (time < 0.5){
+	if (time < 0.5)
+	{
 		this->player.color = FG_RED + BG_WHITE;
 		this->player.LoadSprite(L"firstGlow.txt");
-		}
+	}
 	else if (time < 1)
 		this->player.LoadSprite(L"secondGlow.txt");
 	else if (time < 1.5)

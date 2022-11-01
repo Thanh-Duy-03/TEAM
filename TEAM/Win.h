@@ -1,9 +1,15 @@
 #pragma once
 #include <iostream>
-#include <string>
 #include <Windows.h>
+#include <string>
 #include <cmath>
 #include <thread>
+#include <deque>
+#include <fstream>
+#include <locale>
+#include <codecvt>
+#include <vector>
+#include <random>
 
 using namespace std;
 
@@ -62,7 +68,7 @@ public:
 	void DisableSelection();
 	void FixWindowSize();
 	void DisableControlButton(bool close, bool min, bool max);
-	void Clip(int& x, int& y);
+	void Clip(int &x, int &y);
 	void Draw(int x, int y, short c, short col);
 	void Fill(int x1, int y1, int x2, int y2, short c, short col);
 	void DrawString(int x, int y, wstring c, short col);
@@ -97,7 +103,7 @@ protected:
 	int m_nScreenWidth;
 	int m_nScreenHeight;
 
-	CHAR_INFO* m_buffScreen;
+	CHAR_INFO *m_buffScreen;
 	wstring m_sAppName;
 	HANDLE m_hOriginalConsole;
 	CONSOLE_SCREEN_BUFFER_INFO m_originalConsoleInfo;
@@ -105,8 +111,8 @@ protected:
 	HANDLE m_hConsoleIn;
 	SMALL_RECT m_rectWindow;
 
-	short m_keyOldState[256] = { 0 };
-	short m_keyNewState[256] = { 0 };
+	short m_keyOldState[256] = {0};
+	short m_keyNewState[256] = {0};
 
 	bool m_bAtomActive;
 };

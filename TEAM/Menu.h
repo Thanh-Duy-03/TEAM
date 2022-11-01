@@ -1,32 +1,8 @@
 ﻿#pragma once
 #include "Win.h"
-#include <deque>
-#include <fstream>
-#include <string>
-#include <locale>
-#include <codecvt>
-#include <vector>
-#include <random>
+#include "Player.h"
 
 using namespace std;
-
-class Player
-{
-public:
-	Player();
-	void LoadSprite(wstring fileName);
-
-public:
-	bool die;
-	int x;
-	int y;
-	int currentLane;
-	wstring sprite;
-	short color;
-	int width;
-	int total;
-	int level;
-};
 
 class Lane
 {
@@ -71,7 +47,7 @@ private:
 	Lane lane[8];
 	float score;
 	Save High_Score[10];
-	deque <Save> Load_Game;
+	deque<Save> Load_Game;
 
 protected:
 	virtual bool OnUserCreate();
