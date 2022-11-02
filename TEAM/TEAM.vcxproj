@@ -144,8 +144,8 @@
   <ItemGroup>
     <Text Include="firstGlow.txt" />
     <Text Include="Player.txt" />
-    <Text Include="Save\Die_Game.txt" />
-    <Text Include="Save\Load_Game.txt" />
+    <Text Include="Save\HighScores.txt" />
+    <Text Include="Save\LoadGames.txt" />
     <Text Include="secondGlow.txt" />
     <Text Include="Truck2.txt" />
     <Text Include="thirdGlow.txt" />

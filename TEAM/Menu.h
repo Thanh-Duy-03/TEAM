@@ -12,8 +12,8 @@ private:
 	Player player;
 	Lane lane[8];
 	float score;
-	Save High_Score[10];
-	deque<Save> Load_Game;
+	deque<Save> highScores;
+	deque<Save> loadGames;
 
 protected:
 	virtual bool OnUserCreate();
@@ -30,7 +30,8 @@ protected:
 	void DrawScore(float fDeltaTime);
 	void SaveGame(float fDeltaTime);
 	void DieGame(float fDeltaTime);
-	void effect(float time);
+	void SaveData(string fileName, deque<Save> saves);
+	void LoadData(string fileName, deque<Save> &saves);
 
 private:
 	int m_nCurrentState;

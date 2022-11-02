@@ -7,28 +7,8 @@ bool cmp(Save a, Save b)
 
 bool Game::OnUserCreate()
 {
-	wifstream fi("Save/Load_Game.txt");
-	locale loc(locale(), new codecvt_utf8<wchar_t>);
-	fi.imbue(loc);
-	for (int i = 1; i <= 5; ++i)
-	{
-		Save tmp;
-		fi >> tmp.name;
-		fi >> tmp.level;
-		fi >> tmp.point;
-		this->Load_Game.push_back(tmp);
-	}
-	fi.close();
-
-	fi.open("Save/Die_Game.txt");
-	fi.imbue(loc);
-	for (int i = 1; i <= 5; ++i)
-	{
-		fi >> this->High_Score[i].name;
-		fi >> this->High_Score[i].level;
-		fi >> this->High_Score[i].point;
-	}
-	fi.close();
+	LoadData("Save/HighScores.txt", highScores);
+	LoadData("Save/LoadGames.txt", loadGames);
 	this->m_nCurrentState = 1;
 	return true;
 }
@@ -337,7 +317,7 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 
 void Game::PlayGame(float fDeltaTime)
 {
-	static float time = 0.0;
+	// static float time = 0.0;
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
 	Fill(0, 0, 89, 7, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
@@ -403,11 +383,16 @@ void Game::PlayGame(float fDeltaTime)
 	}
 	else
 	{
-		time += fDeltaTime;
-		effect(time);
-		if (time >= 3.0)
+		// time += fDeltaTime;
+		// effect(time);
+		// if (time >= 3.0)
+		// {
+		// 	time = 0;
+		// 	this->m_nCurrentState = 8;
+		// 	return;
+		// }
+		if (this->player.DieState(fDeltaTime) >= 3.0f)
 		{
-			time = 0;
 			this->m_nCurrentState = 8;
 			return;
 		}
@@ -433,7 +418,7 @@ void Game::LoadGame(float fDeltaTime)
 	}
 	if (this->m_keys[VK_SPACE].bPressed || this->m_keys[VK_RETURN].bPressed)
 	{
-		StartGame(fDeltaTime, this->Load_Game[vtLoadGame].level, this->Load_Game[vtLoadGame].point);
+		// StartGame(fDeltaTime, this->LoadGames[vtLoadGame].level, this->LoadGames[vtLoadGame].point);
 	}
 	// Thêm danh sách load game
 }
@@ -570,7 +555,6 @@ void Game::DrawScore(float fDeltaTime)
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
 	{
-
 		DrawString(112 - 5 * i, 12, Numbers[k % 10], BG_WHITE + FG_BLUE);
 		k /= 10;
 	}
@@ -578,7 +562,6 @@ void Game::DrawScore(float fDeltaTime)
 	int j = this->player.total;
 	for (int i = 1; i <= 3; i++)
 	{
-
 		DrawString(112 - 5 * i, 19, Numbers[j % 10], BG_WHITE + FG_BLUE);
 		j /= 10;
 	}
@@ -618,25 +601,17 @@ void Game::SaveGame(float fDeltaTime)
 	{
 		name.pop_back();
 	}
-	if (this->m_keys[VK_RETURN].bPressed)
+	if (this->m_keys[VK_RETURN].bPressed && name.length() > 0)
 	{
-		this->Load_Game.pop_front();
-		Save tmp;
-		tmp.name = name;
-		tmp.level = this->player.level;
-		tmp.point = this->player.total;
-		this->Load_Game.push_back(tmp);
+		Save save;
+		string temp(name.begin(), name.end());
+		save.name = temp;
+		save.level = this->player.level;
+		save.point = this->player.total;
+		this->loadGames.push_back(save);
+		this->loadGames.pop_front();
+		SaveData("Save/LoadGames.txt", this->loadGames);
 
-		wofstream fo("Save/Load_Game.txt");
-		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		fo.imbue(loc);
-		for (int i = 0; i < this->Load_Game.size(); ++i)
-		{
-			fo << this->Load_Game[i].name << "\n";
-			fo << this->Load_Game[i].level << "\n";
-			fo << this->Load_Game[i].point << "\n";
-		}
-		fo.close();
 		name.clear();
 		this->m_nCurrentState = 1;
 		return;
@@ -648,7 +623,7 @@ void Game::SaveGame(float fDeltaTime)
 void Game::DieGame(float fDeltaTime)
 {
 	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
-	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
+	DrawStringAlpha(22, 22, L"High score", BG_CYAN + FG_WHITE);
 	static wstring name;
 	int length = 5;
 
@@ -673,21 +648,17 @@ void Game::DieGame(float fDeltaTime)
 	}
 	if (this->m_keys[VK_RETURN].bPressed)
 	{
-		this->High_Score[6].name = name;
-		this->High_Score[6].level = this->player.level;
-		this->High_Score[6].point = this->player.total;
-		sort(this->High_Score + 1, this->High_Score + 6 + 1, cmp);
+		Save save;
+		string temp(name.begin(), name.end());
+		save.name = temp;
+		save.level = this->player.level;
+		save.point = this->player.total;
+		this->highScores.push_back(save);
+		sort(this->highScores.begin(), this->highScores.end(), cmp);
+		if (this->highScores.size() > 5)
+			this->highScores.pop_back();
+		SaveData("Save/HighScores.txt", this->highScores);
 
-		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		wofstream fo("Save/Die_Game.txt");
-		fo.imbue(loc);
-		for (int i = 1; i <= 5; ++i)
-		{
-			fo << this->High_Score[i].name << "\n";
-			fo << this->High_Score[i].level << "\n";
-			fo << this->High_Score[i].point << "\n";
-		}
-		fo.close();
 		name.clear();
 		this->m_nCurrentState = 1;
 		return;
@@ -696,15 +667,39 @@ void Game::DieGame(float fDeltaTime)
 	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
 }
 
-void Game::effect(float time)
+void Game::SaveData(string fileName, deque<Save> saves)
 {
-	if (time < 0.5)
+	ofstream file(fileName);
+	for (int i = 0; i < saves.size(); i++)
 	{
-		this->player.color = FG_RED + BG_WHITE;
-		this->player.LoadSprite(L"firstGlow.txt");
+		file << saves[i].name << endl;
+		file << saves[i].level << endl;
+		file << saves[i].point << endl;
 	}
-	else if (time < 1)
-		this->player.LoadSprite(L"secondGlow.txt");
-	else if (time < 1.5)
-		this->player.LoadSprite(L"thirdGlow.txt");
+	file.close();
+}
+
+void Game::LoadData(string fileName, deque<Save> &saves)
+{
+	ifstream file(fileName);
+	if (file.fail())
+	{
+		return;
+	}
+	while (!file.eof())
+	{
+		string temp;
+		file >> temp;
+		if (temp == "")
+		{
+			file.close();
+			return;
+		}
+		Save save;
+		save.name = temp;
+		file >> save.level;
+		file >> save.point;
+		saves.push_back(save);
+	}
+	file.close();
 }

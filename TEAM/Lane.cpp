@@ -1,5 +1,5 @@
 #include "Lane.h"
-int ran = -7;
+
 Lane::Lane()
 {
     this->speed = 0;
@@ -9,7 +9,7 @@ Lane::Lane()
     this->color = FG_BLACK + BG_WHITE;
     this->y = 0;
     this->stop = false;
-    this->timeToStop = 4;
+    this->timeToStop = 9 * (rand() % 6 + 1);
 }
 
 void Lane::LoadSprite(wstring fileName)
@@ -37,13 +37,14 @@ void Lane::LoadSprite(wstring fileName)
 void Lane::Update(float fDeltaTime, int screenWidth)
 {
 
-    if (this->stop && this->y == ran)
+    if (this->stop)
     {
         timeStop += fDeltaTime;
         if (this->timeStop >= this->timeToStop)
         {
             this->timeStop = 0;
             this->stop = false;
+            this->timeToStop = 9 * (rand() % 6 + 1);
         }
         return;
     }
@@ -52,7 +53,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
     if (this->timeStop >= this->timeToStop)
     {
         this->stop = true;
-        ran = 9 * (rand() % 6 + 1);
+        // ran = 9 * (rand() % 6 + 1);
         this->timeStop = 0;
     }
 

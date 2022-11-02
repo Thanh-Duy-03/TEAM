@@ -16,6 +16,15 @@
     <Filter Include="Resource Files\Save">
       <UniqueIdentifier>{37fea086-71d8-4b4c-a07f-b4f38c6cb234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Assets">
+      <UniqueIdentifier>{2a5f733b-5eca-47a7-9536-f564aac3758e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Assets\Player">
+      <UniqueIdentifier>{bb0dfa84-c704-43dc-9458-bc17d83b8cb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Assets\Obstacles">
+      <UniqueIdentifier>{1f4b5980-6de7-41be-bac5-eb4d995674d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
@@ -73,10 +82,10 @@
     <Text Include="Truck2.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Save\Die_Game.txt">
+    <Text Include="Save\HighScores.txt">
       <Filter>Resource Files\Save</Filter>
     </Text>
-    <Text Include="Save\Load_Game.txt">
+    <Text Include="Save\LoadGames.txt">
       <Filter>Resource Files\Save</Filter>
     </Text>
   </ItemGroup>

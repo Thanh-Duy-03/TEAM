@@ -6,6 +6,8 @@ class Player
 public:
     Player();
     void LoadSprite(wstring fileName);
+    void IdleState(float fDeltaTime);
+    float DieState(float fDeltaTime);
 
 public:
     bool die;
@@ -14,6 +16,8 @@ public:
     int currentLane;
     wstring sprite;
     short color;
+    short fgColor;
+    short bgColor;
     int width;
     int total;
     int level;

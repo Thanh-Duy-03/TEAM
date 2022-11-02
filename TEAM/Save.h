@@ -5,13 +5,10 @@ using namespace std;
 class Save
 {
 public:
-    wstring name;
+    Save();
+
+public:
+    string name;
     int level;
     int point;
-    Save()
-    {
-        name = L"";
-        level = 1;
-        point = 0;
-    }
 };

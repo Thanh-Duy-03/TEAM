@@ -8,6 +8,8 @@ Player::Player()
     this->width = 0;
     this->sprite = L"";
     this->color = FG_BLACK + BG_WHITE;
+    this->fgColor = FG_BLACK;
+    this->bgColor = BG_WHITE;
     this->die = false;
     this->total = 0;
     this->level = 1;
@@ -33,4 +35,30 @@ void Player::LoadSprite(wstring fileName)
         this->width = maxWidth;
     }
     file.close();
+}
+
+void Player::IdleState(float fDeltaTime)
+{
+    LoadSprite(L"Player.txt");
+}
+
+float Player::DieState(float fDeltaTime)
+{
+    static float time = 0;
+    if (time < 0.5f)
+    {
+        this->color = FG_RED + BG_WHITE;
+        LoadSprite(L"firstGlow.txt");
+    }
+    else if (time < 1.0f)
+    {
+        LoadSprite(L"secondGlow.txt");
+    }
+    else if (time < 1.5f)
+    {
+        LoadSprite(L"thirdGlow");
+        time == 0;
+    }
+    time += fDeltaTime;
+    return time;
 }
