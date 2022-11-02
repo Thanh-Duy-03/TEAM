@@ -1,85 +1,8 @@
 ﻿#include "Menu.h"
-int ran = -7;
 
 bool cmp(Save a, Save b)
 {
 	return (a.level > b.level || (a.level == b.level && a.point > b.point));
-}
-
-Lane::Lane()
-{
-	this->speed = 0;
-	this->sprite = L"";
-	this->time = 0;
-	this->Kc = 0;
-	this->color = FG_BLACK + BG_WHITE;
-	this->y = 0;
-	this->stop = false;
-	this->timeToStop = 4;
-}
-
-void Lane::LoadSprite(wstring fileName)
-{
-	wfstream file(fileName);
-	this->sprite = L"";
-	this->sprite = L"";
-	if (file.is_open())
-	{
-		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		file.imbue(loc);
-		wstring line;
-		int maxWidth = 0;
-		while (!file.eof())
-		{
-			getline(file, line);
-			if (maxWidth < line.size())
-				maxWidth = line.size();
-			this->sprite += line + L"\n";
-		}
-		this->width = maxWidth;
-	}
-	file.close();
-}
-void Lane::Update(float fDeltaTime, int screenWidth)
-{
-
-	if (this->stop && this->y == ran)
-	{
-		timeStop += fDeltaTime;
-		if (this->timeStop >= this->timeToStop)
-		{
-			this->timeStop = 0;
-			this->stop = false;
-		}
-		return;
-	}
-
-	this->timeStop += fDeltaTime;
-	if (this->timeStop >= this->timeToStop)
-	{
-		this->stop = true;
-		ran = 9 * (rand() % 6 + 1);
-		this->timeStop = 0;
-	}
-
-	this->time += fDeltaTime;
-	if (this->posList.empty() || abs(this->x - this->posList[this->posList.size() - 1]) >= this->Kc)
-	{
-		float newPos = this->x;
-		this->posList.push_back(newPos);
-		this->time = 0;
-	}
-	else
-	{
-		for (int i = 0; i < this->posList.size(); i++)
-		{
-			this->posList[i] += this->speed * fDeltaTime;
-			if (this->posList[i] >= screenWidth || this->posList[i] < -50)
-			{
-				this->posList.pop_front();
-			}
-		}
-	}
 }
 
 bool Game::OnUserCreate()
@@ -428,7 +351,7 @@ void Game::PlayGame(float fDeltaTime)
 	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
 	Fill(0, 63, 89, 69, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawStringAlpha(this->player.x, this->player.y, this->player.sprite, this->player.color);
-	DrawLane();
+	DrawLanes();
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
 
@@ -440,8 +363,6 @@ void Game::PlayGame(float fDeltaTime)
 			if (this->player.x <= this->lane[this->player.currentLane].posList[i] + (float)this->lane[this->player.currentLane].width && this->player.x >= this->lane[this->player.currentLane].posList[i] - this->player.width)
 			{
 				this->player.die = true;
-				// this->m_nCurrentState = 8;
-				// return;
 			}
 		}
 	}
@@ -494,7 +415,6 @@ void Game::PlayGame(float fDeltaTime)
 			return;
 		}
 	}
-	//
 }
 
 void Game::LoadGame(float fDeltaTime)
@@ -611,7 +531,7 @@ void Game::UpdateLane(float fDeltaTime)
 		this->lane[i].Update(fDeltaTime, this->m_nScreenWidth);
 	}
 }
-void Game::DrawLane()
+void Game::DrawLanes()
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -619,7 +539,15 @@ void Game::DrawLane()
 		{
 			if (i < 7 && i > 0)
 			{
-				((ran == this->lane[i].y) ? Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED) : Draw(5, this->lane[i].y, PIXEL_SOLID, FG_GREEN + BG_GREEN));
+				// ((ran == this->lane[i].y) ? Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED) : Draw(5, this->lane[i].y, PIXEL_SOLID, FG_GREEN + BG_GREEN));
+				if (this->lane[i].stop)
+				{
+					Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED);
+				}
+				else
+				{
+					Draw(5, this->lane[i].y, PIXEL_SOLID, BG_GREEN + FG_GREEN);
+				}
 			}
 			DrawString((int)this->lane[i].posList[j], this->lane[i].y, this->lane[i].sprite, this->lane[i].color);
 		}
@@ -725,7 +653,7 @@ void Game::DieGame(float fDeltaTime)
 	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
 	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
 	static wstring name;
-	int length;
+	int length = 5;
 
 	for (char c = 'A'; c <= 'Z'; c++)
 	{

@@ -1,44 +1,10 @@
 ﻿#pragma once
 #include "Win.h"
 #include "Player.h"
+#include "Lane.h"
+#include "Save.h"
 
 using namespace std;
-
-class Lane
-{
-public:
-	Lane();
-	void LoadSprite(wstring fileName);
-	void Update(float fDeltaTime, int screenWidth);
-
-public:
-	int Kc;
-	float time;
-	float speed;
-	float timeToStop;
-	float timeStop;
-	int y;
-	int x;
-	bool stop;
-	wstring sprite;
-	short color;
-	int width;
-	deque<float> posList;
-};
-
-class Save
-{
-public:
-	wstring name;
-	int level;
-	int point;
-	Save()
-	{
-		name = L"";
-		level = 1;
-		point = 0;
-	}
-};
 
 class Game : public ConsoleGame
 {
@@ -60,7 +26,7 @@ protected:
 	void HighScoreScene(float fDeltaTime);
 	void InstructionScene(float fDeltaTime);
 	void UpdateLane(float fDeltaTime);
-	void DrawLane();
+	void DrawLanes();
 	void DrawScore(float fDeltaTime);
 	void SaveGame(float fDeltaTime);
 	void DieGame(float fDeltaTime);
