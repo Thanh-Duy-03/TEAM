@@ -7,7 +7,7 @@ bool cmp(Save a, Save b)
 
 bool Game::OnUserCreate()
 {
-	wifstream fi("Load_Game.txt");
+	wifstream fi("Save/Load_Game.txt");
 	locale loc(locale(), new codecvt_utf8<wchar_t>);
 	fi.imbue(loc);
 	for (int i = 1; i <= 5; ++i)
@@ -20,9 +20,8 @@ bool Game::OnUserCreate()
 	}
 	fi.close();
 
-	fi.open("Die_Game.txt");
+	fi.open("Save/Die_Game.txt");
 	fi.imbue(loc);
-
 	for (int i = 1; i <= 5; ++i)
 	{
 		fi >> this->High_Score[i].name;
@@ -30,9 +29,7 @@ bool Game::OnUserCreate()
 		fi >> this->High_Score[i].point;
 	}
 	fi.close();
-
 	this->m_nCurrentState = 1;
-
 	return true;
 }
 
@@ -630,7 +627,7 @@ void Game::SaveGame(float fDeltaTime)
 		tmp.point = this->player.total;
 		this->Load_Game.push_back(tmp);
 
-		wofstream fo("Load_Game.txt");
+		wofstream fo("Save/Load_Game.txt");
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
 		fo.imbue(loc);
 		for (int i = 0; i < this->Load_Game.size(); ++i)
@@ -682,7 +679,7 @@ void Game::DieGame(float fDeltaTime)
 		sort(this->High_Score + 1, this->High_Score + 6 + 1, cmp);
 
 		locale loc(locale(), new codecvt_utf8<wchar_t>);
-		wofstream fo("Die_Game.txt");
+		wofstream fo("Save/Die_Game.txt");
 		fo.imbue(loc);
 		for (int i = 1; i <= 5; ++i)
 		{
