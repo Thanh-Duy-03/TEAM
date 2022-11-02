@@ -43,12 +43,12 @@ int ConsoleGame::ConstructConsole(int width, int height, int fontW, int fontH)
 	coord.Y = this->m_nScreenHeight;
 	if (!SetConsoleScreenBufferSize(this->m_hConsole, coord))
 	{
-		//return 1;
+		// return 1;
 	}
 
 	if (!SetConsoleActiveScreenBuffer(this->m_hConsole))
 	{
-		//return 1;
+		// return 1;
 	}
 
 	CONSOLE_FONT_INFOEX cfi;
@@ -128,7 +128,7 @@ void ConsoleGame::DisableControlButton(bool close, bool min, bool max)
 	}
 }
 
-void ConsoleGame::Clip(int& x, int& y)
+void ConsoleGame::Clip(int &x, int &y)
 {
 	if (x < 0)
 		x = 0;
@@ -291,7 +291,6 @@ void ConsoleGame::DrawLine(int x1, int y1, int x2, int y2, short c, short col)
 	}
 }
 
-
 void ConsoleGame::DrawRectangle(int x, int y, int width, int height, short c, short col)
 {
 	for (int i = x; i < x + width; i++)
@@ -372,7 +371,7 @@ void ConsoleGame::GameThread()
 			COORD dwBufferSize;
 			dwBufferSize.X = this->m_nScreenWidth;
 			dwBufferSize.Y = this->m_nScreenHeight;
-			WriteConsoleOutput(this->m_hConsole, this->m_buffScreen, dwBufferSize, { 0, 0 }, &this->m_rectWindow);
+			WriteConsoleOutput(this->m_hConsole, this->m_buffScreen, dwBufferSize, {0, 0}, &this->m_rectWindow);
 		}
 		if (!OnUserDestroy())
 		{
@@ -408,4 +407,16 @@ bool ConsoleGame::OnUserDestroy()
 ConsoleGame::sKeyState ConsoleGame::GetKey(int nKeyID)
 {
 	return this->m_keys[nKeyID];
+}
+
+string WstringToString(wstring wstr)
+{
+	string temp(wstr.begin(), wstr.end());
+	return temp;
+}
+
+wstring StringToWstring(string str)
+{
+	wstring temp(str.begin(), str.end());
+	return temp;
 }

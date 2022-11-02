@@ -550,7 +550,7 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
+	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
 	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
@@ -604,8 +604,7 @@ void Game::SaveGame(float fDeltaTime)
 	if (this->m_keys[VK_RETURN].bPressed && name.length() > 0)
 	{
 		Save save;
-		string temp(name.begin(), name.end());
-		save.name = temp;
+		save.name = WstringToString(name);
 		save.level = this->player.level;
 		save.point = this->player.total;
 		this->loadGames.push_back(save);
@@ -649,8 +648,7 @@ void Game::DieGame(float fDeltaTime)
 	if (this->m_keys[VK_RETURN].bPressed)
 	{
 		Save save;
-		string temp(name.begin(), name.end());
-		save.name = temp;
+		save.name = WstringToString(name);
 		save.level = this->player.level;
 		save.point = this->player.total;
 		this->highScores.push_back(save);
@@ -679,7 +677,7 @@ void Game::SaveData(string fileName, deque<Save> saves)
 	file.close();
 }
 
-void Game::LoadData(string fileName, deque<Save> &saves)
+void Game::LoadData(string fileName, deque<Save>& saves)
 {
 	ifstream file(fileName);
 	if (file.fail())

@@ -116,3 +116,6 @@ protected:
 
 	bool m_bAtomActive;
 };
+
+string WstringToString(wstring wstr);
+wstring StringToWstring(string str);
