@@ -1,10 +1,5 @@
 ﻿#include "Menu.h"
 
-bool cmp(Save a, Save b)
-{
-	return (a.level > b.level || (a.level == b.level && a.point > b.point));
-}
-
 bool Game::OnUserCreate()
 {
 	LoadData("Save/HighScores.txt", highScores);
@@ -267,7 +262,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[1].y = 54;
 	this->lane[1].LoadSprite(L"Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
-	this->lane[1].Kc = 60 - 6 * this->player.level;
+	this->lane[1].distance = 60 - 6 * this->player.level;
+	this->lane[1].ResetLane();
 	// this->lane[1].timeToSpawn = 3 + rand() % 10;
 	// this->lane[1].timeToSpawn = 7 - this->player.level;
 
@@ -275,7 +271,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[2].y = 45;
 	this->lane[2].LoadSprite(L"Truck2.txt");
 	this->lane[2].speed = -10.0f;
-	this->lane[2].Kc = 60 - 6 * this->player.level;
+	this->lane[2].distance = 60 - 6 * this->player.level;
+	this->lane[2].ResetLane();
 	// this->lane[2].timeToSpawn = 3 + rand() % 10;
 	// this->lane[2].timeToSpawn = 8 - this->player.level;
 
@@ -283,7 +280,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[3].y = 36;
 	this->lane[3].LoadSprite(L"Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
-	this->lane[3].Kc = 60 - 6 * this->player.level;
+	this->lane[3].distance = 60 - 6 * this->player.level;
+	this->lane[3].ResetLane();
 	// this->lane[3].timeToSpawn = 3 + rand() % 10;
 	// this->lane[3].timeToSpawn = 10 - this->player.level;
 
@@ -291,7 +289,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[4].y = 27;
 	this->lane[4].LoadSprite(L"Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
-	this->lane[4].Kc = 60 - 6 * this->player.level;
+	this->lane[4].distance = 60 - 6 * this->player.level;
+	this->lane[4].ResetLane();
 	// this->lane[4].timeToSpawn = 3 + rand() % 10;
 	// this->lane[4].timeToSpawn = 8 - this->player.level;
 
@@ -299,7 +298,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[5].y = 18;
 	this->lane[5].LoadSprite(L"Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
-	this->lane[5].Kc = 60 - 6 * this->player.level;
+	this->lane[5].distance = 60 - 6 * this->player.level;
+	this->lane[5].ResetLane();
 	// this->lane[5].timeToSpawn = 3 + rand() % 10;
 	// this->lane[5].timeToSpawn = 10 - this->player.level;
 
@@ -307,7 +307,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[6].y = 9;
 	this->lane[6].LoadSprite(L"Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
-	this->lane[6].Kc = 60 - 6 * this->player.level;
+	this->lane[6].distance = 60 - 6 * this->player.level;
+	this->lane[6].ResetLane();
 	// this->lane[6].timeToSpawn = 5 + rand() % 10;
 	// this->lane[6].timeToSpawn = 7 - this->player.level;
 
@@ -550,7 +551,7 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
+	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
 	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
@@ -608,7 +609,8 @@ void Game::SaveGame(float fDeltaTime)
 		save.level = this->player.level;
 		save.point = this->player.total;
 		this->loadGames.push_back(save);
-		this->loadGames.pop_front();
+		if (this->loadGames.size() > 5)
+			this->loadGames.pop_front();
 		SaveData("Save/LoadGames.txt", this->loadGames);
 
 		name.clear();
@@ -645,7 +647,7 @@ void Game::DieGame(float fDeltaTime)
 	{
 		name.pop_back();
 	}
-	if (this->m_keys[VK_RETURN].bPressed)
+	if (this->m_keys[VK_RETURN].bPressed && name.length() > 0)
 	{
 		Save save;
 		save.name = WstringToString(name);
@@ -677,7 +679,7 @@ void Game::SaveData(string fileName, deque<Save> saves)
 	file.close();
 }
 
-void Game::LoadData(string fileName, deque<Save>& saves)
+void Game::LoadData(string fileName, deque<Save> &saves)
 {
 	ifstream file(fileName);
 	if (file.fail())

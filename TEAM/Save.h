@@ -12,3 +12,5 @@ public:
     int level;
     int point;
 };
+
+bool cmp(Save a, Save b);

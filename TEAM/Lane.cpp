@@ -5,11 +5,11 @@ Lane::Lane()
     this->speed = 0;
     this->sprite = L"";
     this->time = 0;
-    this->Kc = 0;
+    this->distance = 0;
     this->color = FG_BLACK + BG_WHITE;
     this->y = 0;
     this->stop = false;
-    this->timeToStop = 9 * (rand() % 6 + 1);
+    this->timeToChange = 9 * (rand() % 6 + 1);
 }
 
 void Lane::LoadSprite(wstring fileName)
@@ -39,26 +39,26 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 
     if (this->stop)
     {
-        timeStop += fDeltaTime;
-        if (this->timeStop >= this->timeToStop)
+        time += fDeltaTime;
+        if (this->time >= this->timeToChange)
         {
-            this->timeStop = 0;
+            this->time = 0;
             this->stop = false;
-            this->timeToStop = 9 * (rand() % 6 + 1);
+            this->timeToChange = 9 * (rand() % 6 + 1);
         }
         return;
     }
 
-    this->timeStop += fDeltaTime;
-    if (this->timeStop >= this->timeToStop)
+    if (this->time >= this->timeToChange)
     {
         this->stop = true;
         // ran = 9 * (rand() % 6 + 1);
-        this->timeStop = 0;
+        this->time = 0;
+        this->timeToChange = 9 * (rand() % 6 + 1);
     }
 
     this->time += fDeltaTime;
-    if (this->posList.empty() || abs(this->x - this->posList[this->posList.size() - 1]) >= this->Kc)
+    if (this->posList.empty() || abs(this->x - this->posList[this->posList.size() - 1]) >= this->distance)
     {
         float newPos = this->x;
         this->posList.push_back(newPos);
@@ -75,4 +75,12 @@ void Lane::Update(float fDeltaTime, int screenWidth)
             }
         }
     }
+}
+
+void Lane::ResetLane()
+{
+    this->time = 0;
+    this->timeToChange = 9 * (rand() % 6 + 1);
+    this->stop = false;
+    this->posList.clear();
 }
