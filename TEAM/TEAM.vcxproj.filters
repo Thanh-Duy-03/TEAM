@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Save">
+      <UniqueIdentifier>{37fea086-71d8-4b4c-a07f-b4f38c6cb234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
@@ -52,12 +55,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Die_Game.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Load_Game.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Truck.txt">
       <Filter>Resource Files</Filter>
     </Text>
@@ -75,6 +72,12 @@
     </Text>
     <Text Include="Truck2.txt">
       <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Save\Die_Game.txt">
+      <Filter>Resource Files\Save</Filter>
+    </Text>
+    <Text Include="Save\Load_Game.txt">
+      <Filter>Resource Files\Save</Filter>
     </Text>
   </ItemGroup>
 </Project>
