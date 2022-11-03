@@ -7,7 +7,7 @@ public:
     Player();
     void LoadSprite(wstring fileName);
     void IdleState(float fDeltaTime);
-    float DieState(float fDeltaTime);
+    bool DieState(float fDeltaTime);
 
 public:
     bool die;

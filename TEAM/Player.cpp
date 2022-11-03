@@ -42,7 +42,7 @@ void Player::IdleState(float fDeltaTime)
     LoadSprite(L"Player.txt");
 }
 
-float Player::DieState(float fDeltaTime)
+bool Player::DieState(float fDeltaTime)
 {
     static float time = 0;
     if (time < 0.5f)
@@ -57,8 +57,12 @@ float Player::DieState(float fDeltaTime)
     else if (time < 1.5f)
     {
         LoadSprite(L"thirdGlow");
+    }
+    else if (time < 3.0f)
+    {
         time == 0;
+        return true; // Finish animation
     }
     time += fDeltaTime;
-    return time;
+    return false;
 }

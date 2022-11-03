@@ -262,55 +262,43 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[1].y = 54;
 	this->lane[1].LoadSprite(L"Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
-	this->lane[1].distance = 60 - 6 * this->player.level;
+	this->lane[1].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[1].ResetLane();
-	// this->lane[1].timeToSpawn = 3 + rand() % 10;
-	// this->lane[1].timeToSpawn = 7 - this->player.level;
 
 	this->lane[2].x = 90;
 	this->lane[2].y = 45;
 	this->lane[2].LoadSprite(L"Truck2.txt");
 	this->lane[2].speed = -10.0f;
-	this->lane[2].distance = 60 - 6 * this->player.level;
+	this->lane[2].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[2].ResetLane();
-	// this->lane[2].timeToSpawn = 3 + rand() % 10;
-	// this->lane[2].timeToSpawn = 8 - this->player.level;
 
 	this->lane[3].x = -20;
 	this->lane[3].y = 36;
 	this->lane[3].LoadSprite(L"Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
-	this->lane[3].distance = 60 - 6 * this->player.level;
+	this->lane[3].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[3].ResetLane();
-	// this->lane[3].timeToSpawn = 3 + rand() % 10;
-	// this->lane[3].timeToSpawn = 10 - this->player.level;
 
 	this->lane[4].x = -20;
 	this->lane[4].y = 27;
 	this->lane[4].LoadSprite(L"Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
-	this->lane[4].distance = 60 - 6 * this->player.level;
+	this->lane[4].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[4].ResetLane();
-	// this->lane[4].timeToSpawn = 3 + rand() % 10;
-	// this->lane[4].timeToSpawn = 8 - this->player.level;
 
 	this->lane[5].x = -20;
 	this->lane[5].y = 18;
 	this->lane[5].LoadSprite(L"Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
-	this->lane[5].distance = 60 - 6 * this->player.level;
+	this->lane[5].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[5].ResetLane();
-	// this->lane[5].timeToSpawn = 3 + rand() % 10;
-	// this->lane[5].timeToSpawn = 10 - this->player.level;
 
 	this->lane[6].x = -20;
 	this->lane[6].y = 9;
 	this->lane[6].LoadSprite(L"Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
-	this->lane[6].distance = 60 - 6 * this->player.level;
+	this->lane[6].distance = 60 - 6 * (this->player.level % 10);
 	this->lane[6].ResetLane();
-	// this->lane[6].timeToSpawn = 5 + rand() % 10;
-	// this->lane[6].timeToSpawn = 7 - this->player.level;
 
 	this->lane[7].y = 0;
 	this->m_nCurrentState = 6;
@@ -318,7 +306,6 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 
 void Game::PlayGame(float fDeltaTime)
 {
-	// static float time = 0.0;
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
 	Fill(0, 0, 89, 7, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
@@ -384,15 +371,7 @@ void Game::PlayGame(float fDeltaTime)
 	}
 	else
 	{
-		// time += fDeltaTime;
-		// effect(time);
-		// if (time >= 3.0)
-		// {
-		// 	time = 0;
-		// 	this->m_nCurrentState = 8;
-		// 	return;
-		// }
-		if (this->player.DieState(fDeltaTime) >= 3.0f)
+		if (this->player.DieState(fDeltaTime))
 		{
 			this->m_nCurrentState = 8;
 			return;
@@ -472,39 +451,11 @@ void Game::HighScoreScene(float fDeltaTime)
 void Game::InstructionScene(float fDeltaTime)
 {
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_CYAN);
-	DrawStringAlpha(10, 9, L"Save Game", BG_CYAN + FG_WHITE);
-	static wstring name;
-
-	for (char c = 'A'; c <= 'Z'; c++)
-	{
-		if (this->m_keys[c].bPressed)
-		{
-			name += c;
-		}
-	}
-	for (char c = '0'; c <= '9'; c++)
-	{
-		if (this->m_keys[c].bPressed)
-		{
-			name += c;
-		}
-	}
-	if (this->m_keys[VK_SPACE].bPressed)
-	{
-		name += L' ';
-	}
-	if (this->m_keys[VK_BACK].bPressed && name != L"")
-	{
-		name.pop_back();
-	}
-	if (this->m_keys[VK_RETURN].bPressed)
+	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
-		name.clear();
 		return;
 	}
-
-	DrawStringAlpha(10, 10, name, BG_CYAN + FG_WHITE);
 }
 
 void Game::UpdateLane(float fDeltaTime)
@@ -522,7 +473,6 @@ void Game::DrawLanes()
 		{
 			if (i < 7 && i > 0)
 			{
-				// ((ran == this->lane[i].y) ? Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED) : Draw(5, this->lane[i].y, PIXEL_SOLID, FG_GREEN + BG_GREEN));
 				if (this->lane[i].stop)
 				{
 					Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED);
