@@ -9,7 +9,8 @@ public:
     Lane();
     void LoadSprite(wstring fileName);
     void Update(float fDeltaTime, int screenWidth);
-    void ResetLane();
+    void Reset();
+    void Draw(ConsoleGame *game);
 
 public:
     int distance;

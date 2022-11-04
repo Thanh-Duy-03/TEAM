@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\Assets\Obstacles">
       <UniqueIdentifier>{1f4b5980-6de7-41be-bac5-eb4d995674d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Assets\Player\Die">
+      <UniqueIdentifier>{03f3188d-a732-4a22-92ed-b1b7e16532e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
@@ -64,29 +67,29 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Truck.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Player.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="secondGlow.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="firstGlow.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="thirdGlow.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Truck2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Save\HighScores.txt">
       <Filter>Resource Files\Save</Filter>
     </Text>
     <Text Include="Save\LoadGames.txt">
       <Filter>Resource Files\Save</Filter>
+    </Text>
+    <Text Include="Assets\Obstacles\Truck.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
+    <Text Include="Assets\Obstacles\Truck2.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
+    <Text Include="Assets\Player\Player.txt">
+      <Filter>Resource Files\Assets\Player</Filter>
+    </Text>
+    <Text Include="Assets\Player\Die\secondGlow.txt">
+      <Filter>Resource Files\Assets\Player\Die</Filter>
+    </Text>
+    <Text Include="Assets\Player\Die\thirdGlow.txt">
+      <Filter>Resource Files\Assets\Player\Die</Filter>
+    </Text>
+    <Text Include="Assets\Player\Die\firstGlow.txt">
+      <Filter>Resource Files\Assets\Player\Die</Filter>
     </Text>
   </ItemGroup>
 </Project>

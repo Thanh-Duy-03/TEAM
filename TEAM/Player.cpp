@@ -39,7 +39,7 @@ void Player::LoadSprite(wstring fileName)
 
 void Player::IdleState(float fDeltaTime)
 {
-    LoadSprite(L"Player.txt");
+    LoadSprite(L"Assets//Player/Player.txt");
 }
 
 bool Player::DieState(float fDeltaTime)
@@ -48,15 +48,15 @@ bool Player::DieState(float fDeltaTime)
     if (time < 0.5f)
     {
         this->color = FG_RED + BG_WHITE;
-        LoadSprite(L"firstGlow.txt");
+        LoadSprite(L"Assets//Player/Die/firstGlow.txt");
     }
     else if (time < 1.0f)
     {
-        LoadSprite(L"secondGlow.txt");
+        LoadSprite(L"Assets//Player/Die/secondGlow.txt");
     }
     else if (time < 1.5f)
     {
-        LoadSprite(L"thirdGlow");
+        LoadSprite(L"Assets//Player/Die/thirdGlow");
     }
     else if (time < 3.0f)
     {

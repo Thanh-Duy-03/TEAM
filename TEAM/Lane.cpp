@@ -77,10 +77,16 @@ void Lane::Update(float fDeltaTime, int screenWidth)
     }
 }
 
-void Lane::ResetLane()
+void Lane::Reset()
 {
     this->time = 0;
     this->timeToChange = 9 * (rand() % 6 + 1);
     this->stop = false;
     this->posList.clear();
+}
+
+void Lane::Draw(ConsoleGame *game)
+{
+    for (int i = 0; i < this->posList.size(); i++)
+        game->DrawStringAlpha((int)this->posList[i], (int)this->y, this->sprite, this->color);
 }
