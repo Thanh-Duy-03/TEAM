@@ -19,9 +19,9 @@ public:
     float timeToChange;
     int y;
     int x;
+    bool light;
     bool stop;
     wstring sprite;
-    short color;
     short fgColor;
     short bgColor;
     int width;

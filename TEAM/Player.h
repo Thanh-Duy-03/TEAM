@@ -11,11 +11,10 @@ public:
 
 public:
     bool die;
-    int x;
+    float x;
     int y;
     int currentLane;
     wstring sprite;
-    short color;
     short fgColor;
     short bgColor;
     int width;

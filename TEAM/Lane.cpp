@@ -6,10 +6,12 @@ Lane::Lane()
     this->sprite = L"";
     this->time = 0;
     this->distance = 0;
-    this->color = FG_BLACK + BG_WHITE;
+    this->fgColor = FG_BLUE;
+    this->bgColor = BG_WHITE;
     this->y = 0;
     this->stop = false;
     this->timeToChange = 3 + (rand() % 3 + 1);
+    this->light = true;
 }
 
 void Lane::LoadSprite(wstring fileName)
@@ -87,6 +89,19 @@ void Lane::Reset()
 
 void Lane::Draw(ConsoleGame *game)
 {
+    game->FillRectangle(0, this->y, 90, 8, L' ', this->fgColor + this->bgColor);
+    game->DrawLine(0, this->y - 1, 89, this->y - 1, PIXEL_SOLID, BG_BLACK + FG_BLACK);
     for (int i = 0; i < this->posList.size(); i++)
-        game->DrawStringAlpha((int)this->posList[i], (int)this->y, this->sprite, this->color);
+        game->DrawStringAlpha((int)this->posList[i], (int)this->y, this->sprite, this->fgColor + this->bgColor);
+    if (this->light)
+    {
+        if (this->stop)
+        {
+            game->Draw(5, this->y, PIXEL_SOLID, BG_RED + FG_RED);
+        }
+        else
+        {
+            game->Draw(5, this->y, PIXEL_SOLID, BG_GREEN + FG_GREEN);
+        }
+    }
 }

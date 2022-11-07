@@ -7,7 +7,6 @@ Player::Player()
 	this->currentLane = 0;
 	this->width = 0;
 	this->sprite = L"";
-	this->color = FG_BLACK + BG_WHITE;
 	this->fgColor = FG_BLACK;
 	this->bgColor = BG_WHITE;
 	this->die = false;
@@ -39,25 +38,25 @@ void Player::LoadSprite(wstring fileName)
 
 void Player::IdleState(float fDeltaTime)
 {
-    static float time = 0;
-    if (time < 0.2f)
-    {
-        LoadSprite(L"Assets/Player/Player.txt");
-    }
-    else if (time < 0.4f)
-    {
-        LoadSprite(L"Assets/Player/Player1.txt");
-    }
-    else if (time < 0.6f)
-    {
-        LoadSprite(L"Assets/Player/Player2.txt");
-    }
-    else 
-    {
-        time = 0;
-    }
-    time += fDeltaTime;
-
+	static float time = 0;
+	this->fgColor = FG_GREEN;
+	if (time < 0.2f)
+	{
+		LoadSprite(L"Assets/Player/Player.txt");
+	}
+	else if (time < 0.4f)
+	{
+		LoadSprite(L"Assets/Player/Player1.txt");
+	}
+	else if (time < 0.6f)
+	{
+		LoadSprite(L"Assets/Player/Player2.txt");
+	}
+	else
+	{
+		time = 0;
+	}
+	time += fDeltaTime;
 }
 
 bool Player::DieState(float fDeltaTime)
@@ -65,7 +64,7 @@ bool Player::DieState(float fDeltaTime)
 	static float time = 0;
 	if (time < 0.5f)
 	{
-		this->color = FG_RED + BG_WHITE;
+		this->fgColor = FG_RED;
 		LoadSprite(L"Assets//Player/Die/firstGlow.txt");
 	}
 	else if (time < 1.0f)

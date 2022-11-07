@@ -250,19 +250,22 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->player.x = 0;
 	this->player.y = 63;
 	this->player.currentLane = 0;
-	//this->player.IdleState(fDeltaTime);
-	this->player.color = FG_BLUE + BG_WHITE;
 	this->player.level = level;
 	this->player.total = point;
 	this->player.die = false;
 
 	this->lane[0].y = 63;
+	this->lane[0].fgColor = FG_BLACK;
+	this->lane[0].bgColor = BG_DARK_GREY;
+	this->lane[0].light = false;
 
 	this->lane[1].x = -20;
 	this->lane[1].y = 54;
 	this->lane[1].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
 	this->lane[1].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[1].fgColor = FG_BLACK;
+	this->lane[1].bgColor = BG_WHITE;
 	this->lane[1].Reset();
 
 	this->lane[2].x = 90;
@@ -270,6 +273,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[2].LoadSprite(L"Assets/Obstacles/Truck2.txt");
 	this->lane[2].speed = -10.0f;
 	this->lane[2].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[2].fgColor = FG_BLACK;
+	this->lane[2].bgColor = BG_WHITE;
 	this->lane[2].Reset();
 
 	this->lane[3].x = -20;
@@ -277,6 +282,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[3].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
 	this->lane[3].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[3].fgColor = FG_BLACK;
+	this->lane[3].bgColor = BG_WHITE;
 	this->lane[3].Reset();
 
 	this->lane[4].x = -20;
@@ -284,6 +291,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[4].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
 	this->lane[4].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[4].fgColor = FG_BLACK;
+	this->lane[4].bgColor = BG_WHITE;
 	this->lane[4].Reset();
 
 	this->lane[5].x = -20;
@@ -291,6 +300,8 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[5].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
 	this->lane[5].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[5].fgColor = FG_BLACK;
+	this->lane[5].bgColor = BG_WHITE;
 	this->lane[5].Reset();
 
 	this->lane[6].x = -20;
@@ -298,28 +309,40 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[6].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
 	this->lane[6].distance = 60 - 6 * (this->player.level % 5);
+	this->lane[6].fgColor = FG_BLACK;
+	this->lane[6].bgColor = BG_WHITE;
 	this->lane[6].Reset();
 
 	this->lane[7].y = 0;
+	this->lane[7].fgColor = FG_BLACK;
+	this->lane[7].bgColor = BG_DARK_GREY;
+	this->lane[7].light = false;
 	this->m_nCurrentState = 6;
 }
 
 void Game::PlayGame(float fDeltaTime)
 {
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
-	Fill(0, 0, 89, 7, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	for (int i = 1; i <= 5; ++i)
-	{
-		DrawLine(0, 8 + 9 * i, 89, 8 + 9 * i, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	}
 	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	Fill(0, 63, 89, 69, PIXEL_QUARTER, FG_DARK_GREY + BG_BLACK);
-	DrawStringAlpha(this->player.x, this->player.y, this->player.sprite, this->player.color);
 	DrawLanes();
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
-	this->player.IdleState(fDeltaTime);
+
+	this->player.bgColor = this->lane[this->player.currentLane].bgColor;
+	if (this->player.die)
+	{
+		if (this->player.DieState(fDeltaTime))
+		{
+			this->m_nCurrentState = 8;
+			return;
+		}
+	}
+	else
+	{
+		this->player.IdleState(fDeltaTime);
+	}
+	DrawStringAlpha(this->player.x, this->player.y, this->player.sprite, this->player.fgColor + this->player.bgColor);
 
 	DrawScore(fDeltaTime);
 	if (this->player.currentLane != 0 && this->player.currentLane != 7)
@@ -342,6 +365,7 @@ void Game::PlayGame(float fDeltaTime)
 	}
 	if (!this->player.die)
 	{
+
 		UpdateLane(fDeltaTime);
 		if (this->m_keys['L'].bPressed)
 		{
@@ -351,13 +375,13 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			this->m_nCurrentState = 1;
 		}
-		if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed) && this->player.x - 5 >= 0)
+		if ((this->m_keys['A'].bHeld || this->m_keys[VK_LEFT].bHeld) && this->player.x >= 0)
 		{
-			this->player.x -= 5;
+			this->player.x -= 20 * fDeltaTime;
 		}
-		if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed) && this->player.x + this->player.width + 5 <= 89)
+		if ((this->m_keys['D'].bHeld || this->m_keys[VK_RIGHT].bHeld) && this->player.x + this->player.width <= 90)
 		{
-			this->player.x += 5;
+			this->player.x += 20 * fDeltaTime;
 		}
 		if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.currentLane < 7)
 		{
@@ -368,14 +392,6 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			this->player.currentLane--;
 			this->player.y = this->lane[this->player.currentLane].y;
-		}
-	}
-	else
-	{
-		if (this->player.DieState(fDeltaTime))
-		{
-			this->m_nCurrentState = 8;
-			return;
 		}
 	}
 }
@@ -470,23 +486,7 @@ void Game::DrawLanes()
 {
 	for (int i = 0; i < 8; i++)
 	{
-		if (i < 7 && i > 0)
-		{
-			if (this->lane[i].stop)
-			{
-				Draw(5, this->lane[i].y, PIXEL_SOLID, BG_RED + FG_RED);
-			}
-			else
-			{
-				Draw(5, this->lane[i].y, PIXEL_SOLID, BG_GREEN + FG_GREEN);
-			}
-		}
 		this->lane[i].Draw(this);
-		// for (int j = 0; j < this->lane[i].posList.size(); j++)
-		// {
-
-		// 	DrawString((int)this->lane[i].posList[j], this->lane[i].y, this->lane[i].sprite, this->lane[i].color);
-		// }
 	}
 }
 void Game::DrawScore(float fDeltaTime)
@@ -504,7 +504,7 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
+	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
 	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
@@ -632,7 +632,7 @@ void Game::SaveData(string fileName, deque<Save> saves)
 	file.close();
 }
 
-void Game::LoadData(string fileName, deque<Save>& saves)
+void Game::LoadData(string fileName, deque<Save> &saves)
 {
 	ifstream file(fileName);
 	if (file.fail())

@@ -9,7 +9,7 @@ int main()
 	{
 		size++;
 	}
-	size -= 1;
+	size -= 2;
 	game.ConstructConsole(120, 70, size, size);
 	game.ChangeName(L"Game");
 	game.Start();
