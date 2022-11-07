@@ -262,42 +262,42 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->lane[1].y = 54;
 	this->lane[1].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[1].speed = 5.0f + rand() % 10;
-	this->lane[1].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[1].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[1].Reset();
 
 	this->lane[2].x = 90;
 	this->lane[2].y = 45;
 	this->lane[2].LoadSprite(L"Assets/Obstacles/Truck2.txt");
 	this->lane[2].speed = -10.0f;
-	this->lane[2].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[2].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[2].Reset();
 
 	this->lane[3].x = -20;
 	this->lane[3].y = 36;
 	this->lane[3].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[3].speed = 5.0f + rand() % 10;
-	this->lane[3].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[3].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[3].Reset();
 
 	this->lane[4].x = -20;
 	this->lane[4].y = 27;
 	this->lane[4].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[4].speed = 5.0f + rand() % 10;
-	this->lane[4].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[4].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[4].Reset();
 
 	this->lane[5].x = -20;
 	this->lane[5].y = 18;
 	this->lane[5].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[5].speed = 5.0f + rand() % 10;
-	this->lane[5].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[5].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[5].Reset();
 
 	this->lane[6].x = -20;
 	this->lane[6].y = 9;
 	this->lane[6].LoadSprite(L"Assets/Obstacles/Truck.txt");
 	this->lane[6].speed = 5.0f + rand() % 10;
-	this->lane[6].distance = 60 - 6 * (this->player.level % 10);
+	this->lane[6].distance = 60 - 6 * (this->player.level % 5);
 	this->lane[6].Reset();
 
 	this->lane[7].y = 0;
@@ -518,7 +518,7 @@ void Game::DrawScore(float fDeltaTime)
 		DrawString(112 - 5 * i, 19, Numbers[j % 10], BG_WHITE + FG_BLUE);
 		j /= 10;
 	}
-	DrawString(112 - 5, 25, Numbers[this->player.level], BG_WHITE + FG_BLUE);
+	DrawString(112 - 5, 25, Numbers[this->player.level % 10], BG_WHITE + FG_BLUE);
 
 	if (this->score <= 0)
 	{

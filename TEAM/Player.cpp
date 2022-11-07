@@ -39,6 +39,21 @@ void Player::LoadSprite(wstring fileName)
 
 void Player::IdleState(float fDeltaTime)
 {
+    int state = 0;
+    int mod = 3;
+    if ((int)fDeltaTime % mod == 0)
+    {
+        state = (state + 1) % mod;
+    }
+    switch (state)
+    {
+    case 0:
+        LoadSprite(L"Assets//Player/Player.txt");
+    case 1:
+        LoadSprite(L"Assets//Player/Player1.txt");
+    default:
+        LoadSprite(L"Assets//Player/Player2.txt");
+    }
     LoadSprite(L"Assets//Player/Player.txt");
 }
 
@@ -56,11 +71,11 @@ bool Player::DieState(float fDeltaTime)
     }
     else if (time < 1.5f)
     {
-        LoadSprite(L"Assets//Player/Die/thirdGlow");
+        LoadSprite(L"Assets//Player/Die/thirdGlow.txt");
     }
     else if (time < 3.0f)
     {
-        time == 0;
+        time = 0;
         return true; // Finish animation
     }
     time += fDeltaTime;

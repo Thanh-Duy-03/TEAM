@@ -9,7 +9,7 @@ Lane::Lane()
     this->color = FG_BLACK + BG_WHITE;
     this->y = 0;
     this->stop = false;
-    this->timeToChange = 9 * (rand() % 6 + 1);
+    this->timeToChange = 3 + (rand() % 3 + 1);
 }
 
 void Lane::LoadSprite(wstring fileName)
@@ -80,7 +80,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
 void Lane::Reset()
 {
     this->time = 0;
-    this->timeToChange = 9 * (rand() % 6 + 1);
+    this->timeToChange = 3 + (rand() % 3 + 1);
     this->stop = false;
     this->posList.clear();
 }

@@ -91,5 +91,11 @@
     <Text Include="Assets\Player\Die\firstGlow.txt">
       <Filter>Resource Files\Assets\Player\Die</Filter>
     </Text>
+    <Text Include="Player1.txt">
+      <Filter>Resource Files\Assets\Player</Filter>
+    </Text>
+    <Text Include="Player2.txt">
+      <Filter>Resource Files\Assets\Player</Filter>
+    </Text>
   </ItemGroup>
 </Project>
