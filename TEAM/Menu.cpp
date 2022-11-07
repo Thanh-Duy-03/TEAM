@@ -330,6 +330,7 @@ void Game::PlayGame(float fDeltaTime)
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
 
 	this->player.bgColor = this->lane[this->player.currentLane].bgColor;
+	DrawStringAlpha(this->player.x, this->player.y, this->player.sprite, this->player.fgColor + this->player.bgColor);
 	if (this->player.die)
 	{
 		if (this->player.DieState(fDeltaTime))
@@ -342,7 +343,6 @@ void Game::PlayGame(float fDeltaTime)
 	{
 		this->player.IdleState(fDeltaTime);
 	}
-	DrawStringAlpha(this->player.x, this->player.y, this->player.sprite, this->player.fgColor + this->player.bgColor);
 
 	DrawScore(fDeltaTime);
 	if (this->player.currentLane != 0 && this->player.currentLane != 7)
