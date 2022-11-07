@@ -39,22 +39,25 @@ void Player::LoadSprite(wstring fileName)
 
 void Player::IdleState(float fDeltaTime)
 {
-	int state = 0;
-	int mod = 3;
-	if ((int)fDeltaTime % mod == 0)
-	{
-		state = (state + 1) % mod;
-	}
-	switch (state)
-	{
-	case 0:
-		LoadSprite(L"Assets/Player/Player.txt");
-	case 1:
-		LoadSprite(L"Assets/Player/Player1.txt");
-	default:
-		LoadSprite(L"Assets/Player/Player2.txt");
-	}
-	LoadSprite(L"Assets/Player/Player.txt");
+    static float time = 0;
+    if (time < 0.2f)
+    {
+        LoadSprite(L"Assets/Player/Player.txt");
+    }
+    else if (time < 0.4f)
+    {
+        LoadSprite(L"Assets/Player/Player1.txt");
+    }
+    else if (time < 0.6f)
+    {
+        LoadSprite(L"Assets/Player/Player2.txt");
+    }
+    else 
+    {
+        time = 0;
+    }
+    time += fDeltaTime;
+
 }
 
 bool Player::DieState(float fDeltaTime)

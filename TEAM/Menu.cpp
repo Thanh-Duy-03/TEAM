@@ -250,7 +250,7 @@ void Game::StartGame(float fDeltaTime, int level, int point)
 	this->player.x = 0;
 	this->player.y = 63;
 	this->player.currentLane = 0;
-	this->player.IdleState(fDeltaTime);
+	//this->player.IdleState(fDeltaTime);
 	this->player.color = FG_BLUE + BG_WHITE;
 	this->player.level = level;
 	this->player.total = point;
@@ -319,6 +319,7 @@ void Game::PlayGame(float fDeltaTime)
 	DrawLanes();
 	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
 	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
+	this->player.IdleState(fDeltaTime);
 
 	DrawScore(fDeltaTime);
 	if (this->player.currentLane != 0 && this->player.currentLane != 7)
