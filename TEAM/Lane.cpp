@@ -44,7 +44,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
         {
             this->time = 0;
             this->stop = false;
-            this->timeToChange = 9 * (rand() % 6 + 1);
+            this->timeToChange = 3 + (rand() % 3 + 1);
         }
         return;
     }
@@ -54,7 +54,7 @@ void Lane::Update(float fDeltaTime, int screenWidth)
         this->stop = true;
         // ran = 9 * (rand() % 6 + 1);
         this->time = 0;
-        this->timeToChange = 9 * (rand() % 6 + 1);
+        this->timeToChange = 3 + (rand() % 3 + 1);
     }
 
     this->time += fDeltaTime;
