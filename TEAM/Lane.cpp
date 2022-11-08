@@ -21,7 +21,7 @@ void Lane::LoadSprite(wstring fileName)
     this->sprite = L"";
     if (file.is_open())
     {
-        locale loc(locale(), new codecvt_utf8<wchar_t>);
+        locale loc(locale(), new codecvt_utf8_utf16<wchar_t>);
         file.imbue(loc);
         wstring line;
         int maxWidth = 0;
