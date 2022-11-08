@@ -2,7 +2,6 @@
 
 int main()
 {
-	srand(time(NULL));
 	Game game;
 	int size = 2;
 	while (game.ConstructConsole(120, 70, size, size) == 0)

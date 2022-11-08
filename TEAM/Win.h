@@ -1,5 +1,6 @@
 #pragma once
 #include "Functions.h"
+#include "Sprite.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
 	void DrawLine(int x1, int y1, int x2, int y2, short c, short col);
 	void DrawRectangle(int x, int y, int width, int height, short c, short col);
 	void FillRectangle(int x, int y, int width, int height, short c, short col);
+	void DrawSprite(int x, int y, Sprite sprite, short col);
 	void Start();
 	int ScreenWidth();
 	int ScreenHeight();

@@ -316,6 +316,17 @@ void ConsoleGame::FillRectangle(int x, int y, int width, int height, short c, sh
 	}
 }
 
+void ConsoleGame::DrawSprite(int x, int y, Sprite sprite, short col)
+{
+	for (int i = 0; i < sprite.GetWidth(); i++)
+	{
+		for (int j = 0; j < sprite.GetHeight(); j++)
+		{
+			Draw(x + i, y + j, sprite.GetGlyph(i, j), sprite.GetColor(i, j) + col);
+		}
+	}
+}
+
 void ConsoleGame::Start()
 {
 	this->m_bAtomActive = true;
@@ -408,4 +419,3 @@ ConsoleGame::sKeyState ConsoleGame::GetKey(int nKeyID)
 {
 	return this->m_keys[nKeyID];
 }
-

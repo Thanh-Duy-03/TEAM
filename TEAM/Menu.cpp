@@ -5,6 +5,7 @@ bool Game::OnUserCreate()
 	LoadData("Save/HighScores.txt", highScores);
 	LoadData("Save/LoadGames.txt", loadGames);
 	this->m_nCurrentState = 1;
+	srand(time(NULL));
 	return true;
 }
 
