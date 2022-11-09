@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Lane.h"
 #include "Save.h"
+#include "alphabet.h"
 
 using namespace std;
 
@@ -28,10 +29,11 @@ protected:
 	void UpdateLane(float fDeltaTime);
 	void DrawLanes();
 	void DrawScore(float fDeltaTime);
+	void DrawLoadGame(float fDeltaTime, int Vt);
 	void SaveGame(float fDeltaTime);
 	void DieGame(float fDeltaTime);
 	void SaveData(string fileName, deque<Save> saves);
-	void LoadData(string fileName, deque<Save> &saves);
+	void LoadData(string fileName, deque<Save>& saves);
 
 private:
 	int m_nCurrentState;

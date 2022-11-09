@@ -112,31 +112,31 @@ void Game::StartMenu(float fDeltaTime)
 	// title += L"█     █▄▄▀  █   █  ▀▀▀▄▄  ▀▀▀▄▄  █   █ █ █  █ ▄▄    █▄▄▀  █   █  █▄▄█  █  █\n";
 	// title += L"█▄▄█  █  █  █▄▄▄█  █▄▄▄█  █▄▄▄█ ▄█▄  █  ▀█  █▄▄█    █  █  █▄▄▄█  █  █  █▄▄▀\n";
 	/*
-░█████╗░██████╗░░█████╗░░██████╗░██████╗██╗███╗░░██╗░██████╗░  ██████╗░░█████╗░░█████╗░██████╗░
-██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝██║████╗░██║██╔════╝░  ██╔══██╗██╔══██╗██╔══██╗██╔══██╗
-██║░░╚═╝██████╔╝██║░░██║╚█████╗░╚█████╗░██║██╔██╗██║██║░░██╗░  ██████╔╝██║░░██║███████║██║░░██║
-██║░░██╗██╔══██╗██║░░██║░╚═══██╗░╚═══██╗██║██║╚████║██║░░╚██╗  ██╔══██╗██║░░██║██╔══██║██║░░██║
-╚█████╔╝██║░░██║╚█████╔╝██████╔╝██████╔╝██║██║░╚███║╚██████╔╝  ██║░░██║╚█████╔╝██║░░██║██████╔╝
-░╚════╝░╚═╝░░╚═╝░╚════╝░╚═════╝░╚═════╝░╚═╝╚═╝░░╚══╝░╚═════╝░  ╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝╚═════╝░
+░█████╗░██████╗  █████╗  ██████╗ ██████╗██╗███╗  ██╗ ██████╗   ██████╗  █████╗  █████╗ ██████╗
+██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝██║████╗ ██║██╔════╝   ██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+██║  ╚═╝██████╔╝██║  ██║╚█████╗ ╚█████╗ ██║██╔██╗██║██║  ██╗   ██████╔╝██║  ██║███████║██║  ██║
+██║  ██╗██╔══██╗██║  ██║ ╚═══██╗ ╚═══██╗██║██║╚████║██║  ╚██╗  ██╔══██╗██║  ██║██╔══██║██║  ██║
+╚█████╔╝██║  ██║╚█████╔╝██████╔╝██████╔╝██║██║ ╚███║╚██████╔╝  ██║  ██║╚█████╔╝██║  ██║██████╔╝
+ ╚════╝ ╚═╝  ╚═╝ ╚════╝ ╚═════╝ ╚═════╝ ╚═╝╚═╝  ╚══╝ ╚═════╝   ╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝╚═════╝
 	*/
-	title += L"░█████╗░██████╗░░█████╗░░██████╗░██████╗██╗███╗░░██╗░██████╗░  ██████╗░░█████╗░░█████╗░██████╗░\n";
-	title += L"██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝██║████╗░██║██╔════╝░  ██╔══██╗██╔══██╗██╔══██╗██╔══██╗\n";
-	title += L"██║░░╚═╝██████╔╝██║░░██║╚█████╗░╚█████╗░██║██╔██╗██║██║░░██╗░  ██████╔╝██║░░██║███████║██║░░██║\n";
-	title += L"██║░░██╗██╔══██╗██║░░██║░╚═══██╗░╚═══██╗██║██║╚████║██║░░╚██╗  ██╔══██╗██║░░██║██╔══██║██║░░██║\n";
-	title += L"╚█████╔╝██║░░██║╚█████╔╝██████╔╝██████╔╝██║██║░╚███║╚██████╔╝  ██║░░██║╚█████╔╝██║░░██║██████╔╝\n";
-	title += L"░╚════╝░╚═╝░░╚═╝░╚════╝░╚═════╝░╚═════╝░╚═╝╚═╝░░╚══╝░╚═════╝░  ╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝╚═════╝░\n";
+	title += L" █████╗ ██████╗  █████╗  ██████╗ ██████╗██╗███╗  ██╗ ██████╗   ██████╗  █████╗  █████╗ ██████╗ \n";
+	title += L"██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔════╝██║████╗ ██║██╔════╝   ██╔══██╗██╔══██╗██╔══██╗██╔══██╗\n";
+	title += L"██║  ╚═╝██████╔╝██║  ██║╚█████╗ ╚█████╗ ██║██╔██╗██║██║  ██╗   ██████╔╝██║  ██║███████║██║  ██║\n";
+	title += L"██║  ██╗██╔══██╗██║  ██║ ╚═══██╗ ╚═══██╗██║██║╚████║██║  ╚██╗  ██╔══██╗██║  ██║██╔══██║██║  ██║\n";
+	title += L"╚█████╔╝██║  ██║╚█████╔╝██████╔╝██████╔╝██║██║ ╚███║╚██████╔╝  ██║  ██║╚█████╔╝██║  ██║██████╔╝\n";
+	title += L" ╚════╝ ╚═╝  ╚═╝ ╚════╝ ╚═════╝ ╚═════╝ ╚═╝╚═╝  ╚══╝ ╚═════╝   ╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝╚═════╝ \n";
 
-	static short titleColor = FG_GREEN + BG_DARK_RED;
+	static short titleColor = FG_RED + BG_YELLOW;
 
 	if (time >= 0.5)
 	{
 		if (change)
 		{
-			titleColor = FG_GREEN + BG_DARK_BLUE;
+			titleColor = FG_RED + BG_YELLOW;
 		}
 		else
 		{
-			titleColor = FG_BLUE + BG_DARK_YELLOW;
+			titleColor = FG_MAGENTA + BG_WHITE;
 		}
 		time = 0;
 		change = !change;
@@ -399,13 +399,50 @@ void Game::PlayGame(float fDeltaTime)
 
 void Game::LoadGame(float fDeltaTime)
 {
+	/*
+		██╗░░░░░░█████╗░░█████╗░██████╗░  ░██████╗░░█████╗░███╗░░░███╗███████╗
+		██║░░░░░██╔══██╗██╔══██╗██╔══██╗  ██╔════╝░██╔══██╗████╗░████║██╔════╝
+		██║░░░░░██║░░██║███████║██║░░██║  ██║░░██╗░███████║██╔████╔██║█████╗░░
+		██║░░░░░██║░░██║██╔══██║██║░░██║  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░
+		███████╗╚█████╔╝██║░░██║██████╔╝  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗
+		╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝
+	*/
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_CYAN);
+	wstring title = L"";
+	title += L"██╗      █████╗  █████╗ ██████╗    ██████╗  █████╗ ███╗   ███╗███████╗\n";
+	title += L"██║     ██╔══██╗██╔══██╗██╔══██╗  ██╔════╝ ██╔══██╗████╗ ████║██╔════╝\n";
+	title += L"██║     ██║  ██║███████║██║  ██║  ██║  ██╗ ███████║██╔████╔██║█████╗  \n";
+	title += L"██║     ██║  ██║██╔══██║██║  ██║  ██║  ╚██╗██╔══██║██║╚██╔╝██║██╔══╝  \n";
+	title += L"███████╗╚█████╔╝██║  ██║██████╔╝  ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗\n";
+	title += L"╚══════╝ ╚════╝ ╚═╝  ╚═╝╚═════╝    ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝";
+	static bool change = 0;
+	static float time = 2;
+	static short titleColor = FG_RED + BG_YELLOW;
+
+	if (time >= 0.5)
+	{
+		if (change)
+		{
+			titleColor = FG_RED + BG_YELLOW;
+		}
+		else
+		{
+			titleColor = FG_WHITE + BG_DARK_BLUE;
+		}
+		time = 0;
+		change = !change;
+	}
+	time += fDeltaTime;
+	FillRectangle((this->m_nScreenWidth - 70) / 2 - 1, 4, 72, 8, L' ', titleColor);
+	DrawString((this->m_nScreenWidth - 70) / 2, 5, title, titleColor);
+
+
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
 		return;
 	}
-	int vtLoadGame = 0;
+	static int vtLoadGame = 0;
 	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && vtLoadGame > 0)
 	{
 		--vtLoadGame;
@@ -416,9 +453,10 @@ void Game::LoadGame(float fDeltaTime)
 	}
 	if (this->m_keys[VK_SPACE].bPressed || this->m_keys[VK_RETURN].bPressed)
 	{
-		// StartGame(fDeltaTime, this->LoadGames[vtLoadGame].level, this->LoadGames[vtLoadGame].point);
+		StartGame(fDeltaTime, this->loadGames[vtLoadGame].level, this->loadGames[vtLoadGame].point);
 	}
-	// Thêm danh sách load game
+
+	DrawLoadGame(fDeltaTime, vtLoadGame);
 }
 
 void Game::HighScoreScene(float fDeltaTime)
@@ -505,7 +543,7 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
+	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
 	this->score -= (fDeltaTime * 1.5);
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
@@ -529,6 +567,119 @@ void Game::DrawScore(float fDeltaTime)
 	/*	█▀▀█   ▄█░   █▀█   █▀▀█   ░█▀█░   █▀▀   ▄▀▀▄   ▀▀▀█   ▄▀▀▄   ▄▀▀▄
 		█▄▀█   ░█░   ░▄▀   ░░▀▄   █▄▄█▄   ▀▀▄   █▄▄░   ░░█░   ▄▀▀▄   ▀▄▄█
 		█▄▄█   ▄█▄   █▄▄   █▄▄█   ░░░█░   ▄▄▀   ▀▄▄▀   ░▐▌░   ▀▄▄▀   ░▄▄▀*/
+}
+
+void Game::DrawLoadGame(float fDeltaTime, int Vt)
+{
+	static short BG = BG_YELLOW;
+	static short FG = FG_MAGENTA;
+
+	FillRectangle(12, 22, 97, 40, L' ', BG);
+
+
+	static short BG_MUC = BG_GREEN;
+	static short FG_MUC = FG_MAGENTA;
+	static bool change = 0;
+	static float time = 2;
+	//BG_MUC = BG_GREEN;
+	if (time >= 0.4)
+	{
+		if (change)
+		{
+			BG_MUC = BG_GREEN;
+		}
+		else
+		{
+			BG_MUC = BG_WHITE;
+		}
+		time = 0;
+		change = !change;
+	}
+	time += fDeltaTime;
+	FillRectangle(13, 24, 95, 4, L' ', BG_MUC);
+	/*
+█▄░█ ▄▀█ █▀▄▀█ █▀▀
+█░▀█ █▀█ █░▀░█ ██▄
+	*/
+	wstring Name = L"█▄ █ ▄▀█ █▀▄▀█ █▀▀\n";
+	Name += L"█ ▀█ █▀█ █ ▀ █ ██▄";
+	DrawString(15, 25, Name, BG_MUC + FG_MUC);
+
+	/*
+
+█▀ █▀▀ █▀█ █▀█ █▀▀
+▄█ █▄▄ █▄█ █▀▄ ██▄
+	*/
+	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n";
+	Score += L"▄█ █▄▄ █▄█ █▀▄ ██▄";
+	DrawString(56, 25, Score, BG_MUC + FG_MUC);
+
+	/*
+
+█░░ █▀▀ █░█ █▀▀ █░░
+█▄▄ ██▄ ▀▄▀ ██▄ █▄▄
+	*/
+	wstring Level = L"█   █▀▀ █ █ █▀▀ █ \n";
+	Level += L"█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
+	DrawString(87, 25, Level, BG_MUC + FG_MUC);
+
+
+
+	Alphabet a;
+	int y = 35;
+	for (int i = 0; i < this->loadGames.size(); ++i)
+	{
+		int x = 15;
+
+		if (i == Vt)
+		{
+			BG = BG_GREY;
+			FillRectangle(13, 35 + Vt * 5 - 1, 95, 4, L' ', BG);
+		}
+
+		for (int j = 0; j < this->loadGames[i].name.length(); ++j)
+		{
+			wstring name = L"";
+			if (this->loadGames[i].name[j] >= 'A' && this->loadGames[i].name[j] <= 'Z')
+			{
+				name = a.alphabet[this->loadGames[i].name[j] - 'A'];
+				DrawString(x, y, name, BG + FG);
+				x = x + a.SizeAlphabet[this->loadGames[i].name[j] - 'A'];
+			}
+			if (this->loadGames[i].name[j] >= '0' && this->loadGames[i].name[j] <= '9')
+			{
+				name = a.Numbers[this->loadGames[i].name[j] - '0'];
+				DrawString(x, y, name, BG + FG);
+				x = x + a.SizeNumbers[this->loadGames[i].name[j] - '0'];
+			}
+		}
+
+		int Score = this->loadGames[i].point;
+		wstring SCORE[5];
+		int SizeScore[5];
+		int z = 0;
+		do
+		{
+			SCORE[z] = a.Numbers[Score % 10];
+			SizeScore[z] = a.SizeNumbers[Score % 10];
+			Score = Score / 10;
+			++z;
+		} while (Score > 0);
+		x = 60;
+		while (z > 0)
+		{
+			DrawString(x, y, SCORE[z - 1], BG + FG);
+			x = x + SizeScore[z - 1];
+			--z;
+		}
+
+		x = 95;
+		DrawString(x, y, a.Numbers[this->loadGames[i].level], BG + FG);
+		x = x + a.SizeNumbers[this->loadGames[i].level];
+
+		y = y + 5;
+		BG = BG_YELLOW;
+	}
 }
 
 void Game::SaveGame(float fDeltaTime)
@@ -633,7 +784,7 @@ void Game::SaveData(string fileName, deque<Save> saves)
 	file.close();
 }
 
-void Game::LoadData(string fileName, deque<Save> &saves)
+void Game::LoadData(string fileName, deque<Save>& saves)
 {
 	ifstream file(fileName);
 	if (file.fail())

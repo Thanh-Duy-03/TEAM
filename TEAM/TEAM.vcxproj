@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="alphabet.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Win.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="alphabet.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Menu.h" />
