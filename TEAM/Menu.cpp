@@ -472,12 +472,12 @@ void Game::HighScoreScene(float fDeltaTime)
 
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_CYAN);
 	wstring title = L"";
-	title += L"██╗░░██╗██╗░██████╗░██╗░░██╗  ░██████╗░█████╗░░█████╗░██████╗░███████╗\n";
-	title += L"██║░░██║██║██╔════╝░██║░░██║  ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝\n";
-	title += L"███████║██║██║░░██╗░███████║  ╚█████╗░██║░░╚═╝██║░░██║██████╔╝█████╗░░\n";
-	title += L"██╔══██║██║██║░░╚██╗██╔══██║  ░╚═══██╗██║░░██╗██║░░██║██╔══██╗██╔══╝░░\n";
-	title += L"██║░░██║██║╚██████╔╝██║░░██║  ██████╔╝╚█████╔╝╚█████╔╝██║░░██║███████╗\n";
-	title += L"╚═╝░░╚═╝╚═╝░╚═════╝░╚═╝░░╚═╝  ╚═════╝░░╚════╝░░╚════╝░╚═╝░░╚═╝╚══════╝";
+	title += L"██╗  ██╗██╗ ██████╗ ██╗  ██╗   ██████╗ █████╗  █████╗ ██████╗ ███████╗\n";
+	title += L"██║  ██║██║██╔════╝ ██║  ██║  ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝\n";
+	title += L"███████║██║██║  ██╗ ███████║  ╚█████╗ ██║  ╚═╝██║  ██║██████╔╝█████╗  \n";
+	title += L"██╔══██║██║██║  ╚██╗██╔══██║   ╚═══██╗██║  ██╗██║  ██║██╔══██╗██╔══╝  \n";
+	title += L"██║  ██║██║╚██████╔╝██║  ██║  ██████╔╝╚█████╔╝╚█████╔╝██║  ██║███████╗\n";
+	title += L"╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝  ╚═════╝  ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝";
 	static bool change = 0;
 	static float time = 2;
 	static short titleColor = FG_GREEN + BG_DARK_RED;
@@ -502,6 +502,8 @@ void Game::HighScoreScene(float fDeltaTime)
 	{
 		this->m_nCurrentState = 1;
 	}
+
+	DrawHighScore(fDeltaTime);
 }
 
 void Game::InstructionScene(float fDeltaTime)
@@ -676,6 +678,113 @@ void Game::DrawLoadGame(float fDeltaTime, int Vt)
 		x = 95;
 		DrawString(x, y, a.Numbers[this->loadGames[i].level], BG + FG);
 		x = x + a.SizeNumbers[this->loadGames[i].level];
+
+		y = y + 5;
+		BG = BG_YELLOW;
+	}
+}
+
+void Game::DrawHighScore(float fDeltaTime)
+{
+	static short BG = BG_YELLOW;
+	static short FG = FG_MAGENTA;
+
+	FillRectangle(12, 22, 97, 40, L' ', BG);
+
+
+	static short BG_MUC = BG_GREEN;
+	static short FG_MUC = FG_MAGENTA;
+	static bool change = 0;
+	static float time = 2;
+	//BG_MUC = BG_GREEN;
+	if (time >= 0.4)
+	{
+		if (change)
+		{
+			BG_MUC = BG_GREEN;
+		}
+		else
+		{
+			BG_MUC = BG_WHITE;
+		}
+		time = 0;
+		change = !change;
+	}
+	time += fDeltaTime;
+	FillRectangle(13, 24, 95, 4, L' ', BG_MUC);
+	/*
+█▄░█ ▄▀█ █▀▄▀█ █▀▀
+█░▀█ █▀█ █░▀░█ ██▄
+	*/
+	wstring Name = L"█▄ █ ▄▀█ █▀▄▀█ █▀▀\n";
+	Name += L"█ ▀█ █▀█ █ ▀ █ ██▄";
+	DrawString(15, 25, Name, BG_MUC + FG_MUC);
+
+	/*
+
+█▀ █▀▀ █▀█ █▀█ █▀▀
+▄█ █▄▄ █▄█ █▀▄ ██▄
+	*/
+	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n";
+	Score += L"▄█ █▄▄ █▄█ █▀▄ ██▄";
+	DrawString(56, 25, Score, BG_MUC + FG_MUC);
+
+	/*
+
+█░░ █▀▀ █░█ █▀▀ █░░
+█▄▄ ██▄ ▀▄▀ ██▄ █▄▄
+	*/
+	wstring Level = L"█   █▀▀ █ █ █▀▀ █ \n";
+	Level += L"█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
+	DrawString(87, 25, Level, BG_MUC + FG_MUC);
+
+
+
+	Alphabet a;
+	int y = 35;
+	for (int i = 0; i < this->highScores.size(); ++i)
+	{
+		int x = 15;
+
+		for (int j = 0; j < this->highScores[i].name.length(); ++j)
+		{
+			wstring name = L"";
+			if (this->highScores[i].name[j] >= 'A' && this->highScores[i].name[j] <= 'Z')
+			{
+				name = a.alphabet[this->highScores[i].name[j] - 'A'];
+				DrawString(x, y, name, BG + FG);
+				x = x + a.SizeAlphabet[this->highScores[i].name[j] - 'A'];
+			}
+			if (this->highScores[i].name[j] >= '0' && this->highScores[i].name[j] <= '9')
+			{
+				name = a.Numbers[this->highScores[i].name[j] - '0'];
+				DrawString(x, y, name, BG + FG);
+				x = x + a.SizeNumbers[this->highScores[i].name[j] - '0'];
+			}
+		}
+
+		int Score = this->highScores[i].point;
+		wstring SCORE[5];
+		int SizeScore[5];
+		int z = 0;
+		do
+		{
+			SCORE[z] = a.Numbers[Score % 10];
+			SizeScore[z] = a.SizeNumbers[Score % 10];
+			Score = Score / 10;
+			++z;
+		} while (Score > 0);
+		x = 60;
+		while (z > 0)
+		{
+			DrawString(x, y, SCORE[z - 1], BG + FG);
+			x = x + SizeScore[z - 1];
+			--z;
+		}
+
+		x = 95;
+		DrawString(x, y, a.Numbers[this->highScores[i].level], BG + FG);
+		x = x + a.SizeNumbers[this->highScores[i].level];
 
 		y = y + 5;
 		BG = BG_YELLOW;
