@@ -3,7 +3,9 @@
 #include "Player.h"
 #include "Lane.h"
 #include "Save.h"
-#include "alphabet.h"
+#include "Alphabet.h"
+#include "Object.h"
+#include "Obstacle.h"
 
 using namespace std;
 
@@ -34,7 +36,7 @@ protected:
 	void SaveGame(float fDeltaTime);
 	void DieGame(float fDeltaTime);
 	void SaveData(string fileName, deque<Save> saves);
-	void LoadData(string fileName, deque<Save>& saves);
+	void LoadData(string fileName, deque<Save> &saves);
 
 private:
 	int m_nCurrentState;

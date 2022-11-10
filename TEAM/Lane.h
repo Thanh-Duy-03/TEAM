@@ -1,29 +1,53 @@
 #pragma once
 #include "Win.h"
+#include "Player.h"
+#include "Obstacle.h"
 
 using namespace std;
 
 class Lane
 {
-public:
-    Lane();
-    void LoadSprite(wstring fileName);
-    void Update(float fDeltaTime, int screenWidth);
-    void Reset();
-    void Draw(ConsoleGame *game);
-
-public:
-    int distance;
-    float time;
-    float speed;
-    float timeToChange;
+private:
     int y;
-    int x;
+    int startPos;
+    int endPos;
+    float time;
+    float timeToChange;
+    float speed;
+    float distance;
     bool light;
     bool stop;
-    wstring sprite;
-    short fgColor;
+    wstring fileName;
     short bgColor;
-    int width;
-    deque<float> posList;
+    deque<Obstacle> obstacles;
+
+public:
+    Lane();
+    int GetY();
+    int GetStart();
+    int GetEnd();
+    float GetTimeToChange();
+    float GetSpeed();
+    float GetDistance();
+    bool GetLight();
+    bool GetStop();
+    wstring GetFileName();
+    short GetBgColor();
+    deque<Obstacle> GetObstacles();
+
+    void SetPosY(int y);
+    void SetStart(int x);
+    void SetEnd(int x);
+    void SetTimeToChange(float time);
+    void SetSpeed(float speed);
+    void SetDistance(float distance);
+    void SetLight(bool light);
+    void SetStop(bool stop);
+    void SetFileName(wstring fileName);
+    void SetBgColor(short color);
+
+    void Update(float fDeltaTime);
+    void Reset();
+    void Draw(ConsoleGame *game);
+    bool CheckCollider(Player *player);
 };

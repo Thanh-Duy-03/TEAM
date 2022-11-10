@@ -127,10 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="alphabet.cpp" />
+    <ClCompile Include="Alphabet.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Save.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -138,10 +140,12 @@
     <ClCompile Include="Win.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="alphabet.h" />
+    <ClInclude Include="Alphabet.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="Sprite.h" />

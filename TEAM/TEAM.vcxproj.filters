@@ -28,60 +28,96 @@
     <Filter Include="Resource Files\Assets\Player\Die">
       <UniqueIdentifier>{03f3188d-a732-4a22-92ed-b1b7e16532e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{45fa9275-65b2-44c8-8234-bbd382989670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{0a3a0aa9-e2b6-4dbd-9d90-ce41f68cb180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Player">
+      <UniqueIdentifier>{76f52c52-a87a-4a30-833e-5e89af35e62b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\Obstacles">
+      <UniqueIdentifier>{b95f331f-1ffb-4ffe-a8d0-0f21d7b32427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Player">
+      <UniqueIdentifier>{4cf38e75-9dd5-4c98-b143-dc9fc4acc53e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\Obstacles">
+      <UniqueIdentifier>{74049a8e-a76e-41db-9253-6bdab87d5aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{bc78bff9-672b-4375-b054-44a762b11f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{a66e6031-d19a-440e-94af-2b06e0e79d2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Win.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Lane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Save.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>Source Files\Object\Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="Alphabet.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Functions.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="alphabet.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Save.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Win.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Win.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Save.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Header Files\Object\Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="Alphabet.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Functions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="alphabet.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Save.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Win.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
