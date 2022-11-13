@@ -19,7 +19,8 @@ private:
     bool stop;
     wstring fileName;
     short bgColor;
-    deque<Obstacle> obstacles;
+    Obstacle prefab;
+    deque<float> posList;
 
 public:
     Lane();
@@ -33,7 +34,6 @@ public:
     bool GetStop();
     wstring GetFileName();
     short GetBgColor();
-    deque<Obstacle> GetObstacles();
 
     void SetPosY(int y);
     void SetStart(int x);

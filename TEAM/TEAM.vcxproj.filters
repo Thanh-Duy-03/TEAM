@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{a66e6031-d19a-440e-94af-2b06e0e79d2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Assets\Player\Idle">
+      <UniqueIdentifier>{84ef2bc8-9318-42dd-ba58-c82e10c416d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
@@ -133,23 +136,23 @@
     <Text Include="Assets\Obstacles\Truck2.txt">
       <Filter>Resource Files\Assets\Obstacles</Filter>
     </Text>
-    <Text Include="Assets\Player\Player.txt">
-      <Filter>Resource Files\Assets\Player</Filter>
-    </Text>
-    <Text Include="Assets\Player\Die\secondGlow.txt">
+    <Text Include="Assets\Player\Die\PlayerDie2.txt">
       <Filter>Resource Files\Assets\Player\Die</Filter>
     </Text>
-    <Text Include="Assets\Player\Die\thirdGlow.txt">
+    <Text Include="Assets\Player\Die\PlayerDie3.txt">
       <Filter>Resource Files\Assets\Player\Die</Filter>
     </Text>
-    <Text Include="Assets\Player\Die\firstGlow.txt">
+    <Text Include="Assets\Player\Die\PlayerDie1.txt">
       <Filter>Resource Files\Assets\Player\Die</Filter>
     </Text>
-    <Text Include="Assets\Player\Player1.txt">
-      <Filter>Resource Files\Assets\Player</Filter>
+    <Text Include="Assets\Player\Idle\PlayerIdle1.txt">
+      <Filter>Resource Files\Assets\Player\Idle</Filter>
     </Text>
-    <Text Include="Assets\Player\Player2.txt">
-      <Filter>Resource Files\Assets\Player</Filter>
+    <Text Include="Assets\Player\Idle\PlayerIdle2.txt">
+      <Filter>Resource Files\Assets\Player\Idle</Filter>
+    </Text>
+    <Text Include="Assets\Player\Idle\PlayerIdle.txt">
+      <Filter>Resource Files\Assets\Player\Idle</Filter>
     </Text>
   </ItemGroup>
 </Project>

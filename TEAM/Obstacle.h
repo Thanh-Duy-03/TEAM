@@ -7,6 +7,7 @@ protected:
 
 public:
     Obstacle();
+    Obstacle(const Obstacle &obstacle);
     void AddSprite(wstring fileName);
     Sprite GetSprite();
 };

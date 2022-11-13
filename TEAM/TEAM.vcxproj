@@ -154,12 +154,12 @@
   <ItemGroup>
     <Text Include="Assets\Obstacles\Truck.txt" />
     <Text Include="Assets\Obstacles\Truck2.txt" />
-    <Text Include="Assets\Player\Die\firstGlow.txt" />
-    <Text Include="Assets\Player\Die\secondGlow.txt" />
-    <Text Include="Assets\Player\Die\thirdGlow.txt" />
-    <Text Include="Assets\Player\Player.txt" />
-    <Text Include="Assets\Player\Player1.txt" />
-    <Text Include="Assets\Player\Player2.txt" />
+    <Text Include="Assets\Player\Die\PlayerDie1.txt" />
+    <Text Include="Assets\Player\Die\PlayerDie2.txt" />
+    <Text Include="Assets\Player\Die\PlayerDie3.txt" />
+    <Text Include="Assets\Player\Idle\PlayerIdle.txt" />
+    <Text Include="Assets\Player\Idle\PlayerIdle1.txt" />
+    <Text Include="Assets\Player\Idle\PlayerIdle2.txt" />
     <Text Include="Save\HighScores.txt" />
     <Text Include="Save\LoadGames.txt" />
   </ItemGroup>

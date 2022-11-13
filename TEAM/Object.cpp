@@ -65,5 +65,5 @@ void Object::SetWidth(int width)
 
 bool Object::Collide(const Object &object)
 {
-    return (this->x + this->width <= object.x) || (this->x >= object.x + object.width);
+    return (this->x + this->width >= object.x) && (this->x <= object.x + object.width);
 }

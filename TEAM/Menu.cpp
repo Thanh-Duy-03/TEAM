@@ -250,10 +250,10 @@ void Game::StartMenu(float fDeltaTime)
 void Game::StartGame(float fDeltaTime, int level, int score)
 {
 	this->score = 200;
-	this->player.Set(0, 63, level, score);
+	this->player.Set(0, 62, level, score);
 
 	// Pavement
-	this->lane[0].SetPosY(63);
+	this->lane[0].SetPosY(62);
 	this->lane[0].SetLight(0);
 	this->lane[0].SetBgColor(BG_DARK_GREY);
 
@@ -262,7 +262,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[7].SetBgColor(BG_DARK_GREY);
 
 	// Roads
-	this->lane[1].SetPosY(54);
+	this->lane[1].SetPosY(53);
 	this->lane[1].SetStart(-20);
 	this->lane[1].SetEnd(95);
 	this->lane[1].SetLight(true);
@@ -272,7 +272,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[1].SetBgColor(BG_WHITE);
 	this->lane[1].Reset();
 
-	this->lane[2].SetPosY(45);
+	this->lane[2].SetPosY(44);
 	this->lane[2].SetStart(90);
 	this->lane[2].SetEnd(-30);
 	this->lane[2].SetLight(true);
@@ -282,7 +282,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[2].SetBgColor(BG_WHITE);
 	this->lane[2].Reset();
 
-	this->lane[3].SetPosY(36);
+	this->lane[3].SetPosY(35);
 	this->lane[3].SetStart(-20);
 	this->lane[3].SetEnd(95);
 	this->lane[3].SetLight(true);
@@ -292,7 +292,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[3].SetBgColor(BG_WHITE);
 	this->lane[3].Reset();
 
-	this->lane[4].SetPosY(27);
+	this->lane[4].SetPosY(26);
 	this->lane[4].SetStart(-20);
 	this->lane[4].SetEnd(95);
 	this->lane[4].SetLight(true);
@@ -302,7 +302,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[4].SetBgColor(BG_WHITE);
 	this->lane[4].Reset();
 
-	this->lane[5].SetPosY(18);
+	this->lane[5].SetPosY(17);
 	this->lane[5].SetStart(-20);
 	this->lane[5].SetEnd(95);
 	this->lane[5].SetLight(true);
@@ -312,7 +312,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[5].SetBgColor(BG_WHITE);
 	this->lane[5].Reset();
 
-	this->lane[6].SetPosY(9);
+	this->lane[6].SetPosY(8);
 	this->lane[6].SetStart(-20);
 	this->lane[6].SetEnd(95);
 	this->lane[6].SetLight(true);
@@ -523,7 +523,8 @@ void Game::UpdateLane(float fDeltaTime)
 }
 void Game::DrawLanes()
 {
-	for (int i = 0; i < 8; i++)
+	this->lane[7].Draw(this);
+	for (int i = 0; i < 7; i++)
 	{
 		this->lane[i].Draw(this);
 	}

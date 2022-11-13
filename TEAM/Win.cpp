@@ -318,11 +318,14 @@ void ConsoleGame::FillRectangle(int x, int y, int width, int height, short c, sh
 
 void ConsoleGame::DrawSprite(int x, int y, Sprite sprite, short col)
 {
-	for (int i = 0; i < sprite.GetWidth(); i++)
+	int width = sprite.GetWidth();
+	int height = sprite.GetHeight();
+	for (int i = 0; i < width; i++)
 	{
-		for (int j = 0; j < sprite.GetHeight(); j++)
+		for (int j = 0; j < height; j++)
 		{
-			Draw(x + i, y + j, sprite.GetGlyph(i, j), sprite.GetColor(i, j) + col);
+			if (sprite.GetGlyph(i, j) != L' ')
+				Draw(x + i, y + j, sprite.GetGlyph(i, j), sprite.GetColor(i, j) + col);
 		}
 	}
 }

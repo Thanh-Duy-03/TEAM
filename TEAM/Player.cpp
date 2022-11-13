@@ -19,14 +19,14 @@ void Player::Create()
 	this->currentIdle = 0;
 	this->currentDie = 0;
 	// Idle state
-	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle.txt"), 0.2f));
-	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle1.txt"), 0.2f));
-	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle2.txt"), 0.2f));
-	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle1.txt"), 0.2f));
+	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle.txt"), 0.1f));
+	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle1.txt"), 0.1f));
+	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle2.txt"), 0.1f));
+	this->idleSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Idle/PlayerIdle1.txt"), 0.1f));
 	// Die state
-	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie.txt"), 0.5f));
-	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie.txt"), 0.5f));
-	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie.txt"), 0.2f));
+	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie1.txt"), 0.5f));
+	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie2.txt"), 0.5f));
+	this->dieSprites.push_back(pair<Sprite, float>(Sprite(L"Assets/Player/Die/PlayerDie3.txt"), 0.2f));
 	this->width = this->idleSprites[0].first.GetWidth();
 }
 
@@ -111,11 +111,11 @@ bool Player::DieState(float fDeltaTime)
 {
 	static float time = 0;
 	this->currentSprite = this->dieSprites[this->currentDie].first;
-	if (time > this->dieSprites[this->currentDie].second)
+	if (time >= this->dieSprites[this->currentDie].second)
 	{
 		time = 0;
-		this->currentIdle++;
-		if (this->currentIdle >= this->dieSprites.size())
+		this->currentDie++;
+		if (this->currentDie >= this->dieSprites.size())
 		{
 			this->currentDie = 0;
 			return true;
@@ -128,55 +128,7 @@ bool Player::DieState(float fDeltaTime)
 	return false;
 }
 
-void Player::Draw(ConsoleGame *game)
+void Player::Draw(ConsoleGame* game)
 {
 	game->DrawSprite((int)this->x, (int)this->y, this->currentSprite, this->bgColor);
 }
-
-// void Player::IdleState(float fDeltaTime)
-// {
-// 	static float time = 0;
-// 	this->fgColor = FG_GREEN;
-// 	if (time < 0.2f)
-// 	{
-// 		LoadSprite(L"Assets/Player/Player.txt");
-// 	}
-// 	else if (time < 0.4f)
-// 	{
-// 		LoadSprite(L"Assets/Player/Player1.txt");
-// 	}
-// 	else if (time < 0.6f)
-// 	{
-// 		LoadSprite(L"Assets/Player/Player2.txt");
-// 	}
-// 	else
-// 	{
-// 		time = 0;
-// 	}
-// 	time += fDeltaTime;
-// }
-
-// bool Player::DieState(float fDeltaTime)
-// {
-// 	static float time = 0;
-// 	if (time < 0.5f)
-// 	{
-// 		this->fgColor = FG_RED;
-// 		LoadSprite(L"Assets//Player/Die/firstGlow.txt");
-// 	}
-// 	else if (time < 1.0f)
-// 	{
-// 		LoadSprite(L"Assets//Player/Die/secondGlow.txt");
-// 	}
-// 	else if (time < 1.5f)
-// 	{
-// 		LoadSprite(L"Assets//Player/Die/thirdGlow.txt");
-// 	}
-// 	else if (time < 3.0f)
-// 	{
-// 		time = 0;
-// 		return true; // Finish animation
-// 	}
-// 	time += fDeltaTime;
-// 	return false;
-// }

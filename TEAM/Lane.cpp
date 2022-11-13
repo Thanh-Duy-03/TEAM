@@ -62,19 +62,16 @@ short Lane::GetBgColor()
 	return this->bgColor;
 }
 
-deque<Obstacle> Lane::GetObstacles()
-{
-	return this->obstacles;
-}
-
 void Lane::SetPosY(int y)
 {
 	this->y = y;
+	this->prefab.SetPosY(this->y);
 }
 
 void Lane::SetStart(int x)
 {
 	this->startPos = x;
+	this->prefab.SetPosX(this->startPos);
 }
 
 void Lane::SetEnd(int x)
@@ -110,6 +107,7 @@ void Lane::SetStop(bool stop)
 void Lane::SetFileName(wstring fileName)
 {
 	this->fileName = fileName;
+	this->prefab.AddSprite(this->fileName);
 }
 
 void Lane::Update(float fDeltaTime)
@@ -135,25 +133,23 @@ void Lane::Update(float fDeltaTime)
 	}
 
 	this->time += fDeltaTime;
-	if (this->obstacles.empty() || abs(this->startPos - this->obstacles[this->obstacles.size() - 1].GetPosX()) >= this->distance)
+	if (this->posList.empty() || abs(this->startPos - this->posList[this->posList.size() - 1]) >= this->distance)
 	{
-		Obstacle newObstacle;
-		newObstacle.SetPos(this->startPos, this->y);
-		newObstacle.AddSprite(this->fileName);
-		this->obstacles.push_back(newObstacle);
+		float newPos = this->startPos;
+		this->posList.push_back(newPos);
 	}
 	else
 	{
-		for (int i = 0; i < this->obstacles.size(); i++)
+		for (int i = 0; i < this->posList.size(); i++)
 		{
-			this->obstacles[i].Move(this->speed * fDeltaTime, 0);
-			if (this->obstacles[i].GetPosX() > this->endPos && this->speed >= 0)
+			this->posList[i] += this->speed * fDeltaTime;
+			if (this->posList[i] > this->endPos && this->speed >= 0)
 			{
-				this->obstacles.pop_front();
+				this->posList.pop_front();
 			}
-			else if (this->obstacles[i].GetPosX() < this->endPos && this->speed < 0)
+			else if (this->posList[i] < this->endPos && this->speed < 0)
 			{
-				this->obstacles.pop_front();
+				this->posList.pop_front();
 			}
 		}
 	}
@@ -169,18 +165,18 @@ void Lane::Reset()
 	this->time = 0;
 	this->timeToChange = 3 + (rand() % 3 + 1);
 	this->stop = false;
-	this->obstacles.clear();
+	this->posList.clear();
 }
 
 void Lane::Draw(ConsoleGame *game)
 {
 	game->FillRectangle(0, this->y, 90, 8, L' ', this->bgColor);
 	game->DrawLine(0, this->y - 1, 89, this->y - 1, PIXEL_SOLID, BG_BLACK + FG_BLACK);
-	for (int i = 0; i < this->obstacles.size(); i++)
-		game->DrawSprite((int)this->obstacles[i].GetPosX(), (int)this->obstacles[i].GetPosY(), this->obstacles[i].GetSprite(), this->bgColor);
 
 	if (this->light)
 	{
+		for (int i = 0; i < this->posList.size(); i++)
+			game->DrawSprite((int)this->posList[i], (int)this->y, this->prefab.GetSprite(), this->bgColor);
 		if (this->stop)
 		{
 			game->Draw(5, this->y, PIXEL_SOLID, BG_RED + FG_RED);
@@ -194,9 +190,10 @@ void Lane::Draw(ConsoleGame *game)
 
 bool Lane::CheckCollider(Player *player)
 {
-	for (int i = 0; i < this->obstacles.size(); i++)
+	for (int i = 0; i < this->posList.size(); i++)
 	{
-		if (player->Collide(this->obstacles[i]))
+		this->prefab.SetPos(this->posList[i], this->y);
+		if (player->Collide(this->prefab))
 		{
 			return true;
 		}
