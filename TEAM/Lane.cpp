@@ -120,7 +120,7 @@ void Lane::Update(float fDeltaTime)
 		{
 			this->time = 0;
 			this->stop = false;
-			this->timeToChange = 3 + (rand() % 3 + 1);
+			this->timeToChange = (rand() % 6) + 1;
 		}
 		return;
 	}
@@ -129,7 +129,7 @@ void Lane::Update(float fDeltaTime)
 	{
 		this->stop = true;
 		this->time = 0;
-		this->timeToChange = 3 + (rand() % 3 + 1);
+		this->timeToChange = (rand() % 6) + 1;
 	}
 
 	this->time += fDeltaTime;
@@ -168,7 +168,7 @@ void Lane::Reset()
 	this->posList.clear();
 }
 
-void Lane::Draw(ConsoleGame *game)
+void Lane::Draw(ConsoleGame* game)
 {
 	game->FillRectangle(0, this->y, 90, 8, L' ', this->bgColor);
 	game->DrawLine(0, this->y - 1, 89, this->y - 1, PIXEL_SOLID, BG_BLACK + FG_BLACK);
@@ -188,7 +188,7 @@ void Lane::Draw(ConsoleGame *game)
 	}
 }
 
-bool Lane::CheckCollider(Player *player)
+bool Lane::CheckCollider(Player* player)
 {
 	for (int i = 0; i < this->posList.size(); i++)
 	{

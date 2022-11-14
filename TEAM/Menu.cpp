@@ -328,6 +328,10 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 void Game::PlayGame(float fDeltaTime)
 {
 	static float time = 0;
+	int offsetX = 0;
+	static float x = 0;
+	static int ran = rand() % 6;
+
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
 	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
@@ -362,7 +366,11 @@ void Game::PlayGame(float fDeltaTime)
 	{
 		this->player.SetLevel(this->player.GetLevel() + 1);
 		this->player.SetScore(this->player.GetScore() + (int)this->score);
-		StartGame(fDeltaTime, this->player.GetCurrentLane(), this->player.GetScore());
+		StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+		time = 0;
+		x = 0;
+		offsetX = 0;
+		ran = rand() % 6;
 	}
 	if (!this->player.GetDie())
 	{
@@ -370,6 +378,9 @@ void Game::PlayGame(float fDeltaTime)
 		if (this->m_keys[VK_ESCAPE].bPressed)
 		{
 			time = 0;
+			x = 0;
+			offsetX = 0;
+			ran = rand() % 6;
 			this->m_nCurrentState = 1;
 			return;
 		}
@@ -398,16 +409,44 @@ void Game::PlayGame(float fDeltaTime)
 				this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
 			}
 		}
-		else
+		else if (time >= 1.5f)
 		{
-			time += fDeltaTime;
-			static float x = 0;
-			wstring wait = L"";
+			Alphabet a;
+			string sen[] = {
+				"press w to up",
+				"press s to down",
+				"press a to go left",
+				"press d to go right",
+				"press l to save game",
+				"press esc to escape"};
+			string wait = sen[ran];
+			for (int i = 0; i < wait.length(); i++)
+			{
+				if (wait[i] <= 'z' && wait[i] >= 'a')
+				{
+					DrawStringAlpha(x + offsetX, 3, a.alphabet[wait[i] - 'a'], FG_RED + BG_DARK_GREY);
+					offsetX += a.SizeAlphabet[wait[i] - 'a'];
+				}
+				else if (wait[i] == ' ')
+				{
+					offsetX += 3;
+				}
+			}
+			x += 20 * fDeltaTime;
+			if (x + offsetX >= 90)
+			{
+				x = 90 - offsetX;
+			}
 		}
+
+		time += fDeltaTime;
 	}
 	else
 	{
 		time = 0;
+		x = 0;
+		offsetX = 0;
+		ran = rand() % 6;
 	}
 }
 
