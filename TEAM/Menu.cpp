@@ -327,6 +327,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 
 void Game::PlayGame(float fDeltaTime)
 {
+	static float time = 0;
 	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
 	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
 	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
@@ -365,34 +366,48 @@ void Game::PlayGame(float fDeltaTime)
 	}
 	if (!this->player.GetDie())
 	{
-
 		UpdateLane(fDeltaTime);
-		if (this->m_keys['L'].bPressed)
-		{
-			this->m_nCurrentState = 7;
-		}
 		if (this->m_keys[VK_ESCAPE].bPressed)
 		{
+			time = 0;
 			this->m_nCurrentState = 1;
+			return;
 		}
-		if ((this->m_keys['A'].bHeld || this->m_keys[VK_LEFT].bHeld) && this->player.GetPosX() >= 0)
+		if (time >= 3.0f)
 		{
-			this->player.Move(-20 * fDeltaTime, 0);
+			if (this->m_keys['L'].bPressed)
+			{
+				this->m_nCurrentState = 7;
+			}
+			if ((this->m_keys['A'].bHeld || this->m_keys[VK_LEFT].bHeld) && this->player.GetPosX() >= 0)
+			{
+				this->player.Move(-20 * fDeltaTime, 0);
+			}
+			if ((this->m_keys['D'].bHeld || this->m_keys[VK_RIGHT].bHeld) && this->player.GetPosX() + this->player.GetWidth() <= 90)
+			{
+				this->player.Move(20 * fDeltaTime, 0);
+			}
+			if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.GetCurrentLane() < 7)
+			{
+				this->player.SetCurrentLane(this->player.GetCurrentLane() + 1);
+				this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+			}
+			if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.GetCurrentLane() > 0)
+			{
+				this->player.SetCurrentLane(this->player.GetCurrentLane() - 1);
+				this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+			}
 		}
-		if ((this->m_keys['D'].bHeld || this->m_keys[VK_RIGHT].bHeld) && this->player.GetPosX() + this->player.GetWidth() <= 90)
+		else
 		{
-			this->player.Move(20 * fDeltaTime, 0);
+			time += fDeltaTime;
+			static float x = 0;
+			wstring wait = L"";
 		}
-		if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.GetCurrentLane() < 7)
-		{
-			this->player.SetCurrentLane(this->player.GetCurrentLane() + 1);
-			this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
-		}
-		if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.GetCurrentLane() > 0)
-		{
-			this->player.SetCurrentLane(this->player.GetCurrentLane() - 1);
-			this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
-		}
+	}
+	else
+	{
+		time = 0;
 	}
 }
 
