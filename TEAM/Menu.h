@@ -39,6 +39,8 @@ protected:
 	void DieGameSau(float fDeltaTime);
 	void SaveData(string fileName, deque<Save> saves);
 	void LoadData(string fileName, deque<Save> &saves);
+	void endEffect(float fDeltaTime);
+	void winEffect(float fDeltaTime);
 
 private:
 	int m_nCurrentState;

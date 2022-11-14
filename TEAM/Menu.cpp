@@ -58,6 +58,9 @@ bool Game::SceneManager(float fDeltaTime)
 	case 9:
 		DieGameSau(fDeltaTime);
 		break;
+	case 10:
+		endEffect(fDeltaTime);
+		break;
 	default:
 		this->m_nCurrentState = 0; //  Exit
 		break;
@@ -368,13 +371,21 @@ void Game::PlayGame(float fDeltaTime)
 
 		if (this->player.GetCurrentLane() == 7)
 		{
-			this->player.SetLevel(this->player.GetLevel() + 1);
-			this->player.SetScore(this->player.GetScore() + (int)this->score);
-			StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
-			time = 0;
-			x = 0;
-			offsetX = 0;
-			ran = rand() % 6;
+			if (this->player.GetLevel() + 1 < 4 )
+			{
+				this->player.SetLevel(this->player.GetLevel() + 1);
+				this->player.SetScore(this->player.GetScore() + (int)this->score);
+				StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+				time = 0;
+				x = 0;
+				offsetX = 0;
+				ran = rand() % 6;
+			}
+			else
+			{
+				this->player.SetScore(this->player.GetScore() + (int)this->score);
+				SaveGame(fDeltaTime);
+			}
 		}
 		if (!this->player.GetDie())
 		{
@@ -1033,7 +1044,10 @@ void Game::SaveGame(float fDeltaTime)
 		SaveData("Save/LoadGames.txt", this->loadGames);
 
 		name.clear();
-		this->m_nCurrentState = 1;
+		if (this->player.GetLevel() < 4)
+			this->m_nCurrentState = 1;
+		else
+			this->m_nCurrentState = 10;
 		return;
 	}
 
@@ -1163,4 +1177,188 @@ void Game::LoadData(string fileName, deque<Save> &saves)
 		saves.push_back(save);
 	}
 	file.close();
+}
+
+void Game::endEffect(float fDeltaTime)
+{
+	static float time = 0;
+	if (this->m_keys[VK_ESCAPE].bPressed)
+	{
+		this->m_nCurrentState = 1;
+		time = 0;
+		return;
+	}
+	int width = this->m_nScreenWidth;
+	int height = this->m_nScreenHeight;
+	int delta = width / 6;
+	if (time < 0.2)
+		FillRectangle(0, 0, delta, height, L' ', BG_CYAN);
+	else if (time < 0.4)
+		FillRectangle(0, 0, delta * 2, height, L' ', BG_CYAN);
+	else if (time < 0.6)
+		FillRectangle(0, 0, delta * 3, height, L' ', BG_CYAN);
+	else if (time < 0.8)
+		FillRectangle(0, 0, delta * 4, height, L' ', BG_CYAN);
+	else if (time < 1.0)
+		FillRectangle(0, 0, delta * 5, height, L' ', BG_CYAN);
+	else if (time < 1.2)
+		FillRectangle(0, 0, delta * 6, height, L' ', BG_CYAN);
+	else if (time > 100)
+		time = 1.21;
+	else
+	{
+		static Alphabet alpha;
+		wstring youWin = L"YOU WIN";
+		wstring newRecord = L"NEW RECORD ";
+		wstring Score = L"SCORE ";
+		FillRectangle(0, 0, delta * 6, height, L' ', BG_CYAN);
+		winEffect(fDeltaTime);
+		int pos = 0;
+		for (int i = 0; i < (int)youWin.size(); ++i)
+		{
+			if (youWin[i] == ' ')
+			{
+				DrawString(70 + pos, 20, L"  \n  \n", BG_CYAN + FG_BLACK);
+				pos += 2;
+			}
+			else
+			{
+				DrawString(70 + pos, 20, alpha.alphabet[youWin[i] - L'A'], BG_CYAN + FG_BLACK);
+				pos += alpha.SizeAlphabet[youWin[i] - L'A'];
+			}
+		}
+		if (this->player.GetScore() > this->highScores[0].point)
+		{
+			pos = -15;
+			for (int i = 0; i < (int)newRecord.size(); ++i)
+			{
+				if (newRecord[i] == ' ')
+				{
+					DrawString(70 + pos, 30, L"  \n  \n", BG_CYAN + FG_BLACK);
+					pos += 2;
+				}
+				else
+				{
+					DrawString(70 + pos, 30, alpha.alphabet[newRecord[i] - L'A'], BG_CYAN + FG_BLACK);
+					pos += alpha.SizeAlphabet[newRecord[i] - L'A'];
+				}
+			}
+		}
+		else
+		{
+			pos = -2;
+			for (int i = 0; i < (int)Score.size(); ++i)
+			{
+				if (Score[i] == ' ')
+				{
+					DrawString(70 + pos, 30, L"  \n  \n", BG_CYAN + FG_BLACK);
+					pos += 2;
+				}
+				else
+				{
+					DrawString(70 + pos, 30, alpha.alphabet[Score[i] - L'A'], BG_CYAN + FG_BLACK);
+					pos += alpha.SizeAlphabet[Score[i] - L'A'];
+				}
+			}
+		}
+		int p = this->player.GetScore();
+		for (int i = 100; i >= 1; i /= 10)
+		{
+			DrawString(70 + pos, 30, alpha.Numbers[(p / i) % 10], BG_CYAN + FG_BLACK);
+			pos += alpha.SizeNumbers[(p / i) % 10];
+		}
+	}
+	time += fDeltaTime;
+}
+
+void Game::winEffect(float fDeltaTime)
+{
+	static float time = 0;
+	int x, y;
+	x = 25, y = 25;
+	/*
+█████████████
+█████████████████
+█  █████████████  █
+█   ███████████   █
+ █   █████████   █
+  █   ███████   █
+   █▄▀ █████ ▀▄█
+		███
+		 █
+		███
+	   █████
+	  ███████
+	  ███████
+	*/
+	wstring trophy = L"    ███████████\n";
+	trophy += L"   █████████████\n";
+	trophy += L" █████████████████\n";
+	trophy += L"█  █████████████  █\n";
+	trophy += L"█   ███████████   █\n";
+	trophy += L" █   █████████   █\n";
+	trophy += L"  █   ███████   █\n";
+	trophy += L"   █▄▀ █████ ▀▄█\n";
+	trophy += L"        ███\n";
+	trophy += L"         █\n";
+	trophy += L"        ███\n";
+	trophy += L"       █████\n";
+	trophy += L"      ███████\n";
+	trophy += L"      ███████\n";
+	DrawString(x, y, trophy, BG_CYAN + FG_DARK_YELLOW);
+	if (time < 0.1)
+		DrawRectangle(x - 2, y - 2, 21 + 2, 16 + 2, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.2)
+		DrawRectangle(x - 3, y - 3, 21 + 4, 16 + 4, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.3)
+		DrawRectangle(x - 4, y - 4, 21 + 6, 16 + 6, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.4)
+		DrawRectangle(x - 5, y - 5, 21 + 8, 16 + 8, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.5)
+		DrawRectangle(x - 6, y - 6, 21 + 10, 16 + 10, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.6)
+		DrawRectangle(x - 7, y - 7, 21 + 12, 16 + 12, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.7)
+		DrawRectangle(x - 7, y - 7, 21 + 12, 16 + 12, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.8)
+		DrawRectangle(x - 6, y - 6, 21 + 10, 16 + 10, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 0.9)
+		DrawRectangle(x - 5, y - 5, 21 + 8, 16 + 8, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 1.0)
+		DrawRectangle(x - 4, y - 4, 21 + 6, 16 + 6, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 1.1)
+		DrawRectangle(x - 3, y - 3, 21 + 4, 16 + 4, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 1.2)
+		DrawRectangle(x - 2, y - 2, 21 + 2, 16 + 2, L'█', BG_CYAN + FG_DARK_CYAN);
+	else if (time < 1.4)
+	{
+		DrawLine(x - 1, y - 2, x + 20, y - 2, L'█', BG_CYAN + FG_GREEN);
+		DrawLine(x - 1, y + 16, x + 20, y + 16, L'█', BG_CYAN + FG_YELLOW);
+		DrawLine(x - 2, y - 1, x - 2, y + 15, L'█', BG_CYAN + FG_BLUE);
+		DrawLine(x + 21, y - 1, x + 21, y + 15, L'█', BG_CYAN + FG_RED);
+	}
+	else if (time < 1.6)
+	{
+		DrawLine(x - 1, y - 2, x + 20, y - 2, L'█', BG_CYAN + FG_RED);
+		DrawLine(x - 1, y + 16, x + 20, y + 16, L'█', BG_CYAN + FG_GREEN);
+		DrawLine(x - 2, y - 1, x - 2, y + 15, L'█', BG_CYAN + FG_YELLOW);
+		DrawLine(x + 21, y - 1, x + 21, y + 15, L'█', BG_CYAN + FG_BLUE);
+	}
+	else if (time < 1.8)
+	{
+		DrawLine(x - 1, y - 2, x + 20, y - 2, L'█', BG_CYAN + FG_BLUE);
+		DrawLine(x - 1, y + 16, x + 20, y + 16, L'█', BG_CYAN + FG_RED);
+		DrawLine(x - 2, y - 1, x - 2, y + 15, L'█', BG_CYAN + FG_GREEN);
+		DrawLine(x + 21, y - 1, x + 21, y + 15, L'█', BG_CYAN + FG_YELLOW);
+	}
+	else if (time < 2.0)
+	{
+		DrawLine(x - 1, y - 2, x + 20, y - 2, L'█', BG_CYAN + FG_YELLOW);
+		DrawLine(x - 1, y + 16, x + 20, y + 16, L'█', BG_CYAN + FG_BLUE);
+		DrawLine(x - 2, y - 1, x - 2, y + 15, L'█', BG_CYAN + FG_RED);
+		DrawLine(x + 21, y - 1, x + 21, y + 15, L'█', BG_CYAN + FG_GREEN);
+	}
+	else
+		time = 0;
+	time += fDeltaTime;
 }
