@@ -10,6 +10,7 @@ Player::Player()
 	this->width = 0;
 	this->bgColor = BG_BLACK;
 	this->die = false;
+	this->die = false;
 	this->score = 0;
 	this->level = 1;
 }
@@ -47,6 +48,11 @@ bool Player::GetDie()
 	return this->die;
 }
 
+bool Player::GetPause()
+{
+	return this->pause;
+}
+
 int Player::GetCurrentLane()
 {
 	return this->currentLane;
@@ -75,6 +81,11 @@ void Player::SetScore(int score)
 void Player::SetDie(bool die)
 {
 	this->die = die;
+}
+
+void Player::SetPause(bool pause)
+{
+	this->pause = pause;
 }
 
 void Player::SetCurrentLane(int lane)

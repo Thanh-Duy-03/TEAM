@@ -53,7 +53,10 @@ bool Game::SceneManager(float fDeltaTime)
 		SaveGame(fDeltaTime);
 		break;
 	case 8:
-		DieGame(fDeltaTime);
+		DieGameTrc(fDeltaTime);
+		break;
+	case 9:
+		DieGameSau(fDeltaTime);
 		break;
 	default:
 		this->m_nCurrentState = 0; //  Exit
@@ -267,7 +270,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[1].SetEnd(95);
 	this->lane[1].SetLight(true);
 	this->lane[1].SetSpeed(5.0f + rand() % 10);
-	this->lane[1].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[1].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[1].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[1].SetBgColor(BG_WHITE);
 	this->lane[1].Reset();
@@ -277,7 +280,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[2].SetEnd(-30);
 	this->lane[2].SetLight(true);
 	this->lane[2].SetSpeed(-5.0f - rand() % 10);
-	this->lane[2].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[2].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[2].SetFileName(L"Assets/Obstacles/Truck2.txt");
 	this->lane[2].SetBgColor(BG_WHITE);
 	this->lane[2].Reset();
@@ -287,7 +290,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[3].SetEnd(95);
 	this->lane[3].SetLight(true);
 	this->lane[3].SetSpeed(5.0f + rand() % 10);
-	this->lane[3].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[3].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[3].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[3].SetBgColor(BG_WHITE);
 	this->lane[3].Reset();
@@ -297,7 +300,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[4].SetEnd(95);
 	this->lane[4].SetLight(true);
 	this->lane[4].SetSpeed(5.0f + rand() % 10);
-	this->lane[4].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[4].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[4].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[4].SetBgColor(BG_WHITE);
 	this->lane[4].Reset();
@@ -307,7 +310,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[5].SetEnd(95);
 	this->lane[5].SetLight(true);
 	this->lane[5].SetSpeed(5.0f + rand() % 10);
-	this->lane[5].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[5].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[5].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[5].SetBgColor(BG_WHITE);
 	this->lane[5].Reset();
@@ -317,7 +320,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[6].SetEnd(95);
 	this->lane[6].SetLight(true);
 	this->lane[6].SetSpeed(5.0f + rand() % 10);
-	this->lane[6].SetDistance(60 - 6 * (this->player.GetLevel() % 5));
+	this->lane[6].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
 	this->lane[6].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[6].SetBgColor(BG_WHITE);
 	this->lane[6].Reset();
@@ -327,127 +330,146 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 
 void Game::PlayGame(float fDeltaTime)
 {
-	static float time = 0;
-	int offsetX = 0;
-	static float x = 0;
-	static int ran = rand() % 6;
-
-	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
-	DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
-	DrawLanes();
-	DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
-	FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
-
-	this->player.SetBgColor(this->lane[this->player.GetCurrentLane()].GetBgColor());
-	this->player.Draw(this);
-
-	if (this->player.GetDie())
+	if (!this->player.GetPause())
 	{
-		if (this->player.DieState(fDeltaTime))
+		static float time = 0;
+		int offsetX = 0;
+		static float x = 0;
+		static int ran = rand() % 6;
+
+		FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_WHITE);
+		DrawLine(0, 8, 89, 8, PIXEL_SOLID, FG_BLACK + BG_WHITE);
+		DrawLine(0, 62, 89, 62, PIXEL_SOLID, FG_BLACK + BG_WHITE);
+		DrawLanes();
+		DrawRectangle(90, 0, 30, this->m_nScreenHeight, PIXEL_SOLID, FG_BLACK + BG_BLACK);
+		FillRectangle(91, 1, 28, this->m_nScreenHeight - 2, PIXEL_SOLID, FG_WHITE + BG_WHITE);
+
+		this->player.SetBgColor(this->lane[this->player.GetCurrentLane()].GetBgColor());
+		this->player.Draw(this);
+
+		if (this->player.GetDie())
 		{
-			this->m_nCurrentState = 8;
-			return;
+			if (this->player.DieState(fDeltaTime))
+			{
+				this->m_nCurrentState = 8;
+				return;
+			}
 		}
-	}
-	else
-	{
-		this->player.IdleState(fDeltaTime);
-	}
+		else
+		{
+			this->player.IdleState(fDeltaTime);
+		}
 
-	DrawScore(fDeltaTime);
-	if (this->player.GetCurrentLane() != 0 && this->player.GetCurrentLane() != 7 && this->lane[this->player.GetCurrentLane()].CheckCollider(&this->player))
-	{
-		this->player.SetDie(true);
-	}
-	// Qua mang choi
+		if (this->player.GetCurrentLane() != 0 && this->player.GetCurrentLane() != 7 && this->lane[this->player.GetCurrentLane()].CheckCollider(&this->player))
+		{
+			this->player.SetDie(true);
+		}
+		// Qua mang choi
 
-	if (this->player.GetCurrentLane() == 7)
-	{
-		this->player.SetLevel(this->player.GetLevel() + 1);
-		this->player.SetScore(this->player.GetScore() + (int)this->score);
-		StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
-		time = 0;
-		x = 0;
-		offsetX = 0;
-		ran = rand() % 6;
-	}
-	if (!this->player.GetDie())
-	{
-		UpdateLane(fDeltaTime);
-		if (this->m_keys[VK_ESCAPE].bPressed)
+		if (this->player.GetCurrentLane() == 7)
+		{
+			this->player.SetLevel(this->player.GetLevel() + 1);
+			this->player.SetScore(this->player.GetScore() + (int)this->score);
+			StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+			time = 0;
+			x = 0;
+			offsetX = 0;
+			ran = rand() % 6;
+		}
+		if (!this->player.GetDie())
+		{
+			UpdateLane(fDeltaTime);
+			if (this->m_keys[VK_ESCAPE].bPressed)
+			{
+				time = 0;
+				x = 0;
+				offsetX = 0;
+				ran = rand() % 6;
+				this->m_nCurrentState = 1;
+				return;
+			}
+			if (time >= 3.0f)
+			{
+				DrawScore2(fDeltaTime);
+				if (this->m_keys['L'].bPressed)
+				{
+					this->m_nCurrentState = 7;
+				}
+				if (this->m_keys['P'].bPressed)
+				{
+					this->player.SetPause(true);
+				}
+				if ((this->m_keys['A'].bHeld || this->m_keys[VK_LEFT].bHeld) && this->player.GetPosX() >= 0)
+				{
+					this->player.Move(-20 * fDeltaTime, 0);
+				}
+				if ((this->m_keys['D'].bHeld || this->m_keys[VK_RIGHT].bHeld) && this->player.GetPosX() + this->player.GetWidth() <= 90)
+				{
+					this->player.Move(20 * fDeltaTime, 0);
+				}
+				if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.GetCurrentLane() < 7)
+				{
+					this->player.SetCurrentLane(this->player.GetCurrentLane() + 1);
+					this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+				}
+				if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.GetCurrentLane() > 0)
+				{
+					this->player.SetCurrentLane(this->player.GetCurrentLane() - 1);
+					this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+				}
+			}
+			else
+			{
+				if (time >= 1.5f)
+				{
+					Alphabet a;
+					string sen[] = {
+						"press w to up",
+						"press s to down",
+						"press a to go left",
+						"press d to go right",
+						"press l to save game",
+						"press esc to escape" };
+					string wait = sen[ran];
+					for (int i = 0; i < wait.length(); i++)
+					{
+						if (wait[i] <= 'z' && wait[i] >= 'a')
+						{
+							DrawStringAlpha(x + offsetX, 3, a.alphabet[wait[i] - 'a'], FG_RED + BG_DARK_GREY);
+							offsetX += a.SizeAlphabet[wait[i] - 'a'];
+						}
+						else if (wait[i] == ' ')
+						{
+							offsetX += 3;
+						}
+					}
+					x += 20 * fDeltaTime;
+					if (x + offsetX >= 90)
+					{
+						x = 90 - offsetX;
+					}
+				}
+				DrawScore1(fDeltaTime);
+			}
+
+			time += fDeltaTime;
+		}
+		else
 		{
 			time = 0;
 			x = 0;
 			offsetX = 0;
 			ran = rand() % 6;
-			this->m_nCurrentState = 1;
-			return;
 		}
-		if (time >= 3.0f)
-		{
-			if (this->m_keys['L'].bPressed)
-			{
-				this->m_nCurrentState = 7;
-			}
-			if ((this->m_keys['A'].bHeld || this->m_keys[VK_LEFT].bHeld) && this->player.GetPosX() >= 0)
-			{
-				this->player.Move(-20 * fDeltaTime, 0);
-			}
-			if ((this->m_keys['D'].bHeld || this->m_keys[VK_RIGHT].bHeld) && this->player.GetPosX() + this->player.GetWidth() <= 90)
-			{
-				this->player.Move(20 * fDeltaTime, 0);
-			}
-			if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && this->player.GetCurrentLane() < 7)
-			{
-				this->player.SetCurrentLane(this->player.GetCurrentLane() + 1);
-				this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
-			}
-			if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.GetCurrentLane() > 0)
-			{
-				this->player.SetCurrentLane(this->player.GetCurrentLane() - 1);
-				this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
-			}
-		}
-		else if (time >= 1.5f)
-		{
-			Alphabet a;
-			string sen[] = {
-				"press w to up",
-				"press s to down",
-				"press a to go left",
-				"press d to go right",
-				"press l to save game",
-				"press esc to escape"};
-			string wait = sen[ran];
-			for (int i = 0; i < wait.length(); i++)
-			{
-				if (wait[i] <= 'z' && wait[i] >= 'a')
-				{
-					DrawStringAlpha(x + offsetX, 3, a.alphabet[wait[i] - 'a'], FG_RED + BG_DARK_GREY);
-					offsetX += a.SizeAlphabet[wait[i] - 'a'];
-				}
-				else if (wait[i] == ' ')
-				{
-					offsetX += 3;
-				}
-			}
-			x += 20 * fDeltaTime;
-			if (x + offsetX >= 90)
-			{
-				x = 90 - offsetX;
-			}
-		}
-
-		time += fDeltaTime;
 	}
 	else
 	{
-		time = 0;
-		x = 0;
-		offsetX = 0;
-		ran = rand() % 6;
+		if (this->m_keys['T'].bPressed)
+		{
+			this->player.SetPause(false);
+		}
 	}
+	
 }
 
 void Game::LoadGame(float fDeltaTime)
@@ -598,6 +620,23 @@ void Game::InstructionScene(float fDeltaTime)
 	time += fDeltaTime;
 	FillRectangle((this->m_nScreenWidth - 81) / 2 - 1, 4, 85, 8, L' ', titleColor);
 	DrawString((this->m_nScreenWidth - 81) / 2, 5, title, titleColor);
+
+	DrawStringAlpha(43, 20, L"INSTRUCTOR: PhD.TRUONG TOAN THINH", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(56, 24, L"MEMBERS", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(18, 30, L"1.  TRAN THANH DUY (LEADER) 21127033", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(65, 30, L"2.  HUYNH DANG KHOA         21127077", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(18, 32, L"3.  PHUNG QUANG MINH HUY    21127306", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(65, 32, L"4.  TRAN MINH KHOA          21127629", BG_CYAN + FG_BLACK);
+
+	DrawStringAlpha(54, 38, L"HOW TO PLAY?", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(30, 44, L"W: MOVE UP", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(30, 46, L"A: MOVE LEFT", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(30, 48, L"S: MOVE DOWN", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(30, 50, L"D: MODE RIGHT", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(75, 44, L"P: PAUSE GAME", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(75, 46, L"T: CONTINUE GAME", BG_CYAN + FG_BLACK);
+	DrawStringAlpha(75, 48, L"L: SAVE GAME", BG_CYAN + FG_BLACK);
+
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
 		this->m_nCurrentState = 1;
@@ -619,11 +658,11 @@ void Game::DrawLanes()
 		this->lane[i].Draw(this);
 	}
 }
-void Game::DrawScore(float fDeltaTime)
+
+void Game::DrawScore2(float fDeltaTime)
 {
-	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n";
-	Score += L"▄█ █▄▄ █▄█ █▀▄ ██▄";
-	DrawString(93, 7, Score, BG_WHITE + FG_BLUE);
+	static short FG_Time = FG_GREEN;
+
 	wstring Number0 = L"█▀▀█\n█▄▀█\n█▄▄█";
 	wstring Number1 = L"▄█\n █\n▄█▄";
 	wstring Number2 = L"█▀█\n ▄▀\n█▄▄";
@@ -635,26 +674,109 @@ void Game::DrawScore(float fDeltaTime)
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
 	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
+
+	wstring Level = L"█   █▀▀ █ █ █▀▀ █  \n█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
+	//wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
+	DrawString(92, 6, Level, BG_WHITE + FG_BLUE);
+	DrawString(114, 5, Numbers[this->player.GetLevel() % 10], BG_WHITE + FG_BLUE);
+
+	wstring Time = L"▀█▀ █ █▀▄▀█ █▀▀\n █  █ █ ▀ █ ██▄";
+	DrawString(97, 11, Time, BG_WHITE + FG_BLUE);
 	this->score -= (fDeltaTime * 1.5f);
+	if (this->score >= 150)
+	{
+		FG_Time = FG_GREEN;
+	}
+	if (this->score < 100 && this->score >= 50)
+	{
+		FG_Time = FG_DARK_YELLOW;
+	}
+	if (this->score < 50)
+	{
+		FG_Time = FG_RED;
+	}
 	int k = this->score;
 	for (int i = 1; i <= 3; i++)
 	{
-		DrawString(112 - 5 * i, 12, Numbers[k % 10], BG_WHITE + FG_BLUE);
+		DrawString(113 - 5 * i, 15, Numbers[k % 10], BG_WHITE + FG_Time);
 		k /= 10;
 	}
 
+	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n▄█ █▄▄ █▄█ █▀▄ ██▄";
+	DrawString(96, 22, Score, BG_WHITE + FG_BLUE);
 	int j = this->player.GetScore();
 	for (int i = 1; i <= 3; i++)
 	{
-		DrawString(112 - 5 * i, 19, Numbers[j % 10], BG_WHITE + FG_BLUE);
+		DrawString(113 - 5 * i, 26, Numbers[j % 10], BG_WHITE + FG_DARK_MAGENTA);
 		j /= 10;
 	}
-	DrawString(112 - 5, 25, Numbers[this->player.GetLevel() % 10], BG_WHITE + FG_BLUE);
+	
+	FillRectangle(91, 34, 29, 1, L' ', BG_BLACK);
+
+	DrawStringAlpha(99, 38, L"How to play?", BG_WHITE + FG_RED);
+	DrawStringAlpha(96, 42, L"[W]    MOVE UP", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 44, L"[A]    MOVE LEFT", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 46, L"[S]    MOVE DOWN", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 48, L"[D]    MODE RIGHT", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 50, L"[P]    PAUSE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 52, L"[T]    CONTINUE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 54, L"[L]    SAVE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 56, L"[ESC]  EXIT GAME", BG_WHITE + FG_BLACK);
 
 	if (this->score <= 0)
 	{
-		this->m_nCurrentState = 1;
+		this->m_nCurrentState = 8;
 	}
+	/*	█▀▀█   ▄█░   █▀█   █▀▀█   ░█▀█░   █▀▀   ▄▀▀▄   ▀▀▀█   ▄▀▀▄   ▄▀▀▄
+		█▄▀█   ░█░   ░▄▀   ░░▀▄   █▄▄█▄   ▀▀▄   █▄▄░   ░░█░   ▄▀▀▄   ▀▄▄█
+		█▄▄█   ▄█▄   █▄▄   █▄▄█   ░░░█░   ▄▄▀   ▀▄▄▀   ░▐▌░   ▀▄▄▀   ░▄▄▀*/
+}
+
+void Game::DrawScore1(float fDeltaTime)
+{
+	wstring Number0 = L"█▀▀█\n█▄▀█\n█▄▄█";
+	wstring Number1 = L"▄█\n █\n▄█▄";
+	wstring Number2 = L"█▀█\n ▄▀\n█▄▄";
+	wstring Number3 = L"█▀▀█\n  ▀▄\n█▄▄█";
+	wstring Number4 = L" █▀█\n█▄▄█▄\n   █";
+	wstring Number5 = L"█▀▀\n▀▀▄\n▄▄▀";
+	wstring Number6 = L"▄▀▀▄\n█▄▄\n▀▄▄▀";
+	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
+	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
+	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
+	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
+
+	wstring Level = L"█   █▀▀ █ █ █▀▀ █  \n█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
+	//wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
+	DrawString(92, 6, Level, BG_WHITE + FG_BLUE);
+	DrawString(114, 5, Numbers[0], BG_WHITE + FG_BLUE);
+
+	wstring Time = L"▀█▀ █ █▀▄▀█ █▀▀\n █  █ █ ▀ █ ██▄";
+	DrawString(97, 11, Time, BG_WHITE + FG_BLUE);
+	for (int i = 1; i <= 3; i++)
+	{
+		DrawString(113 - 5 * i, 15, Numbers[0], BG_WHITE + FG_GREEN);
+	}
+
+	wstring Score = L"█▀ █▀▀ █▀█ █▀█ █▀▀\n▄█ █▄▄ █▄█ █▀▄ ██▄";
+	DrawString(96, 22, Score, BG_WHITE + FG_BLUE);
+	for (int i = 1; i <= 3; i++)
+	{
+		DrawString(113 - 5 * i, 26, Numbers[0], BG_WHITE + FG_DARK_MAGENTA);
+	}
+
+	FillRectangle(91, 34, 29, 1, L' ', BG_BLACK);
+
+	DrawStringAlpha(99, 38, L"How to play?", BG_WHITE + FG_RED);
+	DrawStringAlpha(96, 42, L"[W]    MOVE UP", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 44, L"[A]    MOVE LEFT", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 46, L"[S]    MOVE DOWN", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 48, L"[D]    MODE RIGHT", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 50, L"[P]    PAUSE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 52, L"[T]    CONTINUE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 54, L"[L]    SAVE GAME", BG_WHITE + FG_BLACK);
+	DrawStringAlpha(96, 56, L"[ESC]  EXIT GAME", BG_WHITE + FG_BLACK);
+	
 	/*	█▀▀█   ▄█░   █▀█   █▀▀█   ░█▀█░   █▀▀   ▄▀▀▄   ▀▀▀█   ▄▀▀▄   ▄▀▀▄
 		█▄▀█   ░█░   ░▄▀   ░░▀▄   █▄▄█▄   ▀▀▄   █▄▄░   ░░█░   ▄▀▀▄   ▀▄▄█
 		█▄▄█   ▄█▄   █▄▄   █▄▄█   ░░░█░   ▄▄▀   ▀▄▄▀   ░▐▌░   ▀▄▄▀   ░▄▄▀*/
@@ -876,8 +998,8 @@ void Game::DrawHighScore(float fDeltaTime)
 
 void Game::SaveGame(float fDeltaTime)
 {
-	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
-	DrawStringAlpha(22, 22, L"Save Game", BG_CYAN + FG_WHITE);
+	FillRectangle(28, 31, 27, 7, L' ', BG_CYAN);
+	DrawStringAlpha(30, 33, L"Please enter your name", BG_CYAN + FG_RED);
 	static wstring name;
 	int length = 5;
 
@@ -915,13 +1037,55 @@ void Game::SaveGame(float fDeltaTime)
 		return;
 	}
 
-	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
+	DrawStringAlpha(38, 35, name, BG_CYAN + FG_BLACK);
 }
 
-void Game::DieGame(float fDeltaTime)
+void Game::DieGameTrc(float fDeltaTime)
 {
-	FillRectangle(20, 20, 10, 5, L' ', BG_CYAN);
-	DrawStringAlpha(22, 22, L"High score", BG_CYAN + FG_WHITE);
+	static bool choi = true;
+	static short FG_Y = FG_WHITE;
+	static short FG_N = FG_WHITE;
+
+	FillRectangle(28, 31, 27, 7, L' ', BG_CYAN);
+	DrawStringAlpha(30, 33, L"Do you want to continue", BG_CYAN + FG_RED);
+	if (choi)
+	{
+		FG_Y = FG_GREEN;
+		FG_N = FG_WHITE;
+	}
+	else
+	{
+		FG_N = FG_GREEN;
+		FG_Y = FG_WHITE;
+	}
+	DrawStringAlpha(36, 35, L"Yes", BG_CYAN + FG_Y);
+	DrawStringAlpha(44, 35, L"No", BG_CYAN + FG_N);
+	if (this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed && choi)
+	{
+		choi = false;
+	}
+	if (this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed && !choi)
+	{
+		choi = true;
+	}
+	if (this->m_keys[VK_RETURN].bPressed)
+	{
+		if (!choi)
+		{
+			this->m_nCurrentState = 9;
+		}
+		else
+		{
+			StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+			return;
+		}
+	}
+}
+
+void Game::DieGameSau(float fDeltaTime)
+{
+	FillRectangle(28, 31, 27, 7, L' ', BG_CYAN);
+	DrawStringAlpha(30, 33, L"Please enter your name", BG_CYAN + FG_RED);
 	static wstring name;
 	int length = 5;
 
@@ -961,7 +1125,7 @@ void Game::DieGame(float fDeltaTime)
 		return;
 	}
 
-	DrawStringAlpha(22, 23, name, BG_CYAN + FG_WHITE);
+	DrawStringAlpha(38, 35, name, BG_CYAN + FG_BLACK);
 }
 
 void Game::SaveData(string fileName, deque<Save> saves)

@@ -30,11 +30,13 @@ protected:
 	void InstructionScene(float fDeltaTime);
 	void UpdateLane(float fDeltaTime);
 	void DrawLanes();
-	void DrawScore(float fDeltaTime);
+	void DrawScore1(float fDeltaTime);
+	void DrawScore2(float fDeltaTime);
 	void DrawLoadGame(float fDeltaTime, int Vt);
 	void DrawHighScore(float fDeltaTime);
 	void SaveGame(float fDeltaTime);
-	void DieGame(float fDeltaTime);
+	void DieGameTrc(float fDeltaTime);
+	void DieGameSau(float fDeltaTime);
 	void SaveData(string fileName, deque<Save> saves);
 	void LoadData(string fileName, deque<Save> &saves);
 
