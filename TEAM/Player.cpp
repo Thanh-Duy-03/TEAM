@@ -64,7 +64,8 @@ int Player::GetLevel()
 
 Sprite Player::GetSprite()
 {
-	return this->currentSprite;
+	Sprite tmp = this->currentSprite;
+	return tmp;
 }
 
 void Player::SetLevel(int level)
