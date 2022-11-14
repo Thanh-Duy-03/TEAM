@@ -11,7 +11,6 @@ protected:
     int currentIdle;
     vector<pair<Sprite, float>> dieSprites;
     int currentDie;
-    Sprite currentSprite;
     int score;
     int level;
 
@@ -23,7 +22,6 @@ public:
     int GetCurrentLane();
     int GetScore();
     int GetLevel();
-    Sprite GetSprite();
     void SetDie(bool die);
     void SetCurrentLane(int lane);
     void SetScore(int score);

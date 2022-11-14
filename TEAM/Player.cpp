@@ -62,12 +62,6 @@ int Player::GetLevel()
 	return this->level;
 }
 
-Sprite Player::GetSprite()
-{
-	Sprite tmp = this->currentSprite;
-	return tmp;
-}
-
 void Player::SetLevel(int level)
 {
 	this->level = level;
@@ -91,7 +85,6 @@ void Player::SetCurrentLane(int lane)
 void Player::IdleState(float fDeltaTime)
 {
 	static float time = 0;
-	this->currentSprite = this->idleSprites[this->currentIdle].first;
 	if (time > this->idleSprites[this->currentIdle].second)
 	{
 		time = 0;
@@ -99,6 +92,7 @@ void Player::IdleState(float fDeltaTime)
 		if (this->currentIdle >= this->idleSprites.size())
 		{
 			this->currentIdle = 0;
+
 			return;
 		}
 	}
@@ -111,7 +105,6 @@ void Player::IdleState(float fDeltaTime)
 bool Player::DieState(float fDeltaTime)
 {
 	static float time = 0;
-	this->currentSprite = this->dieSprites[this->currentDie].first;
 	if (time >= this->dieSprites[this->currentDie].second)
 	{
 		time = 0;
@@ -131,5 +124,8 @@ bool Player::DieState(float fDeltaTime)
 
 void Player::Draw(ConsoleGame* game)
 {
-	game->DrawSprite((int)this->x, (int)this->y, this->currentSprite, this->bgColor);
+	if (this->die)
+		game->DrawSprite((int)this->x, (int)this->y, this->dieSprites[this->currentDie].first, this->bgColor);
+	else
+		game->DrawSprite((int)this->x, (int)this->y, this->idleSprites[this->currentIdle].first, this->bgColor);
 }

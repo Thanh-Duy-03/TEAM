@@ -32,7 +32,7 @@ Sprite::Sprite(wstring fileName)
 	Load(fileName);
 }
 
-Sprite::Sprite(const Sprite& sprite)
+Sprite::Sprite(const Sprite &sprite)
 {
 	this->width = sprite.width;
 	this->height = sprite.height;
@@ -51,8 +51,9 @@ Sprite::~Sprite()
 		delete[] this->m_glyphs;
 	}
 	if (this->m_colors != NULL)
+	{
 		delete[] this->m_colors;
-
+	}
 }
 
 void Sprite::Create(int width, int height)
