@@ -273,7 +273,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[1].SetEnd(95);
 	this->lane[1].SetLight(true);
 	this->lane[1].SetSpeed(5.0f + rand() % 10);
-	this->lane[1].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[1].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[1].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[1].SetBgColor(BG_WHITE);
 	this->lane[1].Reset();
@@ -283,7 +283,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[2].SetEnd(-30);
 	this->lane[2].SetLight(true);
 	this->lane[2].SetSpeed(-5.0f - rand() % 10);
-	this->lane[2].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[2].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[2].SetFileName(L"Assets/Obstacles/Truck2.txt");
 	this->lane[2].SetBgColor(BG_WHITE);
 	this->lane[2].Reset();
@@ -293,7 +293,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[3].SetEnd(95);
 	this->lane[3].SetLight(true);
 	this->lane[3].SetSpeed(5.0f + rand() % 10);
-	this->lane[3].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[3].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[3].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[3].SetBgColor(BG_WHITE);
 	this->lane[3].Reset();
@@ -303,7 +303,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[4].SetEnd(95);
 	this->lane[4].SetLight(true);
 	this->lane[4].SetSpeed(5.0f + rand() % 10);
-	this->lane[4].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[4].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[4].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[4].SetBgColor(BG_WHITE);
 	this->lane[4].Reset();
@@ -313,7 +313,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[5].SetEnd(95);
 	this->lane[5].SetLight(true);
 	this->lane[5].SetSpeed(5.0f + rand() % 10);
-	this->lane[5].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[5].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[5].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[5].SetBgColor(BG_WHITE);
 	this->lane[5].Reset();
@@ -323,7 +323,7 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[6].SetEnd(95);
 	this->lane[6].SetLight(true);
 	this->lane[6].SetSpeed(5.0f + rand() % 10);
-	this->lane[6].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[6].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
 	this->lane[6].SetFileName(L"Assets/Obstacles/Truck.txt");
 	this->lane[6].SetBgColor(BG_WHITE);
 	this->lane[6].Reset();
@@ -371,21 +371,18 @@ void Game::PlayGame(float fDeltaTime)
 
 		if (this->player.GetCurrentLane() == 7)
 		{
-			if (this->player.GetLevel() + 1 < 4 )
+			this->player.SetLevel(this->player.GetLevel() + 1);
+			this->player.SetScore(this->player.GetScore() + (int)this->score);
+			if (this->player.GetLevel() == 6)
 			{
-				this->player.SetLevel(this->player.GetLevel() + 1);
-				this->player.SetScore(this->player.GetScore() + (int)this->score);
-				StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
-				time = 0;
-				x = 0;
-				offsetX = 0;
-				ran = rand() % 6;
+				this->m_nCurrentState = 9;
+				return;
 			}
-			else
-			{
-				this->player.SetScore(this->player.GetScore() + (int)this->score);
-				SaveGame(fDeltaTime);
-			}
+			else StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+			time = 0;
+			x = 0;
+			offsetX = 0;
+			ran = rand() % 6;
 		}
 		if (!this->player.GetDie())
 		{
@@ -1135,7 +1132,8 @@ void Game::DieGameSau(float fDeltaTime)
 		SaveData("Save/HighScores.txt", this->highScores);
 
 		name.clear();
-		this->m_nCurrentState = 1;
+		if (this->player.GetLevel() == 6) this->m_nCurrentState = 10;
+		else this->m_nCurrentState = 1;
 		return;
 	}
 

@@ -1,3 +1,9 @@
+CHAO2
+6
+1031
+CHAO1
+6
+466
 ADAD
 4
 678
@@ -7,9 +13,3 @@ DADDD
 DD
 4
 678
-NOOOO
-0
-0
-HFHFH
-0
-0
