@@ -44,6 +44,32 @@ Sprite::Sprite(const Sprite &sprite)
 	}
 }
 
+Sprite &Sprite::operator=(const Sprite &sprite)
+{
+	if (this == &sprite)
+	{
+		return *this;
+	}
+	if (this->m_glyphs != NULL)
+	{
+		delete[] this->m_glyphs;
+		this->m_glyphs = NULL;
+	}
+	if (this->m_colors != NULL)
+	{
+		delete[] this->m_colors;
+		this->m_colors = NULL;
+	}
+	this->width = sprite.width;
+	this->height = sprite.height;
+	Create(this->width, this->height);
+	for (int i = 0; i < this->width * this->height; i++)
+	{
+		this->m_glyphs[i] = sprite.m_glyphs[i];
+		this->m_colors[i] = sprite.m_colors[i];
+	}
+}
+
 Sprite::~Sprite()
 {
 	if (this->m_glyphs != NULL)

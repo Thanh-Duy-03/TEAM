@@ -8,8 +8,10 @@ Lane::Lane()
 	this->bgColor = BG_WHITE;
 	this->y = 0;
 	this->stop = false;
-	this->timeToChange = 3 + (rand() % 3 + 1);
+	this->timeToChange = 3.0f + (rand() % 3 + 1);
 	this->light = true;
+	this->startPos = 0;
+	this->endPos = 0;
 }
 
 int Lane::GetY()
@@ -120,7 +122,7 @@ void Lane::Update(float fDeltaTime)
 		{
 			this->time = 0;
 			this->stop = false;
-			this->timeToChange = (rand() % 6) + 1;
+			this->timeToChange = (rand() % 6) + 1.0f;
 		}
 		return;
 	}
@@ -129,7 +131,7 @@ void Lane::Update(float fDeltaTime)
 	{
 		this->stop = true;
 		this->time = 0;
-		this->timeToChange = (rand() % 6) + 1;
+		this->timeToChange = (rand() % 6) + 1.0f;
 	}
 
 	this->time += fDeltaTime;
@@ -163,7 +165,7 @@ void Lane::SetBgColor(short color)
 void Lane::Reset()
 {
 	this->time = 0;
-	this->timeToChange = 3 + (rand() % 3 + 1);
+	this->timeToChange = 3.0f + (rand() % 3 + 1);
 	this->stop = false;
 	this->posList.clear();
 }

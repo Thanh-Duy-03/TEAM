@@ -11,6 +11,9 @@
 #include <vector>
 #include <random>
 #include <time.h>
+#include <mmsystem.h>
+#include <mciapi.h>
+#pragma comment(lib, "winmm.lib")
 
 using namespace std;
 

@@ -15,6 +15,7 @@ public:
     Sprite(int width, int height);
     Sprite(wstring fileName);
     Sprite(const Sprite &sprite);
+    Sprite &operator=(const Sprite &sprite);
     ~Sprite();
     void Create(int width, int height);
     int GetWidth();

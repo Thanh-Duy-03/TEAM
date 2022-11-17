@@ -1,6 +1,7 @@
 #pragma once
 #include "Functions.h"
 #include "Sprite.h"
+#include "AudioSample.h"
 
 using namespace std;
 

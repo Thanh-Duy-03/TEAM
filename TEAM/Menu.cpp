@@ -7,6 +7,8 @@ bool Game::OnUserCreate()
 	LoadData("Save/LoadGames.txt", loadGames);
 	this->m_nCurrentState = 1;
 	this->player.Create();
+	this->music.Open(L"Assets/Audio/audio.mp3");
+	this->music.PlayLoop();
 
 	return true;
 }

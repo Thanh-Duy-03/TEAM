@@ -17,6 +17,7 @@ private:
 	float score;
 	deque<Save> highScores;
 	deque<Save> loadGames;
+	AudioSample music;
 
 protected:
 	virtual bool OnUserCreate();
