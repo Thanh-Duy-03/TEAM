@@ -23,7 +23,9 @@ public:
 public:
     AudioSample();
     AudioSample(wstring name);
+    AudioSample(const AudioSample &audio);
     ~AudioSample();
+    AudioSample &operator=(const AudioSample &audio);
     bool Open(wstring name);
     void Play();
     void PlayFrom(int pos);
