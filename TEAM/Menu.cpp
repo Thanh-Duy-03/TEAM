@@ -7,8 +7,9 @@ bool Game::OnUserCreate()
 	LoadData("Save/LoadGames.txt", loadGames);
 	this->m_nCurrentState = 1;
 	this->player.Create();
-	this->music.Open(L"Assets/Audio/audio.mp3");
-	this->music.PlayLoop();
+	this->musicGame.Open(L"Assets/Audio/inGame.mp3");
+	this->musicMenu.Open(L"Assets/Audio/opening.mp3");
+	this->musicMenu.PlayLoop();
 
 	return true;
 }
@@ -23,31 +24,22 @@ bool Game::SceneManager(float fDeltaTime)
 	switch (m_nCurrentState)
 	{
 	case 0: // Exit
-	{
 		return false;
-	}
-
 	case 1: // Menu
 		StartMenu(fDeltaTime);
 		break;
 	case 2: // New Game
-	{
 		StartGame(fDeltaTime, 1, 0);
-	}
-	break;
-
+		break;
 	case 3: // Load game
 		LoadGame(fDeltaTime);
 		break;
-
 	case 4: // High score
 		HighScoreScene(fDeltaTime);
 		break;
-
 	case 5: // Instruction
 		InstructionScene(fDeltaTime);
 		break;
-
 	case 6: // Play Game
 		PlayGame(fDeltaTime);
 		break;
@@ -63,6 +55,9 @@ bool Game::SceneManager(float fDeltaTime)
 	case 10:
 		endEffect(fDeltaTime);
 		break;
+	case 11:
+		Setting(fDeltaTime);
+		break;
 	default:
 		this->m_nCurrentState = 0; //  Exit
 		break;
@@ -72,12 +67,14 @@ bool Game::SceneManager(float fDeltaTime)
 
 void Game::StartMenu(float fDeltaTime)
 {
+	this->musicMenu.Resume();
+	this->musicGame.Pause();
 	static int selectCurrent = 0;
 	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && selectCurrent > 0)
 	{
 		selectCurrent--;
 	}
-	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && selectCurrent < 4)
+	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && selectCurrent < 5)
 	{
 		selectCurrent++;
 	}
@@ -98,10 +95,14 @@ void Game::StartMenu(float fDeltaTime)
 			return;
 
 		case 3:
-			this->m_nCurrentState = 5;
+			this->m_nCurrentState = 11;
 			return;
 
 		case 4:
+			this->m_nCurrentState = 5;
+			return;
+
+		case 5:
 			this->m_nCurrentState = 0;
 			return;
 
@@ -166,7 +167,7 @@ void Game::StartMenu(float fDeltaTime)
 	wstring newGame = L"";
 	newGame += L"█▄ █ █▀▀ █ █ █   █▀▀ ▄▀█ █▀▄▀█ █▀▀\n";
 	newGame += L"█ ▀█ ██▄ ▀▄▀▄▀   █▄█ █▀█ █ ▀ █ ██▄\n";
-	DrawString((this->m_nScreenWidth - 34) / 2, 20, newGame, newGameColor);
+	DrawString((this->m_nScreenWidth - 34) / 2, 18, newGame, newGameColor);
 
 	/*
 █   █▀█ ▄▀█ █▀▄   █▀▀ ▄▀█ █▀▄▀█ █▀▀
@@ -176,7 +177,7 @@ void Game::StartMenu(float fDeltaTime)
 	wstring loadGame = L"";
 	loadGame += L"█   █▀█ ▄▀█ █▀▄   █▀▀ ▄▀█ █▀▄▀█ █▀▀\n";
 	loadGame += L"█▄▄ █▄█ █▀█ █▄▀   █▄█ █▀█ █ ▀ █ ██▄\n";
-	DrawString((this->m_nScreenWidth - 34) / 2, 25, loadGame, loadGameColor);
+	DrawString((this->m_nScreenWidth - 34) / 2, 23, loadGame, loadGameColor);
 
 	/*
 █ █ █ █▀▀ █ █   █▀ █▀▀ █▀█ █▀█ █▀▀
@@ -186,27 +187,37 @@ void Game::StartMenu(float fDeltaTime)
 	wstring highScore = L"";
 	highScore += L"█ █ █ █▀▀ █ █   █▀ █▀▀ █▀█ █▀█ █▀▀\n";
 	highScore += L"█▀█ █ █▄█ █▀█   ▄█ █▄▄ █▄█ █▀▄ ██▄\n";
-	DrawString((this->m_nScreenWidth - 34) / 2, 30, highScore, highScoreColor);
+	DrawString((this->m_nScreenWidth - 34) / 2, 28, highScore, highScoreColor);
+
+	/*
+█▀ █▀▀ ▀█▀ ▀█▀ █ █▄░█ █▀▀
+▄█ ██▄ ░█░ ░█░ █ █░▀█ █▄█
+	*/
+	short settingColor = selectCurrent == 3 ? selectColor : defaultColor;
+	wstring Setting = L"";
+	Setting += L"█▀ █▀▀ ▀█▀ ▀█▀ █ █▄ █ █▀▀\n";
+	Setting += L"▄█ ██▄  █   █  █ █ ▀█ █▄█\n";
+	DrawString((this->m_nScreenWidth - 34) / 2 + 4, 33, Setting, settingColor);
 
 	/*
 █ █▄ █ █▀ ▀█▀ █▀█ █ █ █▀▀ ▀█▀ █ █▀█ █▄ █
 █ █ ▀█ ▄█  █  █▀▄ █▄█ █▄▄  █  █ █▄█ █ ▀█
 	*/
-	short instructionColor = selectCurrent == 3 ? selectColor : defaultColor;
+	short instructionColor = selectCurrent == 4 ? selectColor : defaultColor;
 	wstring instruction = L"";
 	instruction += L"█ █▄ █ █▀ ▀█▀ █▀█ █ █ █▀▀ ▀█▀ █ █▀█ █▄ █\n";
 	instruction += L"█ █ ▀█ ▄█  █  █▀▄ █▄█ █▄▄  █  █ █▄█ █ ▀█\n";
-	DrawString((this->m_nScreenWidth - 40) / 2, 35, instruction, instructionColor);
+	DrawString((this->m_nScreenWidth - 40) / 2, 38, instruction, instructionColor);
 
 	/*
 █▀▀ ▀▄▀ █ ▀█▀
 ██▄ █ █ █  █
 	*/
-	short exitColor = selectCurrent == 4 ? selectColor : defaultColor;
+	short exitColor = selectCurrent == 5 ? selectColor : defaultColor;
 	wstring exit = L"";
 	exit += L"█▀▀ ▀▄▀ █ ▀█▀\n";
 	exit += L"██▄ █ █ █  █ \n";
-	DrawString((this->m_nScreenWidth - 13) / 2, 40, exit, exitColor);
+	DrawString((this->m_nScreenWidth - 13) / 2, 43, exit, exitColor);
 
 	Fill(0, 49, this->m_nScreenWidth - 1, 49 + 16, L' ', FG_BLACK + BG_BLACK);
 	DrawLine(0, 49 + 8, this->m_nScreenWidth - 1, 49 + 8, L' ', FG_WHITE + BG_WHITE);
@@ -257,6 +268,10 @@ void Game::StartMenu(float fDeltaTime)
 
 void Game::StartGame(float fDeltaTime, int level, int score)
 {
+	this->musicMenu.Pause();
+	this->musicGame.PlayFrom(0);
+	this->musicGame.PlayLoop();
+
 	this->score = 200;
 	this->player.Set(0, 62, level, score);
 
@@ -564,17 +579,17 @@ void Game::HighScoreScene(float fDeltaTime)
 	title += L"╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝  ╚═════╝  ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝";
 	static bool change = 0;
 	static float time = 2;
-	static short titleColor = FG_GREEN + BG_DARK_RED;
+	static short titleColor = FG_RED + BG_YELLOW;
 
 	if (time >= 0.5)
 	{
 		if (change)
 		{
-			titleColor = FG_GREEN + BG_DARK_BLUE;
+			titleColor = FG_RED + BG_YELLOW;
 		}
 		else
 		{
-			titleColor = FG_BLUE + BG_DARK_YELLOW;
+			titleColor = FG_WHITE + BG_DARK_BLUE;
 		}
 		time = 0;
 		change = !change;
@@ -590,11 +605,70 @@ void Game::HighScoreScene(float fDeltaTime)
 	DrawHighScore(fDeltaTime);
 }
 
+void Game::Setting(float fDeltaTime)
+{
+	/*
+	* 
+░██████╗███████╗████████╗████████╗██╗███╗░░██╗░██████╗░
+██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██║████╗░██║██╔════╝░
+╚█████╗░█████╗░░░░░██║░░░░░░██║░░░██║██╔██╗██║██║░░██╗░
+░╚═══██╗██╔══╝░░░░░██║░░░░░░██║░░░██║██║╚████║██║░░╚██╗
+██████╔╝███████╗░░░██║░░░░░░██║░░░██║██║░╚███║╚██████╔╝
+╚═════╝░╚══════╝░░░╚═╝░░░░░░╚═╝░░░╚═╝╚═╝░░╚══╝░╚═════╝░
+	*/
+
+	FillRectangle(0, 0, this->m_nScreenWidth, this->m_nScreenHeight, L' ', BG_CYAN);
+	wstring title = L"";
+	title += L" ██████╗███████╗████████╗████████╗██╗███╗  ██╗ ██████╗ \n";
+	title += L"██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██║████╗ ██║██╔════╝ \n";
+	title += L"╚█████╗ █████╗     ██║      ██║   ██║██╔██╗██║██║  ██╗ \n";
+	title += L" ╚═══██╗██╔══╝     ██║      ██║   ██║██║╚████║██║  ╚██╗\n";
+	title += L"██████╔╝███████╗   ██║      ██║   ██║██║ ╚███║╚██████╔╝\n";
+	title += L"╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚══╝ ╚═════╝ ";
+	static bool change = 0;
+	static float time = 2;
+	static short titleColor = FG_RED + BG_YELLOW;
+
+	if (time >= 0.5)
+	{
+		if (change)
+		{
+			titleColor = FG_RED + BG_YELLOW;
+		}
+		else
+		{
+			titleColor = FG_WHITE + BG_DARK_BLUE;
+		}
+		time = 0;
+		change = !change;
+	}
+	time += fDeltaTime;
+	FillRectangle((this->m_nScreenWidth - 56) / 2 - 1, 4, 57, 8, L' ', titleColor);
+	DrawString((this->m_nScreenWidth - 56) / 2, 5, title, titleColor);
+
+	if (this->m_keys[VK_ESCAPE].bPressed)
+	{
+		this->m_nCurrentState = 1;
+		return;
+	}
+	static int vtSetting = 0;
+	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && vtSetting > 0)
+	{
+		--vtSetting;
+	}
+	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && vtSetting < 2)
+	{
+		++vtSetting;
+	}
+
+	DrawSetting(fDeltaTime, vtSetting);
+}
+
 void Game::InstructionScene(float fDeltaTime)
 {
 
 	/*
-██╗███╗░░██╗░██████╗████████╗██████╗░██╗░░░██╗░█████╗░████████╗██╗░█████╗░███╗░░██╗
+██╗███╗ ░██╗░██████╗████████╗██████╗░██╗░░░██╗░█████╗░████████╗██╗░█████╗░███╗░░██╗
 ██║████╗░██║██╔════╝╚══██╔══╝██╔══██╗██║░░░██║██╔══██╗╚══██╔══╝██║██╔══██╗████╗░██║
 ██║██╔██╗██║╚█████╗░░░░██║░░░██████╔╝██║░░░██║██║░░╚═╝░░░██║░░░██║██║░░██║██╔██╗██║
 ██║██║╚████║░╚═══██╗░░░██║░░░██╔══██╗██║░░░██║██║░░██╗░░░██║░░░██║██║░░██║██║╚████║
@@ -612,17 +686,17 @@ void Game::InstructionScene(float fDeltaTime)
 	title += L"╚═╝╚═╝░░╚══╝╚═════╝░░░░╚═╝░░░╚═╝░░╚═╝░╚═════╝░░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝";
 	static bool change = 0;
 	static float time = 2;
-	static short titleColor = FG_GREEN + BG_DARK_RED;
+	static short titleColor = FG_RED + BG_YELLOW;
 
 	if (time >= 0.5)
 	{
 		if (change)
 		{
-			titleColor = FG_GREEN + BG_DARK_BLUE;
+			titleColor = FG_RED + BG_YELLOW;
 		}
 		else
 		{
-			titleColor = FG_BLUE + BG_DARK_YELLOW;
+			titleColor = FG_WHITE + BG_DARK_BLUE;
 		}
 		time = 0;
 		change = !change;
@@ -1004,6 +1078,100 @@ void Game::DrawHighScore(float fDeltaTime)
 		y = y + 5;
 		BG = BG_YELLOW;
 	}
+}
+
+void Game::DrawSetting(float fDeltaTime, int Vt)
+{
+
+	FillRectangle(12, 22, 97, 40, L' ', BG_YELLOW);
+	FillRectangle(23, 29 + Vt * 10, 70, 4, L' ', BG_GREY);
+
+	static int SUM = 10;
+	wstring sum = L"█▀ █ █ █▀▄▀█\n";
+	sum += L"▄█ █▄█ █ ▀ █";
+	DrawString(25, 30, sum, FG_MAGENTA + ((Vt == 0) ? BG_GREY : BG_YELLOW));
+
+	static int MUSIC = 100;
+	wstring music = L"█▀▄▀█ █ █ █▀ █ █▀▀\n";
+	music += L"█ ▀ █ █▄█ ▄█ █ █▄▄";
+	DrawString(25, 40, music, FG_MAGENTA + ((Vt == 1) ? BG_GREY : BG_YELLOW));
+
+	static int SFX = 100;
+	wstring sfx = L"█▀ █▀▀ ▀▄▀\n";
+	sfx += L"▄█ █▀  █ █";
+	DrawString(25, 50, sfx, FG_MAGENTA + ((Vt == 2) ? BG_GREY : BG_YELLOW));
+
+	wstring SumVolume = L"";
+	wstring MusicVolume = L"";
+	wstring SFXVolume = L"";
+	for (int i = 1; i <= 10; ++i)
+	{
+		if (SUM >= i) SumVolume += L"   ";
+		if (MUSIC / 10 >= i) MusicVolume += L"   ";
+		if (SFX / 10 >= i) SFXVolume += L"   ";
+	}
+	SumVolume = SumVolume + L"\n" + SumVolume;
+	MusicVolume = MusicVolume + L"\n" + MusicVolume;
+	SFXVolume = SFXVolume + L"\n" + SFXVolume;
+	DrawString(55, 30, L"                              \n                              ", BG_BLACK);
+	DrawString(55, 30, SumVolume, BG_BLUE);
+	DrawString(55, 40, L"                              \n                              ", BG_BLACK);
+	DrawString(55, 40, MusicVolume, BG_BLUE);
+	DrawString(55, 50, L"                              \n                              ", BG_BLACK);
+	DrawString(55, 50, SFXVolume, BG_BLUE);
+
+
+	if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed))
+	{
+		switch (Vt)
+		{
+		case 0:
+		{
+			if (SUM > 0) --SUM;
+			this->musicMenu.SetVolume(SUM * MUSIC);
+			this->musicGame.SetVolume(SUM * SFX);
+			break;
+		}
+		case 1:
+		{
+			if (MUSIC > 0) MUSIC = MUSIC - 10;
+			this->musicMenu.SetVolume(SUM * MUSIC);
+			break;
+		}
+		case 2:
+		{
+			if (SFX > 0) SFX = SFX - 10;
+			this->musicGame.SetVolume(SUM * SFX);
+			break;
+		}
+		}
+	}
+	if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed))
+	{
+		switch (Vt)
+		{
+		case 0:
+		{
+			if (SUM < 10) ++SUM;
+			this->musicMenu.SetVolume(SUM * MUSIC);
+			this->musicGame.SetVolume(SUM * SFX);
+			break;
+		}
+		case 1:
+		{
+			if (MUSIC < 100) MUSIC = MUSIC + 10;
+			this->musicMenu.SetVolume(SUM * MUSIC);
+			break;
+		}
+		case 2:
+		{
+			if (SFX < 100) SFX = SFX + 10;
+			this->musicGame.SetVolume(SUM * SFX);
+			break;
+		}
+		}
+	}
+
 }
 
 void Game::SaveGame(float fDeltaTime)

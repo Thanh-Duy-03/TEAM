@@ -17,7 +17,8 @@ private:
 	float score;
 	deque<Save> highScores;
 	deque<Save> loadGames;
-	AudioSample music;
+	AudioSample musicMenu;
+	AudioSample musicGame;
 
 protected:
 	virtual bool OnUserCreate();
@@ -29,12 +30,14 @@ protected:
 	void LoadGame(float fDeltaTime);
 	void HighScoreScene(float fDeltaTime);
 	void InstructionScene(float fDeltaTime);
+	void Setting(float fDeltaTime);
 	void UpdateLane(float fDeltaTime);
 	void DrawLanes();
 	void DrawScore1(float fDeltaTime);
 	void DrawScore2(float fDeltaTime);
 	void DrawLoadGame(float fDeltaTime, int Vt);
 	void DrawHighScore(float fDeltaTime);
+	void DrawSetting(float fDeltaTimei, int Vt);
 	void SaveGame(float fDeltaTime);
 	void DieGameTrc(float fDeltaTime);
 	void DieGameSau(float fDeltaTime);
