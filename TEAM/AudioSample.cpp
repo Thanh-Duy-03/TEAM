@@ -17,7 +17,7 @@ AudioSample::AudioSample(wstring name)
 	Open(name);
 }
 
-AudioSample::AudioSample(const AudioSample& audio)
+AudioSample::AudioSample(const AudioSample &audio)
 {
 	this->name = audio.name;
 	this->length = 0;
@@ -31,7 +31,7 @@ AudioSample::~AudioSample()
 	Close();
 }
 
-AudioSample& AudioSample::operator=(const AudioSample& audio)
+AudioSample &AudioSample::operator=(const AudioSample &audio)
 {
 	if (this == &audio)
 		return *this;
@@ -155,7 +155,9 @@ void AudioSample::SetVolume(int volume)
 		this->volume = 1000;
 	}
 	else
+	{
 		this->volume = volume;
+	}
 	wstring cmd = L"setaudio " + this->name + L" volume to " + to_wstring(this->volume);
 	mciSendString(cmd.c_str(), NULL, 0, NULL);
 }
@@ -170,7 +172,10 @@ void AudioSample::SetSpeed(int speed)
 	{
 		this->speed = 2000;
 	}
-	this->speed = speed;
+	else
+	{
+		this->speed = speed;
+	}
 	wstring cmd = L"set " + this->name + L" speed " + to_wstring(this->speed);
 	mciSendString(cmd.c_str(), NULL, 0, NULL);
 }
