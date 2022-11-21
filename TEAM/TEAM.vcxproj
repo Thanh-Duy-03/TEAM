@@ -164,6 +164,7 @@
     <Text Include="Assets\Player\Idle\PlayerIdle2.txt" />
     <Text Include="Save\HighScores.txt" />
     <Text Include="Save\LoadGames.txt" />
+    <Text Include="Settings\Audio.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

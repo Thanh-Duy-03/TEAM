@@ -55,6 +55,9 @@
     <Filter Include="Resource Files\Assets\Player\Idle">
       <UniqueIdentifier>{84ef2bc8-9318-42dd-ba58-c82e10c416d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Settings">
+      <UniqueIdentifier>{7a531bfa-dd81-4693-97fb-df76f1ebb988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TEAM.cpp">
@@ -159,6 +162,9 @@
     </Text>
     <Text Include="Assets\Player\Idle\PlayerIdle.txt">
       <Filter>Resource Files\Assets\Player\Idle</Filter>
+    </Text>
+    <Text Include="Settings\Audio.txt">
+      <Filter>Resource Files\Settings</Filter>
     </Text>
   </ItemGroup>
 </Project>

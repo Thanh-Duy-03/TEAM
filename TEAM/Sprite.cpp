@@ -34,9 +34,7 @@ Sprite::Sprite(wstring fileName)
 
 Sprite::Sprite(const Sprite &sprite)
 {
-	this->width = sprite.width;
-	this->height = sprite.height;
-	Create(this->width, this->height);
+	Create(sprite.width, sprite.height);
 	for (int i = 0; i < this->width * this->height; i++)
 	{
 		this->m_glyphs[i] = sprite.m_glyphs[i];
@@ -60,9 +58,7 @@ Sprite &Sprite::operator=(const Sprite &sprite)
 		delete[] this->m_colors;
 		this->m_colors = NULL;
 	}
-	this->width = sprite.width;
-	this->height = sprite.height;
-	Create(this->width, this->height);
+	Create(sprite.width, sprite.height);
 	for (int i = 0; i < this->width * this->height; i++)
 	{
 		this->m_glyphs[i] = sprite.m_glyphs[i];

@@ -2,15 +2,17 @@
 
 bool Game::OnUserCreate()
 {
-	srand((unsigned int)time(NULL));
+	srand((unsigned int)time_t(NULL));
 	LoadData("Save/HighScores.txt", highScores);
 	LoadData("Save/LoadGames.txt", loadGames);
+
+	LoadAudioSetting("Settings/Audio.txt");
+
 	this->m_nCurrentState = 1;
 	this->player.Create();
 	this->musicGame.Open(L"Assets/Audio/inGame.mp3");
 	this->musicMenu.Open(L"Assets/Audio/opening.mp3");
 	this->musicMenu.PlayLoop();
-
 	return true;
 }
 
@@ -395,7 +397,8 @@ void Game::PlayGame(float fDeltaTime)
 				this->m_nCurrentState = 9;
 				return;
 			}
-			else StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
+			else
+				StartGame(fDeltaTime, this->player.GetLevel(), this->player.GetScore());
 			time = 0;
 			x = 0;
 			offsetX = 0;
@@ -454,7 +457,7 @@ void Game::PlayGame(float fDeltaTime)
 						"press a to go left",
 						"press d to go right",
 						"press l to save game",
-						"press esc to escape" };
+						"press esc to escape"};
 					string wait = sen[ran];
 					for (int i = 0; i < wait.length(); i++)
 					{
@@ -494,7 +497,6 @@ void Game::PlayGame(float fDeltaTime)
 			this->player.SetPause(false);
 		}
 	}
-	
 }
 
 void Game::LoadGame(float fDeltaTime)
@@ -608,7 +610,7 @@ void Game::HighScoreScene(float fDeltaTime)
 void Game::Setting(float fDeltaTime)
 {
 	/*
-	* 
+	*
 ░██████╗███████╗████████╗████████╗██╗███╗░░██╗░██████╗░
 ██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██║████╗░██║██╔════╝░
 ╚█████╗░█████╗░░░░░██║░░░░░░██║░░░██║██╔██╗██║██║░░██╗░
@@ -646,12 +648,13 @@ void Game::Setting(float fDeltaTime)
 	FillRectangle((this->m_nScreenWidth - 56) / 2 - 1, 4, 57, 8, L' ', titleColor);
 	DrawString((this->m_nScreenWidth - 56) / 2, 5, title, titleColor);
 
+	static int vtSetting = 0;
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
+		vtSetting = 0;
 		this->m_nCurrentState = 1;
 		return;
 	}
-	static int vtSetting = 0;
 	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && vtSetting > 0)
 	{
 		--vtSetting;
@@ -659,6 +662,64 @@ void Game::Setting(float fDeltaTime)
 	if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && vtSetting < 2)
 	{
 		++vtSetting;
+	}
+	if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed))
+	{
+		switch (vtSetting)
+		{
+		case 0:
+		{
+			if (this->masterAudio > 0)
+				--this->masterAudio;
+			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
+			break;
+		}
+		case 1:
+		{
+			if (this->musicAudio > 0)
+				this->musicAudio = this->musicAudio - 5;
+			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
+			break;
+		}
+		case 2:
+		{
+			if (this->sfxAudio > 0)
+				this->sfxAudio = this->sfxAudio - 5;
+			break;
+		}
+		}
+		SaveAudioSetting("Settings/Audio.txt");
+	}
+	if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed))
+	{
+		switch (vtSetting)
+		{
+		case 0:
+		{
+			if (this->masterAudio < 10)
+				++this->masterAudio;
+			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
+			break;
+		}
+		case 1:
+		{
+			if (this->musicAudio < 100)
+				this->musicAudio = this->musicAudio + 5;
+			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
+			break;
+		}
+		case 2:
+		{
+			if (this->sfxAudio < 100)
+				this->sfxAudio = this->sfxAudio + 5;
+			break;
+		}
+		}
+		SaveAudioSetting("Settings/Audio.txt");
 	}
 
 	DrawSetting(fDeltaTime, vtSetting);
@@ -734,6 +795,7 @@ void Game::UpdateLane(float fDeltaTime)
 		this->lane[i].Update(fDeltaTime);
 	}
 }
+
 void Game::DrawLanes()
 {
 	this->lane[7].Draw(this);
@@ -760,7 +822,7 @@ void Game::DrawScore2(float fDeltaTime)
 	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
 
 	wstring Level = L"█   █▀▀ █ █ █▀▀ █  \n█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
-	//wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
+	// wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
 	DrawString(92, 6, Level, BG_WHITE + FG_BLUE);
 	DrawString(114, 5, Numbers[this->player.GetLevel() % 10], BG_WHITE + FG_BLUE);
 
@@ -794,7 +856,7 @@ void Game::DrawScore2(float fDeltaTime)
 		DrawString(113 - 5 * i, 26, Numbers[j % 10], BG_WHITE + FG_DARK_MAGENTA);
 		j /= 10;
 	}
-	
+
 	FillRectangle(91, 34, 29, 1, L' ', BG_BLACK);
 
 	DrawStringAlpha(99, 38, L"How to play?", BG_WHITE + FG_RED);
@@ -828,10 +890,10 @@ void Game::DrawScore1(float fDeltaTime)
 	wstring Number7 = L"▀▀▀█\n  █\n ▐▌";
 	wstring Number8 = L"▄▀▀▄\n▄▀▀▄\n▀▄▄▀";
 	wstring Number9 = L"▄▀▀▄\n▀▄▄█\n ▄▄▀";
-	wstring Numbers[10] = { Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9 };
+	wstring Numbers[10] = {Number0, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8, Number9};
 
 	wstring Level = L"█   █▀▀ █ █ █▀▀ █  \n█▄▄ ██▄ ▀▄▀ ██▄ █▄▄";
-	//wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
+	// wstring Level = L"██╗░░░░░███████╗██╗░░░██╗███████╗██╗░░░░░\n██║░░░░░██╔════╝██║░░░██║██╔════╝██║░░░░░\n██║░░░░░█████╗░░╚██╗░██╔╝█████╗░░██║░░░░░\n██║░░░░░██╔══╝░░░╚████╔╝░██╔══╝░░██║░░░░░\n███████╗███████╗░░╚██╔╝░░███████╗███████╗\n╚══════╝╚══════╝░░░╚═╝░░░╚══════╝╚══════╝";
 	DrawString(92, 6, Level, BG_WHITE + FG_BLUE);
 	DrawString(114, 5, Numbers[0], BG_WHITE + FG_BLUE);
 
@@ -860,7 +922,7 @@ void Game::DrawScore1(float fDeltaTime)
 	DrawStringAlpha(96, 52, L"[T]    CONTINUE GAME", BG_WHITE + FG_BLACK);
 	DrawStringAlpha(96, 54, L"[L]    SAVE GAME", BG_WHITE + FG_BLACK);
 	DrawStringAlpha(96, 56, L"[ESC]  EXIT GAME", BG_WHITE + FG_BLACK);
-	
+
 	/*	█▀▀█   ▄█░   █▀█   █▀▀█   ░█▀█░   █▀▀   ▄▀▀▄   ▀▀▀█   ▄▀▀▄   ▄▀▀▄
 		█▄▀█   ░█░   ░▄▀   ░░▀▄   █▄▄█▄   ▀▀▄   █▄▄░   ░░█░   ▄▀▀▄   ▀▄▄█
 		█▄▄█   ▄█▄   █▄▄   █▄▄█   ░░░█░   ▄▄▀   ▀▄▄▀   ░▐▌░   ▀▄▄▀   ░▄▄▀*/
@@ -1086,92 +1148,29 @@ void Game::DrawSetting(float fDeltaTime, int Vt)
 	FillRectangle(12, 22, 97, 40, L' ', BG_YELLOW);
 	FillRectangle(23, 29 + Vt * 10, 70, 4, L' ', BG_GREY);
 
-	static int SUM = 10;
-	wstring sum = L"█▀ █ █ █▀▄▀█\n";
-	sum += L"▄█ █▄█ █ ▀ █";
-	DrawString(25, 30, sum, FG_MAGENTA + ((Vt == 0) ? BG_GREY : BG_YELLOW));
+	wstring master = L"";
+	master += L"█▀▄▀█ ▄▀█ █▀ ▀█▀ █▀▀ █▀█\n";
+	master += L"█ ▀ █ █▀█ ▄█  █  ██▄ █▀▄";
+	DrawString(25, 30, master, FG_MAGENTA + ((Vt == 0) ? BG_GREY : BG_YELLOW));
 
-	static int MUSIC = 100;
-	wstring music = L"█▀▄▀█ █ █ █▀ █ █▀▀\n";
+	wstring music = L"";
+	music += L"█▀▄▀█ █ █ █▀ █ █▀▀\n";
 	music += L"█ ▀ █ █▄█ ▄█ █ █▄▄";
 	DrawString(25, 40, music, FG_MAGENTA + ((Vt == 1) ? BG_GREY : BG_YELLOW));
 
-	static int SFX = 100;
-	wstring sfx = L"█▀ █▀▀ ▀▄▀\n";
-	sfx += L"▄█ █▀  █ █";
+	wstring sfx = L"";
+	sfx += L"█▀ █▀▀ ▀▄▀\n";
+	sfx += L"▄█ █▀  █ █";
 	DrawString(25, 50, sfx, FG_MAGENTA + ((Vt == 2) ? BG_GREY : BG_YELLOW));
 
-	wstring SumVolume = L"";
-	wstring MusicVolume = L"";
-	wstring SFXVolume = L"";
-	for (int i = 1; i <= 10; ++i)
-	{
-		if (SUM >= i) SumVolume += L"   ";
-		if (MUSIC / 10 >= i) MusicVolume += L"   ";
-		if (SFX / 10 >= i) SFXVolume += L"   ";
-	}
-	SumVolume = SumVolume + L"\n" + SumVolume;
-	MusicVolume = MusicVolume + L"\n" + MusicVolume;
-	SFXVolume = SFXVolume + L"\n" + SFXVolume;
-	DrawString(55, 30, L"                              \n                              ", BG_BLACK);
-	DrawString(55, 30, SumVolume, BG_BLUE);
-	DrawString(55, 40, L"                              \n                              ", BG_BLACK);
-	DrawString(55, 40, MusicVolume, BG_BLUE);
-	DrawString(55, 50, L"                              \n                              ", BG_BLACK);
-	DrawString(55, 50, SFXVolume, BG_BLUE);
+	FillRectangle(55, 30, 30, 2, PIXEL_SOLID, FG_BLACK + BG_BLACK);
+	FillRectangle(55, 30, 30 * ((float)this->masterAudio / 10.0f), 2, PIXEL_SOLID, FG_BLUE + BG_BLUE);
 
+	FillRectangle(55, 40, 30, 2, PIXEL_SOLID, FG_BLACK + BG_BLACK);
+	FillRectangle(55, 40, 30 * ((float)this->musicAudio / 100.0f), 2, PIXEL_SOLID, FG_BLUE + BG_BLUE);
 
-	if ((this->m_keys['A'].bPressed || this->m_keys[VK_LEFT].bPressed))
-	{
-		switch (Vt)
-		{
-		case 0:
-		{
-			if (SUM > 0) --SUM;
-			this->musicMenu.SetVolume(SUM * MUSIC);
-			this->musicGame.SetVolume(SUM * SFX);
-			break;
-		}
-		case 1:
-		{
-			if (MUSIC > 0) MUSIC = MUSIC - 10;
-			this->musicMenu.SetVolume(SUM * MUSIC);
-			break;
-		}
-		case 2:
-		{
-			if (SFX > 0) SFX = SFX - 10;
-			this->musicGame.SetVolume(SUM * SFX);
-			break;
-		}
-		}
-	}
-	if ((this->m_keys['D'].bPressed || this->m_keys[VK_RIGHT].bPressed))
-	{
-		switch (Vt)
-		{
-		case 0:
-		{
-			if (SUM < 10) ++SUM;
-			this->musicMenu.SetVolume(SUM * MUSIC);
-			this->musicGame.SetVolume(SUM * SFX);
-			break;
-		}
-		case 1:
-		{
-			if (MUSIC < 100) MUSIC = MUSIC + 10;
-			this->musicMenu.SetVolume(SUM * MUSIC);
-			break;
-		}
-		case 2:
-		{
-			if (SFX < 100) SFX = SFX + 10;
-			this->musicGame.SetVolume(SUM * SFX);
-			break;
-		}
-		}
-	}
-
+	FillRectangle(55, 50, 30, 2, PIXEL_SOLID, FG_BLACK + BG_BLACK);
+	FillRectangle(55, 50, 30 * ((float)this->sfxAudio / 100.0f), 2, PIXEL_SOLID, FG_BLUE + BG_BLUE);
 }
 
 void Game::SaveGame(float fDeltaTime)
@@ -1302,8 +1301,10 @@ void Game::DieGameSau(float fDeltaTime)
 		SaveData("Save/HighScores.txt", this->highScores);
 
 		name.clear();
-		if (this->player.GetLevel() == 6) this->m_nCurrentState = 10;
-		else this->m_nCurrentState = 1;
+		if (this->player.GetLevel() == 6)
+			this->m_nCurrentState = 10;
+		else
+			this->m_nCurrentState = 1;
 		return;
 	}
 
@@ -1529,4 +1530,30 @@ void Game::winEffect(float fDeltaTime)
 	else
 		time = 0;
 	time += fDeltaTime;
+}
+
+void Game::LoadAudioSetting(string name)
+{
+	ifstream file(name);
+	if (file.fail())
+	{
+		this->masterAudio = 10;
+		this->musicAudio = 100;
+		this->sfxAudio = 100;
+		SaveAudioSetting(name);
+		return;
+	}
+	file >> this->masterAudio;
+	file >> this->musicAudio;
+	file >> this->sfxAudio;
+	file.close();
+}
+
+void Game::SaveAudioSetting(string name)
+{
+	ofstream file(name);
+	file << this->masterAudio << endl;
+	file << this->musicAudio << endl;
+	file << this->sfxAudio << endl;
+	file.close();
 }

@@ -19,6 +19,9 @@ private:
 	deque<Save> loadGames;
 	AudioSample musicMenu;
 	AudioSample musicGame;
+	int masterAudio;
+	int musicAudio;
+	int sfxAudio;
 
 protected:
 	virtual bool OnUserCreate();
@@ -37,7 +40,7 @@ protected:
 	void DrawScore2(float fDeltaTime);
 	void DrawLoadGame(float fDeltaTime, int Vt);
 	void DrawHighScore(float fDeltaTime);
-	void DrawSetting(float fDeltaTimei, int Vt);
+	void DrawSetting(float fDeltaTime, int Vt);
 	void SaveGame(float fDeltaTime);
 	void DieGameTrc(float fDeltaTime);
 	void DieGameSau(float fDeltaTime);
@@ -45,6 +48,8 @@ protected:
 	void LoadData(string fileName, deque<Save> &saves);
 	void endEffect(float fDeltaTime);
 	void winEffect(float fDeltaTime);
+	void LoadAudioSetting(string name);
+	void SaveAudioSetting(string name);
 
 private:
 	int m_nCurrentState;

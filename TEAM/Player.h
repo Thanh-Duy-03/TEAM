@@ -14,7 +14,7 @@ protected:
     int currentDie;
     int score;
     int level;
-    AudioSample music;
+    AudioSample sound;
 
 public:
     Player();
