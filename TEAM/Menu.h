@@ -20,6 +20,7 @@ private:
 	AudioSample musicMenu;
 	AudioSample musicGame;
 	AudioSample musicWin;
+	AudioSample musicLose;
 	int masterAudio;
 	int musicAudio;
 	int sfxAudio;

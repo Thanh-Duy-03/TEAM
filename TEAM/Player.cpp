@@ -98,6 +98,16 @@ void Player::SetOpen(wstring link)
 	this->sound.Open(link);
 }
 
+void Player::SetMove(wstring link)
+{
+	this->moveSound.Open(link);
+}
+
+void Player::playMove()
+{
+	this->moveSound.PlayFrom(0);
+}
+
 void Player::SetStop()
 {
 	this->sound.Stop();

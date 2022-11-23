@@ -15,6 +15,7 @@ protected:
     int score;
     int level;
     AudioSample sound;
+    AudioSample moveSound;
 
 public:
     Player();
@@ -31,6 +32,8 @@ public:
     void SetScore(int score);
     void SetLevel(int level);
     void SetOpen(wstring link);
+    void SetMove(wstring link);
+    void playMove();
     void SetStop();
     void SetPlay();
     void IdleState(float fDeltaTime);

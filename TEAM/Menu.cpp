@@ -8,10 +8,11 @@ bool Game::OnUserCreate()
 
 	this->m_nCurrentState = 1;
 	this->player.Create();
-	this->player.SetOpen(L"Assets/Audio/audio.mp3");
+	this->musicLose.Open(L"Assets/Audio/game_over.mp3");
 	this->musicGame.Open(L"Assets/Audio/inGame.mp3");
+	this->player.SetMove(L"Assets/Audio/move.mp3");
 	this->musicMenu.Open(L"Assets/Audio/opening.mp3");
-	this->musicWin.Open(L"Assets/Audio/audio.mp3");
+	this->musicWin.Open(L"Assets/Audio/victory.mp3");
 	this->musicMenu.PlayLoop();
 
 	LoadAudioSetting("Settings/Audio.txt");
@@ -376,7 +377,6 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			if (this->player.DieState(fDeltaTime))
 			{
-				this->player.SetStop();
 				this->m_nCurrentState = 8;
 				return;
 			}
@@ -388,9 +388,9 @@ void Game::PlayGame(float fDeltaTime)
 
 		if (this->player.GetCurrentLane() != 0 && this->player.GetCurrentLane() != 7 && this->lane[this->player.GetCurrentLane()].CheckCollider(&this->player) && !this->player.GetDie())
 		{
-			this->player.SetDie(true);
 			this->musicGame.Pause();
-			this->player.SetPlay();
+			this->musicLose.PlayFrom(0);
+			this->player.SetDie(true);
 		}
 		// Qua mang choi
 
@@ -446,11 +446,13 @@ void Game::PlayGame(float fDeltaTime)
 				{
 					this->player.SetCurrentLane(this->player.GetCurrentLane() + 1);
 					this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+					this->player.playMove();
 				}
 				if ((this->m_keys['S'].bPressed || this->m_keys[VK_DOWN].bPressed) && this->player.GetCurrentLane() > 0)
 				{
 					this->player.SetCurrentLane(this->player.GetCurrentLane() - 1);
 					this->player.SetPosY(this->lane[this->player.GetCurrentLane()].GetY());
+					this->player.playMove();
 				}
 			}
 			else
