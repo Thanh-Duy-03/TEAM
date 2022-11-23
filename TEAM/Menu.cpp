@@ -1302,6 +1302,7 @@ void Game::DieGameSau(float fDeltaTime)
 		Save save;
 		save.name = WstringToString(name);
 		save.level = this->player.GetLevel();
+		if (this->player.GetLevel() == 6) save.level = 5;
 		save.point = this->player.GetScore();
 		this->highScores.push_back(save);
 		sort(this->highScores.begin(), this->highScores.end(), cmp);
