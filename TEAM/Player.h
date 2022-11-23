@@ -30,6 +30,9 @@ public:
     void SetCurrentLane(int lane);
     void SetScore(int score);
     void SetLevel(int level);
+    void SetOpen(wstring link);
+    void SetStop();
+    void SetPlay();
     void IdleState(float fDeltaTime);
     bool DieState(float fDeltaTime);
     void Draw(ConsoleGame *game);

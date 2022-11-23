@@ -93,6 +93,22 @@ void Player::SetCurrentLane(int lane)
 	this->currentLane = lane;
 }
 
+void Player::SetOpen(wstring link)
+{
+	this->sound.Open(link);
+}
+
+void Player::SetStop()
+{
+	this->sound.Stop();
+}
+
+void Player::SetPlay()
+{
+	this->sound.PlayFrom(0);
+	this->sound.PlayLoop();
+}
+
 void Player::IdleState(float fDeltaTime)
 {
 	static float time = 0;

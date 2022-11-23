@@ -19,9 +19,11 @@ private:
 	deque<Save> loadGames;
 	AudioSample musicMenu;
 	AudioSample musicGame;
+	AudioSample musicWin;
 	int masterAudio;
 	int musicAudio;
 	int sfxAudio;
+	int m_nCurrentState;
 
 protected:
 	virtual bool OnUserCreate();
@@ -50,7 +52,4 @@ protected:
 	void winEffect(float fDeltaTime);
 	void LoadAudioSetting(string name);
 	void SaveAudioSetting(string name);
-
-private:
-	int m_nCurrentState;
 };

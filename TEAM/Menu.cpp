@@ -6,13 +6,16 @@ bool Game::OnUserCreate()
 	LoadData("Save/HighScores.txt", highScores);
 	LoadData("Save/LoadGames.txt", loadGames);
 
-	LoadAudioSetting("Settings/Audio.txt");
-
 	this->m_nCurrentState = 1;
 	this->player.Create();
+	this->player.SetOpen(L"Assets/Audio/audio.mp3");
 	this->musicGame.Open(L"Assets/Audio/inGame.mp3");
 	this->musicMenu.Open(L"Assets/Audio/opening.mp3");
+	this->musicWin.Open(L"Assets/Audio/audio.mp3");
 	this->musicMenu.PlayLoop();
+
+	LoadAudioSetting("Settings/Audio.txt");
+
 	return true;
 }
 
@@ -69,8 +72,8 @@ bool Game::SceneManager(float fDeltaTime)
 
 void Game::StartMenu(float fDeltaTime)
 {
-	this->musicMenu.Resume();
 	this->musicGame.Pause();
+	this->musicMenu.Resume();
 	static int selectCurrent = 0;
 	if ((this->m_keys['W'].bPressed || this->m_keys[VK_UP].bPressed) && selectCurrent > 0)
 	{
@@ -373,6 +376,7 @@ void Game::PlayGame(float fDeltaTime)
 		{
 			if (this->player.DieState(fDeltaTime))
 			{
+				this->player.SetStop();
 				this->m_nCurrentState = 8;
 				return;
 			}
@@ -382,9 +386,11 @@ void Game::PlayGame(float fDeltaTime)
 			this->player.IdleState(fDeltaTime);
 		}
 
-		if (this->player.GetCurrentLane() != 0 && this->player.GetCurrentLane() != 7 && this->lane[this->player.GetCurrentLane()].CheckCollider(&this->player))
+		if (this->player.GetCurrentLane() != 0 && this->player.GetCurrentLane() != 7 && this->lane[this->player.GetCurrentLane()].CheckCollider(&this->player) && !this->player.GetDie())
 		{
 			this->player.SetDie(true);
+			this->musicGame.Pause();
+			this->player.SetPlay();
 		}
 		// Qua mang choi
 
@@ -394,6 +400,7 @@ void Game::PlayGame(float fDeltaTime)
 			this->player.SetScore(this->player.GetScore() + (int)this->score);
 			if (this->player.GetLevel() == 6)
 			{
+				this->musicGame.Pause();
 				this->m_nCurrentState = 9;
 				return;
 			}
@@ -672,21 +679,21 @@ void Game::Setting(float fDeltaTime)
 			if (this->masterAudio > 0)
 				--this->masterAudio;
 			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
-			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		case 1:
 		{
 			if (this->musicAudio > 0)
-				this->musicAudio = this->musicAudio - 5;
+				this->musicAudio = this->musicAudio - 10;
 			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
-			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
 			break;
 		}
 		case 2:
 		{
 			if (this->sfxAudio > 0)
-				this->sfxAudio = this->sfxAudio - 5;
+				this->sfxAudio = this->sfxAudio - 10;
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		}
@@ -707,15 +714,15 @@ void Game::Setting(float fDeltaTime)
 		case 1:
 		{
 			if (this->musicAudio < 100)
-				this->musicAudio = this->musicAudio + 5;
+				this->musicAudio = this->musicAudio + 10;
 			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
-			this->musicGame.SetVolume(this->masterAudio * this->musicAudio);
 			break;
 		}
 		case 2:
 		{
 			if (this->sfxAudio < 100)
-				this->sfxAudio = this->sfxAudio + 5;
+				this->sfxAudio = this->sfxAudio + 10;
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		}
@@ -1302,7 +1309,10 @@ void Game::DieGameSau(float fDeltaTime)
 
 		name.clear();
 		if (this->player.GetLevel() == 6)
+		{
+			this->musicWin.PlayLoop();
 			this->m_nCurrentState = 10;
+		}
 		else
 			this->m_nCurrentState = 1;
 		return;
@@ -1353,6 +1363,7 @@ void Game::endEffect(float fDeltaTime)
 	static float time = 0;
 	if (this->m_keys[VK_ESCAPE].bPressed)
 	{
+		this->musicWin.Stop();
 		this->m_nCurrentState = 1;
 		time = 0;
 		return;
@@ -1547,6 +1558,8 @@ void Game::LoadAudioSetting(string name)
 	file >> this->musicAudio;
 	file >> this->sfxAudio;
 	file.close();
+	this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
+	this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 }
 
 void Game::SaveAudioSetting(string name)
