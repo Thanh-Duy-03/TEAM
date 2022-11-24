@@ -166,5 +166,17 @@
     <Text Include="Settings\Audio.txt">
       <Filter>Resource Files\Settings</Filter>
     </Text>
+    <Text Include="Khung_Long.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
+    <Text Include="Truc_Thang2.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
+    <Text Include="Truc_Thang.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
+    <Text Include="Khung_Long2.txt">
+      <Filter>Resource Files\Assets\Obstacles</Filter>
+    </Text>
   </ItemGroup>
 </Project>

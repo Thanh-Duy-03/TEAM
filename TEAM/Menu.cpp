@@ -316,18 +316,18 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[3].SetEnd(95);
 	this->lane[3].SetLight(true);
 	this->lane[3].SetSpeed(5.0f + rand() % 10);
-	this->lane[3].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
-	this->lane[3].SetFileName(L"Assets/Obstacles/Truck.txt");
+	this->lane[3].SetDistance(50 - 6 * (this->player.GetLevel() % 6));
+	this->lane[3].SetFileName(L"Assets/Obstacles/Khung_Long.txt");
 	this->lane[3].SetBgColor(BG_WHITE);
 	this->lane[3].Reset();
 
 	this->lane[4].SetPosY(26);
-	this->lane[4].SetStart(-20);
-	this->lane[4].SetEnd(95);
+	this->lane[4].SetStart(90);
+	this->lane[4].SetEnd(-30);
 	this->lane[4].SetLight(true);
-	this->lane[4].SetSpeed(5.0f + rand() % 10);
-	this->lane[4].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
-	this->lane[4].SetFileName(L"Assets/Obstacles/Truck.txt");
+	this->lane[4].SetSpeed(-5.0f - rand() % 10);
+	this->lane[4].SetDistance(50 - 6 * (this->player.GetLevel() % 6));
+	this->lane[4].SetFileName(L"Assets/Obstacles/Khung_Long2.txt");
 	this->lane[4].SetBgColor(BG_WHITE);
 	this->lane[4].Reset();
 
@@ -336,18 +336,18 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 	this->lane[5].SetEnd(95);
 	this->lane[5].SetLight(true);
 	this->lane[5].SetSpeed(5.0f + rand() % 10);
-	this->lane[5].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
-	this->lane[5].SetFileName(L"Assets/Obstacles/Truck.txt");
+	this->lane[5].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[5].SetFileName(L"Assets/Obstacles/Truc_Thang.txt");
 	this->lane[5].SetBgColor(BG_WHITE);
 	this->lane[5].Reset();
 
 	this->lane[6].SetPosY(8);
-	this->lane[6].SetStart(-20);
-	this->lane[6].SetEnd(95);
+	this->lane[6].SetStart(90);
+	this->lane[6].SetEnd(-30);
 	this->lane[6].SetLight(true);
-	this->lane[6].SetSpeed(5.0f + rand() % 10);
-	this->lane[6].SetDistance(70 - 6 * (this->player.GetLevel() % 6));
-	this->lane[6].SetFileName(L"Assets/Obstacles/Truck.txt");
+	this->lane[6].SetSpeed(-5.0f - rand() % 10);
+	this->lane[6].SetDistance(60 - 6 * (this->player.GetLevel() % 6));
+	this->lane[6].SetFileName(L"Assets/Obstacles/Truc_Thang2.txt");
 	this->lane[6].SetBgColor(BG_WHITE);
 	this->lane[6].Reset();
 
@@ -1364,7 +1364,7 @@ void Game::LoadData(string fileName, deque<Save> &saves)
 void Game::endEffect(float fDeltaTime)
 {
 	static float time = 0;
-	if (this->m_keys[VK_ESCAPE].bPressed)
+	if (this->m_keys[VK_ESCAPE].bPressed || this->m_keys[VK_RETURN].bPressed)
 	{
 		this->musicWin.Stop();
 		this->m_nCurrentState = 1;
