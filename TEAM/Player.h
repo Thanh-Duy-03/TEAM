@@ -36,5 +36,4 @@ public:
     void IdleState(float fDeltaTime);
     bool DieState(float fDeltaTime);
     void Draw(ConsoleGame *game);
-    void SetVolume(int volume);
 };

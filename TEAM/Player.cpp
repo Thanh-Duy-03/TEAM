@@ -143,16 +143,10 @@ bool Player::DieState(float fDeltaTime)
 	return false;
 }
 
-void Player::Draw(ConsoleGame *game)
+void Player::Draw(ConsoleGame* game)
 {
 	if (this->die)
 		game->DrawSprite((int)this->x, (int)this->y, this->dieSprites[this->currentDie].first, this->bgColor);
 	else
 		game->DrawSprite((int)this->x, (int)this->y, this->idleSprites[this->currentIdle].first, this->bgColor);
-}
-
-void Player::SetVolume(int volume)
-{
-	this->sound.SetVolume(volume);
-	this->moveSound.SetVolume(volume);
 }

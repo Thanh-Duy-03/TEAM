@@ -280,7 +280,6 @@ void Game::StartGame(float fDeltaTime, int level, int score)
 
 	this->score = 200;
 	this->player.Set(0, 62, level, score);
-	this->player.SetVolume(this->sfxAudio * this->masterAudio);
 
 	// Pavement
 	this->lane[0].SetPosY(62);
@@ -690,13 +689,13 @@ void Game::Setting(float fDeltaTime)
 			if (this->musicAudio > 0)
 				this->musicAudio = this->musicAudio - 10;
 			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
-			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		case 2:
 		{
 			if (this->sfxAudio > 0)
 				this->sfxAudio = this->sfxAudio - 10;
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		}
@@ -719,15 +718,13 @@ void Game::Setting(float fDeltaTime)
 			if (this->musicAudio < 100)
 				this->musicAudio = this->musicAudio + 10;
 			this->musicMenu.SetVolume(this->masterAudio * this->musicAudio);
-			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		case 2:
 		{
 			if (this->sfxAudio < 100)
 				this->sfxAudio = this->sfxAudio + 10;
-			this->musicWin.SetVolume(this->masterAudio * this->sfxAudio);
-			this->musicLose.SetVolume(this->sfxAudio * this->masterAudio);
+			this->musicGame.SetVolume(this->masterAudio * this->sfxAudio);
 			break;
 		}
 		}
@@ -1305,8 +1302,7 @@ void Game::DieGameSau(float fDeltaTime)
 		Save save;
 		save.name = WstringToString(name);
 		save.level = this->player.GetLevel();
-		if (this->player.GetLevel() == 6)
-			save.level = 5;
+		if (this->player.GetLevel() == 6) save.level = 5;
 		save.point = this->player.GetScore();
 		this->highScores.push_back(save);
 		sort(this->highScores.begin(), this->highScores.end(), cmp);
