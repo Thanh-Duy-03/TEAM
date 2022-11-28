@@ -131,7 +131,7 @@ void Lane::Update(float fDeltaTime)
 	{
 		this->stop = true;
 		this->time = 0;
-		this->timeToChange = (rand() % 6) + 1.0f;
+		this->timeToChange = (rand() % 3) + 1.0f;
 	}
 
 	this->time += fDeltaTime;

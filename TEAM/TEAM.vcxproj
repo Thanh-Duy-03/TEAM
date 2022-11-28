@@ -154,8 +154,11 @@
     <ClInclude Include="Win.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Assets\Obstacles\Khung_Long2.txt" />
     <Text Include="Assets\Obstacles\Truck.txt" />
     <Text Include="Assets\Obstacles\Truck2.txt" />
+    <Text Include="Assets\Obstacles\Truc_Thang.txt" />
+    <Text Include="Assets\Obstacles\Truc_Thang2.txt" />
     <Text Include="Assets\Player\Die\PlayerDie1.txt" />
     <Text Include="Assets\Player\Die\PlayerDie2.txt" />
     <Text Include="Assets\Player\Die\PlayerDie3.txt" />
@@ -163,12 +166,9 @@
     <Text Include="Assets\Player\Idle\PlayerIdle1.txt" />
     <Text Include="Assets\Player\Idle\PlayerIdle2.txt" />
     <Text Include="Khung_Long.txt" />
-    <Text Include="Khung_Long2.txt" />
     <Text Include="Save\HighScores.txt" />
     <Text Include="Save\LoadGames.txt" />
     <Text Include="Settings\Audio.txt" />
-    <Text Include="Truc_Thang.txt" />
-    <Text Include="Truc_Thang2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
