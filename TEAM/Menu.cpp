@@ -1219,10 +1219,7 @@ void Game::SaveGame(float fDeltaTime)
 		SaveData("Save/LoadGames.txt", this->loadGames);
 
 		name.clear();
-		if (this->player.GetLevel() < 4)
-			this->m_nCurrentState = 1;
-		else
-			this->m_nCurrentState = 10;
+		this->m_nCurrentState = 1;
 		return;
 	}
 
